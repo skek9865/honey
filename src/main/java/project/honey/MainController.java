@@ -1,11 +1,11 @@
-package project.honey.controller;
+package project.honey;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import project.honey.GlobalConst;
+import project.honey.comm.GlobalConst;
 
 @Controller
 @Slf4j

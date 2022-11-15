@@ -1,4 +1,4 @@
-package project.honey;
+package project.honey.comm;
 
 public interface GlobalConst {
     static final String title = "허니엣비";
