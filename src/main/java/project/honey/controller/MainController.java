@@ -18,6 +18,6 @@ public class MainController {
         model.addAttribute("cssDir", GlobalConst.cssDir);
         model.addAttribute("jsDir", GlobalConst.jsDir);
         model.addAttribute("imgDir", GlobalConst.imgDir);
-        return "main/main";
+        return "main";
     }
 }
