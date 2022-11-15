@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html th:fragment="layout (content)" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+  <title th:text="${title}"></title>
+  <link rel="icon" th:href="@{${imgDir}/favicon.ico}" type="image/x-icon" />
+  <link rel="shortcut icon" th:href="@{${imgDir}/favicon.ico}" type="image/x-icon" />
+  <link th:href="@{|${cssDir}/bootstrap.min.css|}" rel="stylesheet" >
+  <link th:href="@{|${cssDir}/bootstrap-datepicker3.min.css|}" rel="stylesheet" >
+  <link th:href="@{|${cssDir}/bootstrap-icons.css|}" rel="stylesheet" >
+  <link th:href="@{|${cssDir}/bootstrap.css|}" rel="stylesheet" >
+  <link th:href="@{|${cssDir}/styles.css|}" rel="stylesheet" />
+  <link th:href="@{|${cssDir}/style_old.css|}" rel="stylesheet" />
+  <link th:href="@{|${cssDir}/bootstrap4-toggle.min.css|}" rel="stylesheet" >
+  <link th:href="@{|${cssDir}/theme.blue.css|}" rel="stylesheet" >
+
+  <script th:src="@{|${jsDir}/all.min.js|}" crossorigin="anonymous"></script>
+  <script th:src="@{|${jsDir}/jquery-3.4.1.min.js|}"></script>
+  <script th:src="@{|${jsDir}/jquery-ui.min.js|}"></script>
+
+  <script th:src="@{|${jsDir}/colResizable-1.6.js|}"></script>
+  <script th:src="@{|${jsDir}/jquery.tablesorter.min.js|}"></script>
+  <script th:src="@{|${jsDir}/bootstrap4-toggle.min.js|}"></script>
+  <script th:src="@{|${jsDir}/popper.min.js|}"></script>
+
+  <script th:src="@{|${jsDir}/bootstrap.min.js|}"></script>
+  <script th:src="@{|${jsDir}/bootstrap-datepicker.min.js|}" type='text/javascript' ></script>
+  <script th:src="@{|${jsDir}/bootstrap-datepicker.ko.min.js|}" charset="UTF-8"></script>
+
+  <script th:src="@{|${jsDir}/showModalDialog.js|}" type="text/javascript"></script>
+  <script th:src="@{|${jsDir}/showModalDialogCallee.js|}" type="text/javascript"></script>
+
+  <script th:src="@{|${jsDir}/comfunction.js|}"></script>
+  <script th:src="@{|${jsDir}/comfunction_src.js|}"></script>
+  <script th:src="@{|${jsDir}/clientValidate.js|}"></script>
+
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body class="sb-nav-fixed">
+
+  <!-- 최상단 판넬 -->
+  <nav class="sb-topnav navbar navbar-expand">
+    <!-- 로고바-->
+    <a class="navbar-brand" th:href="@{layoutMain.html}"><img class="main-logo" th:src="@{|${imgDir}/logo.png|}" alt="" width = "170" />&nbsp;&nbsp;&nbsp;</a>
+    <!-- 화면쉼김 바-->
+    <button class="btn btn-link btn-sm order-lg-0 me-lg-0" id="sidebarToggle" href="#!" title="화면숨김"><div class="sb-nav-link-hidden-icon"><i class="bi bi-layout-text-window-reverse"></i></div></button>
+    <!-- 1차메뉴-->
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 px-1">
+      <div >
+        <ul class="nav navbar-nav mai-top-nav">
+          <?
+            for ($i = 0 ; $i < count($menu1) ;$i++){ ?>
+          <li class="nav-item " ><div class="div-icon"><i class="bi bi-grip-vertical"></i></div></li>
+<!--          <li class="nav-item fw-bold "><a href="#" onclick="gf_menu('<?=$menu1[$i][fstid]?>','<?=$gval_userid?>')" class="nav-link_main"><?=$menu1[$i][fstnm]?></a></li>-->
+          <li class="nav-item fw-bold "><a href="#" class="nav-link_main">aa</a></li>
+          <?}?>
+        </ul>
+      </div>
+    </div>
+    <!-- 1차메뉴-->
+  </nav>
+  <!-- 최상단 판넬 -->
+
+  <!-- 컨텐츠 (사이드판넬 + 메인판넬) -->
+  <div id="layoutSidenav">
+    <!-- 켄텐츠 (사이드판넬) -->
+    <div id="layoutSidenav_nav">
+      <nav class="sb-sidenav" id="sidenavAccordion">
+        <!-- 켄텐츠 (사이드메뉴) -->
+        <div class="sb-sidenav-menu" id="sb-sidenav-menu">
+        </div>
+        <!-- 켄텐츠 (사이드메뉴) -->
+        <!-- 켄텐츠 (로그아웃) -->
+        <div class="sb-sidenav-footer">
+          <div ><a href="#" title="로그아웃" class="nav-link fs-6"><i class="bi bi-arrow-right-square"></i>&nbsp;&nbsp;<strong>로그아웃</strong></a></div>
+<!--          <div ><?=$gval_usernm?>&nbsp;[<?="$gval_userid"?>]&nbsp;&nbsp;<?=$gval_postnm ?></div>-->
+          <div >김효중&nbsp;[skek]&nbsp;&nbsp;??</div>
+        </div>
+        <!-- 켄텐츠 (로그아웃) -->
+      </nav>
+    </div>
+    <!-- 켄텐츠 (사이드판넬) -->
+    <!-- 켄텐츠 (메인내용) -->
+    <div id="layoutSidenav_content">
+      <div th:replace="${content}"></div>
+    </div>
+    <!-- 켄텐츠 (메인내용) -->
+  </div>
+
+  <!-- 컨텐츠 (사이드판넬 + 메인판넬) -->
+  <!-- Button trigger modal -->
+  <!-- Tab이동 바 -->
+<!--  <?-->
+<!--    if ($tab){-->
+<!--      $gs_querystr .= "&page=".$page."&num_per_page=".$num_per_page;-->
+<!--      put_tabinfo($gval_userid,$gval_session_id,$gs_tpid,$gs_querystr,$gval_logged_ip);-->
+<!--    }-->
+<!--    ?>-->
+<!--  <?=tab_cpnt($gval_userid,$gval_session_id)?>-->
+  <!-- Tab이동 바 -->
+
+  <!-- Copyright 바 -->
+  <nav class="fixed-bottom sb-main-footer" id="Copyright_footer"><strong>Copyright 2022 허니엣비 All rights reserved.</strong>	</nav>
+  <!-- Copyright 바 -->
+
+  <div id="loading" style="margin-left: 0px;">
+    <img th:src="@{|${imgDir}/loading.gif|}">
+  </div>
+
+  <script th:src="@{|${jsDir}/bootstrap.bundle.min.js|}" crossorigin="anonymous"></script>
+  <script th:src="@{|${jsDir}/scripts.js|}"></script>
+  <script type="text/javascript">
+    <!--
+    // <?
+    // if($ACD == '00') $ACD = '01';
+    //   ?>
+    // gf_menu('<?=$ACD?>','<?=$BCD?>','<?=$CCD?>','<?=$gval_userid?>');
+    //-->
+  </script>
+  <!-- Modal -->
+  <div class="modal fade" id="inputpopup" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div id="modal_main" class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-body" id="modalhtml">
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+</body>
+</html>

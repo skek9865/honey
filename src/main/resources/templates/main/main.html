@@ -1,0 +1,26 @@
+<html th:replace="~{main/layoutMain:: layout(~{::main})}"
+      xmlns:th="http://www.thymeleaf.org">
+  <style>
+      .outer-div {
+          display: flex;
+          align-items: center; /* 수직 정렬 */
+          flex-direction: row; /* default: row */
+          justify-content: center; /* flex direction에 대해서 정렬방식 선택 */
+      }
+
+      .inner-div {
+          position: absolute;
+          top: 40%;
+          left: 55%;
+          transform: translate(-50%,-50%);
+      }
+  </style>
+  <main>
+    <div class="outer-div p-2">
+      <div class="inner-div">
+        <img src="images/login_logo.png" name="Image1"  border="0" >
+        <p><img src="images/main_logo.png" name="Image1"  border="0"></p>
+      </div>
+    </div>
+  </main>
+</html>
