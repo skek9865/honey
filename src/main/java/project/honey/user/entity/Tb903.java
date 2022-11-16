@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.honey.comm.BaseTime;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @Table(name = "tb_903")
-public class Tb903 {
+public class Tb903  extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,15 +48,4 @@ public class Tb903 {
     @Column(name = "delyn", columnDefinition = "char")
     private String delYn;   //삭제사용여부
 
-    @Column(name = "inputid")
-    private String inputId; //입력아이디
-
-    @Column(name = "inputdt", columnDefinition = "char")
-    private String inputDt; //입력일시
-
-    @Column(name = "updateid")
-    private String updateId;    //수정아이디
-
-    @Column(name = "updatedt", columnDefinition = "char")
-    private String updateDt;    //수정일시
 }

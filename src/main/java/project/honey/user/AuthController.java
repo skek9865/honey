@@ -28,7 +28,7 @@ public class AuthController {
         model.addAttribute("cssDir", GlobalConst.cssDir);
         model.addAttribute("jsDir", GlobalConst.jsDir);
         model.addAttribute("imgDir", GlobalConst.imgDir);
-        return "auth/login";
+        return "login";
     }
 
     // 로그인

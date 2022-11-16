@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.honey.comm.BaseTime;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @Table(name = "tb_901")
-public class Tb901 {
+public class Tb901 extends BaseTime {
 
     @Id
     @Column(name = "userid")
@@ -37,8 +38,8 @@ public class Tb901 {
     @Column(name = "usergr", columnDefinition = "char")
     private String userGr;  //사용자그룹
 
-    @Column(name = "useryn", columnDefinition = "char")
-    private String userYn;  //사용여부
+    @Column(name = "useyn", columnDefinition = "char")
+    private String useYn;  //사용여부
 
     @Column(name = "empyn", columnDefinition = "char")
     private String empYn;   //사원여부
@@ -49,15 +50,5 @@ public class Tb901 {
     @Column(name = "regdt", columnDefinition = "char")
     private String regDt;   //등록일자
 
-    @Column(name = "inputid")
-    private String inputId; //입력아이디
 
-    @Column(name = "inputdt", columnDefinition = "char")
-    private String inputDt; //입력일시
-
-    @Column(name = "updateid")
-    private String updateId;    //수정아이디
-
-    @Column(name = "updatedt", columnDefinition = "char")
-    private String updateDt;    //수정일시
 }
