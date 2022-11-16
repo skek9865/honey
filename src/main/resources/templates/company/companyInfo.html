@@ -1,0 +1,142 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::main})}"
+      xmlns:th="http://www.thymeleaf.org">
+    <form action="" method="post" enctype="multipart/form-data">
+        <main>
+            <div class="container-fluid p-2">
+                <div class="titleBar" id="titleBar">
+                    <div class="row">
+                        <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i> 뭐고</div>
+                        <div class="col titleBar_path">에헤이</div>
+                    </div>
+                </div>
+                <div class="table-responsive text-nowrap" id="tableWrapper">
+                    <div class="input_div">
+                        <table class="input_table" >
+                            <tr>
+                                <td>
+                                    <label for="corpnm">회사명</label>
+                                    <input type="text" id="corpnm" name="corpnm" th:value="${company.corpnm}">
+                                </td>
+                                <td>
+                                    <label for="corpeng">회사영문명</label>
+                                    <input type="text" id="corpeng" name="corpeng" th:value="${company.corpeng}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="corpno">사업자번호</label>
+                                    <input type="text" id="corpno" name="corpno" th:value="${company.corpno}">
+                                </td>
+                                <td>
+                                    <label for="ceonm">대표자명</label>
+                                    <input type="text" id="ceonm" name="ceonm" th:value="${company.ceonm}">
+                                </td>
+                                <td>
+                                    <label for="setdt">설립일자</label>
+                                    <input type="text" id="setdt" name="setdt" th:value="${company.setdt}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="corptel">회사전화</label>
+                                    <input type="text" id="corptel" name="corptel" th:value="${company.corptel}">
+                                </td>
+                                <td>
+                                    <label for="hometel">자택전화</label>
+                                    <input type="text" id="hometel" name="hometel" th:value="${company.hometel}">
+                                </td>
+                                <td>
+                                    <label for="corpfax">회사Fax</label>
+                                    <input type="text" id="corpfax" name="corpfax" th:value="${company.corpfax}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="mobile">모바일</label>
+                                    <input type="text" id="mobile" name="mobile" th:value="${company.mobile}">
+                                </td>
+                                <td colspan="2">
+                                    <label for="email">이메일</label>
+                                    <input type="text" id="email" name="email" th:value="${company.email}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <label for="hompage">홈페이지</label>
+                                    <input type="text" id="hompage" name="hompage" th:value="${company.hompage}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <label for="zipcd1">우편번호1</label>
+                                    <input type="text" id="zipcd1" name="zipcd1" th:value="${company.zipcd1}">
+                                    <button type="button">검색</button>
+                                    <input type="text" id="address1" name="address1" th:value="${company.address1}">
+                                    <input type="text" id="address11" name="address11" th:value="${company.address11}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <label for="zipcd2">우편번호2</label>
+                                    <input type="text" id="zipcd2" name="zipcd2" th:value="${company.zipcd2}">
+                                    <button type="button">검색</button>
+                                    <input type="text" id="address2" name="address2" th:value="${company.address2}">
+                                    <input type="text" id="address21" name="address21" th:value="${company.address21}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <label for="zipcdeng">영문우편번호</label>
+                                    <input type="text" id="zipcdeng" name="zipcdeng" th:value="${company.zipcdeng}">
+                                    <button type="button">검색</button>
+                                    <input type="text" id="addresseng" name="addresseng" th:value="${company.addresseng}">
+                                    <input type="text" id="addresseng1" name="addresseng1" th:value="${company.addresseng1}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="corpregno">법인등록번호</label>
+                                    <input type="text" id="corpregno" name="corpregno" th:value="${company.corpregno}">
+                                </td>
+                                <td>
+                                    <label for="bsns">업태</label>
+                                    <input type="text" id="bsns" name="bsns" th:value="${company.bsns}">
+                                </td>
+                                <td>
+                                    <label for="item">종목</label>
+                                    <input type="text" id="item" name="item" th:value="${company.item}">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="logonm">회사로고</label>
+                                    <input type="file" id="logonm" name="logonm" th:value="${company.logonm}">
+                                    <img src="/static/images/corp/logo.jpg" alt="이미지가 없습니다">
+                                </td>
+
+                                <td>
+                                    <label for="stampnm">도장이미지</label>
+                                    <input type="file" id="stampnm" name="stampnm" th:value="${company.stampnm}">
+                                    <img src="/static/images/corp/stamp.jpg" alt="이미지가 없습니다">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="searchBar" id="searchBar">
+                    <div class="row">
+                        <div class="col-12 fixed-right p-2 px-4">
+                            <table style="float: right">
+                                <tr>
+                                    <td>
+                                        <button>저장</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </form>
+</html>
