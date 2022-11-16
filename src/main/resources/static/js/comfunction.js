@@ -14,11 +14,11 @@ function gf_modal(as_url,as_acd,as_bcd,as_ccd,as_action,as_val,as_val1) {
 }
 
 function gf_menu(as_acd,as_bcd,as_ccd,as_empno) {
-	var purl = "menu.php";
+	var purl = "menu";
 	$.ajax({
 	url:purl,
 	type:"GET",
-	data: { ACD : as_acd ,BCD : as_bcd ,CCD : as_ccd ,sj_userid : as_empno},
+	data: { fstId : as_acd ,scdId : as_bcd ,thdId : as_ccd ,userId : as_empno},
 	dataType:"html",
 	complete: function(req,stat) {
 		if(stat=="success") {
