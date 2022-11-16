@@ -1,7 +1,7 @@
 package project.honey.comm.menu;
 
 import lombok.*;
-import project.honey.comm.BaseTime;
+import project.honey.comm.BaseAtt;
 
 import javax.persistence.*;
 
@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @Table(name = "tb_904")
-public class Tb904 extends BaseTime {
+public class Tb904 extends BaseAtt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
