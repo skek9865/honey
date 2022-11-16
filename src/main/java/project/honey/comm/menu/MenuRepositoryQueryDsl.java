@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface MenuRepositoryQueryDsl {
 
-    List<MenuIdDto> getMenuId();
+    List<Tb904> getMenuId(Integer type, String acd, String scd, String userId);
 }
