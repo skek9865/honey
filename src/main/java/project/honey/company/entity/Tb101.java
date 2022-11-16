@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import project.honey.comm.BaseTime;
+import project.honey.comm.BaseAtt;
 
 import javax.persistence.*;
 
@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Builder
 @Getter
 @Table(name = "tb_101")
-public class Tb101{
+public class Tb101 extends BaseAtt {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer seq;
@@ -93,17 +93,5 @@ public class Tb101{
 
     @Column(name = "stampnm")
     private String stampnm;
-
-    @Column(name = "inputid")
-    private String inputid;
-
-    @Column(name = "inputdt", columnDefinition = "char")
-    private String inputdt;
-
-    @Column(name = "updateid")
-    private String updateid;
-
-    @Column(name = "updatedt", columnDefinition = "char")
-    private String updatedt;
 
 }

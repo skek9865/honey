@@ -5,10 +5,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import project.honey.comm.GlobalConst;
 import project.honey.company.entity.Tb101;
 import project.honey.company.repository.CompanyRepository;
+import project.honey.company.service.CompanyService;
 
 @Controller
 @RequiredArgsConstructor
@@ -16,13 +19,13 @@ import project.honey.company.repository.CompanyRepository;
 @RequestMapping("/company")
 public class CompanyController {
 
-    private final CompanyRepository companyRepository;
+    private final CompanyService companyService;
 
     @GetMapping("/info")
     public String companyInfo(Model model){
-        Tb101 tb101 = companyRepository.findById(27).get();
+        CompanyInfoDto dto = companyService.findById(27);
 
-        model.addAttribute("company", tb101);
+        model.addAttribute("company", dto);
         model.addAttribute("title", GlobalConst.title);
         model.addAttribute("cssDir", GlobalConst.cssDir);
         model.addAttribute("jsDir", GlobalConst.jsDir);
@@ -30,5 +33,9 @@ public class CompanyController {
 
         return "company/companyInfo.html";
     }
+//    @PostMapping("/info")
+//    public String companySave(@ModelAttribute CompanyForm form) {
+//
+//    }
 
 }
