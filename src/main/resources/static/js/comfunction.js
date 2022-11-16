@@ -15,7 +15,6 @@ function gf_modal(as_url,as_acd,as_bcd,as_ccd,as_action,as_val,as_val1) {
 
 function gf_menu(as_acd,as_bcd,as_ccd,as_empno) {
 	var purl = "menu";
-	console.log(as_acd);
 	$.ajax({
 	url:purl,
 	type:"GET",
