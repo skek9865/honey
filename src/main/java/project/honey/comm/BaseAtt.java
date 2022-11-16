@@ -5,10 +5,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
@@ -16,16 +15,27 @@ import java.time.LocalDateTime;
 public abstract class BaseAtt {
 
     @CreatedDate
-    @Column(name = "inputdt", updatable = false)
-    private LocalDateTime createDate;
+    @Column(name = "inputdt", updatable = false, columnDefinition = "char")
+    private String createDate;
 
     @Column(name = "inputid")
     private String createId;
 
     @LastModifiedDate
-    @Column(name = "updatedt")
-    private LocalDateTime modifyDate;
+    @Column(name = "updatedt", columnDefinition = "char")
+    private String modifyDate;
 
     @Column(name = "updateid")
     private String updateId;
+
+    @PrePersist
+    public void onPrePersist(){
+        this.createDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        this.modifyDate = this.createDate;
+    }
+
+    @PreUpdate
+    public void onPreUpdate(){
+        this.modifyDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+    }
 }
