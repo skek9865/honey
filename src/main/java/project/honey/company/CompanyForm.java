@@ -2,9 +2,13 @@ package project.honey.company;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter @Setter
+@ToString
 public class CompanyForm {
+
     private String corpnm;
 
     private String corpno;
@@ -51,7 +55,7 @@ public class CompanyForm {
 
     private String item;
 
-    private String logonm;
+    private MultipartFile logonm;
 
-    private String stampnm;
+    private MultipartFile stampnm;
 }

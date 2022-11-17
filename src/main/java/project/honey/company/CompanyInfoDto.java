@@ -65,11 +65,11 @@ public class CompanyInfoDto {
 
     private String stampnm;
 
-    private LocalDateTime createDate;
+    private String createDate;
 
     private String createId;
 
-    private LocalDateTime modifyDate;
+    private String modifyDate;
 
     private String updateId;
 }

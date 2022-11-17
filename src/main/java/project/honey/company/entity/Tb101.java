@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import project.honey.comm.BaseAtt;
+import project.honey.company.CompanyForm;
 
 import javax.persistence.*;
 
@@ -94,4 +95,31 @@ public class Tb101 extends BaseAtt {
     @Column(name = "stampnm")
     private String stampnm;
 
+    public void changeInfo(CompanyForm form){
+        this.corpnm = form.getCorpnm();
+        this.corpno = form.getCorpno();
+        this.ceonm = form.getCorpnm();
+        this.setdt = form.getSetdt();
+        this.corptel = form.getCorptel();
+        this.hometel = form.getHometel();
+        this.email = form.getEmail();
+        this.mobile = form.getMobile();
+        this.corpfax = form.getCorpfax();
+        this.hompage = form.getHompage();
+        this.zipcd1 = form.getZipcd1();
+        this.address1 = form.getAddress1();
+        this.address11 = form.getAddress11();
+        this.zipcd2 = form.getZipcd2();
+        this.address2 = form.getAddress2();
+        this.address21 = form.getAddress21();
+        this.corpeng = form.getCorpeng();
+        this.zipcdeng = form.getZipcdeng();
+        this.addresseng = form.getAddresseng();
+        this.addresseng1 = form.getAddresseng1();
+        this.corpregno = form.getCorpregno();
+        this.bsns = form.getBsns();
+        this.item = form.getItem();
+        if(!form.getLogonm().isEmpty()) this.logonm = form.getLogonm().getOriginalFilename();
+        if(!form.getStampnm().isEmpty()) this.stampnm = form.getStampnm().getOriginalFilename();
+    }
 }
