@@ -1,7 +1,9 @@
 package project.honey.comm;
 
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -18,15 +20,18 @@ public abstract class BaseAtt {
     @Column(name = "inputdt", updatable = false, columnDefinition = "char")
     private String createDate;
 
-    @Column(name = "inputid")
+    @CreatedBy
+    @Column(name = "inputid", updatable = false)
     private String createId;
 
     @LastModifiedDate
     @Column(name = "updatedt", columnDefinition = "char")
     private String modifyDate;
 
+    @LastModifiedBy
     @Column(name = "updateid")
     private String updateId;
+
 
     @PrePersist
     public void onPrePersist(){
@@ -38,4 +43,5 @@ public abstract class BaseAtt {
     public void onPreUpdate(){
         this.modifyDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     }
+
 }

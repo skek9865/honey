@@ -6,14 +6,17 @@ import org.springframework.data.domain.Pageable;
 public interface UserService {
 
     // 사용자 등록
-    String insertUser(UserDto dto);
+    String insert(UserDto dto);
 
     // 사용자 수정
-    String updateUser(UserDto dto);
+    String update(UserDto dto);
 
     // 사용자 리스트 조회
-    Page<UserDto> userList(Pageable pageable);
+    Page<UserDto> findAll(Pageable pageable);
+
+    // 사용자 단건 조회
+    UserDto findById(String userId);
 
     // 사용자 삭제
-    void deleteUser(String userId);
+    void delete(String userId);
 }

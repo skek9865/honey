@@ -61,6 +61,8 @@ public class UserDto {
                 .empYn(entity.getEmpYn())
                 .empNo(entity.getEmpNo())
                 .regDt(entity.getRegDt())
+                .inputId(entity.getCreateId())
+                .updateId(entity.getUpdateId())
                 .build();
     }
 }

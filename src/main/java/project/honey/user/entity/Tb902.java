@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import project.honey.comm.BaseTime;
+import project.honey.comm.BaseAtt;
 
 import javax.persistence.*;
 
@@ -18,7 +18,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @Table(name = "tb_902")
-public class Tb902  extends BaseTime {
+public class Tb902  extends BaseAtt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
