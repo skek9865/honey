@@ -34,7 +34,7 @@ class UserServiceImplTest {
     private void insertUser() {
         session.setAttribute("user", "hello");
 
-        IntStream.range(0, 200).forEach(i -> {
+        IntStream.range(0, 2000).forEach(i -> {
             UserDto dto = UserDto.builder()
                     .userId("test" + i)
                     .passwd("test" + i)

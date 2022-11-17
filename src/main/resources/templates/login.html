@@ -22,10 +22,10 @@
     <script language="javascript">
         <!--
         function lf_confirm(as_action,as_val1,as_val2,as_val3) { // FORM을 서버미트 하기전에 수행할 일
-            form = loginForm;
+            form = $('#loginForm');
             switch (as_action) {
                 case "login" : //저장
-                    if (!gf_checkSubmit("사용자ID",form.empno,1,0,0,0,0,0)) { break; }
+                    if (!gf_checkSubmit("사용자ID",form.userId,1,0,0,0,0,0)) { break; }
                     if (!gf_checkSubmit("비밀번호",form.passwd,1,0,0,0,0,0)) { break; }
                     form.submit();
                     break;
@@ -48,7 +48,7 @@
         <div class="container-fluid">
             <div class="hpanel">
                 <div class="panel-body">
-                    <form name="loginForm" id="loginForm" th:action="@{/templates/system/login}" method="post">
+                    <form name="loginForm" id="loginForm" th:action="@{/auth/login}" method="post">
                         <div class="form-group row">
                             <label for="userId" class="col-sm-2 col-form-label ">사용자ID</label>
                             <div class="col-sm-10">

@@ -20,14 +20,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
 
     private final UserRepository userRepository;
-    private final HttpSession session;
 
     // User 저장
     @Override
     @Transactional
     public String insert(UserDto dto) {
-        Tb901 entity = UserDto.toUser(dto);
-        return userRepository.save(entity).getUserId();
+        return userRepository.save(UserDto.toUser(dto)).getUserId();
     }
 
     // User 수정
@@ -42,6 +40,8 @@ public class UserServiceImpl implements UserService{
     // User 리스트 불러오기
     @Override
     public Page<UserDto> findAll(Pageable pageable) {
+//        Page<Tb901> all = userRepository.findAll(pageable);
+
         return userRepository.findAll(pageable).map(UserDto::of);
     }
 
