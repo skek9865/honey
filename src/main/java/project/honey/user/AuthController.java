@@ -24,10 +24,7 @@ public class AuthController {
     // 로그인 폼 요청
     @GetMapping("/login")
     public String loginForm(Model model) {
-        model.addAttribute("title", GlobalConst.title);
-        model.addAttribute("cssDir", GlobalConst.cssDir);
-        model.addAttribute("jsDir", GlobalConst.jsDir);
-        model.addAttribute("imgDir", GlobalConst.imgDir);
+        model.addAttribute("title", new GlobalConst());
         return "auth/login";
     }
 
