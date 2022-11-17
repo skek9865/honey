@@ -1,8 +1,12 @@
 package project.honey.comm;
 
-public interface GlobalConst {
-    static final String title = "허니엣비";
-    static final String cssDir = "/css";
-    static final String jsDir = "/js";
-    static final String imgDir = "/images";
+import lombok.Getter;
+
+@Getter
+public class GlobalConst {
+    private final String title = "허니엣비";
+    private final String cssDir = "/css";
+    private final String jsDir = "/js";
+    private final String imgDir = "/images";
+    private final String mainWidth = "1000px";
 }

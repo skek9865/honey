@@ -29,10 +29,7 @@ public class MainController {
     public String main(Model model){
         log.info("mainController");
         model.addAttribute("menus", menuMaker.getMenuId(1,"00","00",""));
-        model.addAttribute("title", GlobalConst.title);
-        model.addAttribute("cssDir", GlobalConst.cssDir);
-        model.addAttribute("jsDir", GlobalConst.jsDir);
-        model.addAttribute("imgDir", GlobalConst.imgDir);
+        model.addAttribute("global", new GlobalConst());
         return "main";
     }
     @GetMapping("/menu")
