@@ -1,4 +1,3 @@
-<!--
 //
 //  ===============================================================================================
 //  Function Name : gf_checkSubmit(myLabel,myObj,m_mandatory,min_length,max_length,m_numCheck,m_lowValue,m_highValue,myFocus,myValue)
