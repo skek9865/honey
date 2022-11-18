@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
-import project.honey.user.UserDto;
+import project.honey.user.dto.Tb901Dto;
 
 import javax.persistence.*;
 
@@ -22,39 +23,50 @@ import javax.persistence.*;
 public class Tb901 extends BaseAtt {
 
     @Id
+    @Comment("아이디")
     @Column(name = "userid")
-    private String userId;  //아이디
+    private String userId;
 
-    private String passwd;  //비밀번호
+    @Comment("비밀번호")
+    private String passwd;
 
+    @Comment("사용자이름")
     @Column(name = "usernm")
-    private String userNm;  //사용자이름
+    private String userNm;
 
-    private String phone;   //전화번호
+    @Comment("전화번호")
+    private String phone;
 
-    private String mobile;  //모바일
+    @Comment("모바일")
+    private String mobile;
 
-    private String email;   //이메일
+    @Comment("이메일")
+    private String email;
 
+    @Comment("사용자그룹")
     @Column(name = "usergr", columnDefinition = "char")
-    private String userGr;  //사용자그룹
+    private String userGr;
 
+    @Comment("사용여부")
     @Column(name = "useyn", columnDefinition = "char")
-    private String useYn;  //사용여부
+    private String useYn;
 
+    @Comment("사원여부")
     @Column(name = "empyn", columnDefinition = "char")
-    private String empYn;   //사원여부
+    private String empYn;
 
+    @Comment("사원번호")
     @Column(name = "empno")
-    private String empNo;   //사원번호
+    private String empNo;
 
+    @Comment("등록일자")
     @Column(name = "regdt", columnDefinition = "char")
-    private String regDt;   //등록일자
+    private String regDt;
 
 
 
     // 사용자 정보 변경
-    public void changeInfo(UserDto dto) {
+    public void changeInfo(Tb901Dto dto) {
         this.passwd = dto.getPasswd();
         this.userNm = dto.getUserNm();
         this.phone = dto.getPhone();

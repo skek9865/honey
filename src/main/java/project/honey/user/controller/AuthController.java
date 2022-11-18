@@ -1,4 +1,4 @@
-package project.honey.user;
+package project.honey.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import project.honey.comm.GlobalConst;
+import project.honey.user.dto.LoginDto;
 import project.honey.user.repository.UserRepository;
 
 import javax.servlet.http.HttpSession;
@@ -25,7 +26,8 @@ public class AuthController {
     @GetMapping("/login")
     public String loginForm(Model model) {
 
-        model.addAttribute("title", new GlobalConst());
+        model.addAttribute("global", new GlobalConst());
+
         return "login";
 
     }

@@ -1,6 +1,5 @@
 package project.honey.user;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -9,7 +8,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Transactional;
+import project.honey.user.dto.Tb901Dto;
+import project.honey.user.service.UserService;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
@@ -35,7 +35,7 @@ class UserServiceImplTest {
         session.setAttribute("user", "hello");
 
         IntStream.range(0, 2000).forEach(i -> {
-            UserDto dto = UserDto.builder()
+            Tb901Dto dto = Tb901Dto.builder()
                     .userId("test" + i)
                     .passwd("test" + i)
                     .userNm("tester" + i)
@@ -61,7 +61,7 @@ class UserServiceImplTest {
 
         insertUser();
 
-        UserDto findUser = userService.findById("test50");
+        Tb901Dto findUser = userService.findById("test50");
 
         assertThat(findUser.getUserId()).isEqualTo("test50");
 
@@ -74,12 +74,12 @@ class UserServiceImplTest {
         session.invalidate();
         session.setAttribute("user", "hello2");
 
-        UserDto dto = userService.findById("test50");
+        Tb901Dto dto = userService.findById("test50");
         dto.setEmail("hello~~~");
 
         //when
         String userId = userService.update(dto);
-        UserDto findUser = userService.findById(userId);
+        Tb901Dto findUser = userService.findById(userId);
         //then
         assertThat(findUser.getUserId()).isEqualTo(userId);
         assertThat(findUser.getInputId()).isEqualTo("hello");
@@ -90,7 +90,7 @@ class UserServiceImplTest {
     @Rollback
     void find() {
         insertUser();
-        Page<UserDto> pagingUsers = userService.findAll(PageRequest.of(1, 50));
+        Page<Tb901Dto> pagingUsers = userService.findAll(PageRequest.of(1, 50));
 
         assertThat(pagingUsers.getTotalElements()).isEqualTo(202);  // 총 사이즈 검증
         assertThat(pagingUsers.getContent().size()).isEqualTo(50);  // 페이징한 사이즈 검증

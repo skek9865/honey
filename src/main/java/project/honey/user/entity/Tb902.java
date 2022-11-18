@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
 
 import javax.persistence.*;
@@ -22,24 +23,31 @@ public class Tb902  extends BaseAtt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer seq;    // 순번
+    @Comment("순번")
+    private Integer seq;
 
+    @Comment("아이디")
     @Column(name = "userid")
-    private String userId;  // 아이디
+    private String userId;
 
+    @Comment("접속시간")
     @Column(name = "timestamp")
-    private String timeStamp;   // 접속시간
+    private String timeStamp;
 
+    @Comment("접속IP")
     @Column(name = "ipaddr")
-    private String ipAddr;  // 접속IP
+    private String ipAddr;
 
+    @Comment("접속port")
     @Column(name = "remoteport")
-    private Integer remotePort; // 접속port
+    private Integer remotePort;
 
+    @Comment("섹션")
     @Column(name = "sessid")
-    private String sessId;  //섹션
+    private String sessId;
 
+    @Comment("사용자사양")
     @Column(name = "useragent")
-    private String userAgent;   //사용자사양
+    private String userAgent;
 
 }
