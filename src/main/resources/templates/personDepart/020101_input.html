@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <body>
+  <script th:src="@{|${glbal.jsDir}/printPreview_a.js|}"></script>
+  <FORM name="fm_input" method="post" enctype="multipart/form-data" th:object="${dto}">
+    <main >
+      <div class="container-fluid p-2" >
+        <div class="input_div">
+          <table class="input_table">
+            <tr >
+              <td>
+                <label for="empNo" class="input_labal">사원번호</label>
+                <input id="empNo" th:field="*{empNo}" type="text" size="15" class="form-control">
+              </td>
+              <td>
+                <label for="empNm" class="input_labal">사원명</label>
+                <input id="empNm" th:field="*{empNm}" type="text" size="15" class="form-control">
+              </td>
+              <td>
+                <label for="idNo" class="input_labal">주민등록번호</label>
+                <input id="idNo" th:field="*{idNo}" type="text" size="20" class="form-control">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="empEngNm" class="input_labal">영문성명</label>
+                <input id="empEngNm" th:field="*{empEngNm}" type="text" size="20" class="form-control">
+              </td>
+              <td>
+                <label for="emp2Nm" class="input_labal">제2외국어성명</label>
+                <input id="emp2Nm" th:field="*{emp2Nm}" type="text" size="20" class="form-control">
+              </td>
+              <td>
+                <div class='form-check form-check-inline'>
+                  <input class='form-check-input' id="headYn" th:field="*{headYn}" type="checkbox" value="Y">
+                  <label class='form-check-label' for="headYn">세대주여부</label>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for='empClass' class=''>입사구분</label>
+                <SELECT class='form-select' id='empClass' name='empClass'  size=1 >
+                  <OPTION value=''>선택</OPTION>
+                  <OPTION value='00001'>대표이사</OPTION>
+                  <OPTION value='00002'>전무님</OPTION>
+                  <OPTION value='00003'>과장</OPTION>
+                  <OPTION value='00004'>팀장</OPTION>
+                  <OPTION value='00005'>대리</OPTION>
+                  <OPTION value='00006'>주임</OPTION>
+                  <OPTION value='00007'>실장</OPTION>
+                  <OPTION value='00008'>상무</OPTION>
+                  <OPTION value='00009'>차장</OPTION>
+                  <OPTION value='00010'>이사</OPTION>
+                  <OPTION value='00011'>사원</OPTION>
+                  <OPTION value='00012'>본부장</OPTION>
+                  <OPTION value='00013'>단장</OPTION>
+                </SELECT>
+              </td>
+              <td>
+                <div class='input-group input-daterange'>
+                  <div class='input-group-addon px-2'>
+                    <label for="empDt" class="input_labal">입사일자</label>
+                  </div>
+                  <input type="text" id="empDt" th:field="*{empDt}" size="6" class="input_date" autocomplete="off">
+                </div>
+              </td>
+              <td>
+                <label for='post' class=''>직위/직급</label>
+                <SELECT class='form-select' id='post' name='post'  size=1 >
+                  <OPTION value=''>선택</OPTION>
+                  <OPTION value='00001'>대표이사</OPTION>
+                  <OPTION value='00002'>전무님</OPTION>
+                  <OPTION value='00003'>과장</OPTION>
+                  <OPTION value='00004'>팀장</OPTION>
+                  <OPTION value='00005'>대리</OPTION>
+                  <OPTION value='00006'>주임</OPTION>
+                  <OPTION value='00007'>실장</OPTION>
+                  <OPTION value='00008'>상무</OPTION>
+                  <OPTION value='00009'>차장</OPTION>
+                  <OPTION value='00010'>이사</OPTION>
+                  <OPTION value='00011'>사원</OPTION>
+                  <OPTION value='00012'>본부장</OPTION>
+                  <OPTION value='00013'>단장</OPTION>
+                </SELECT>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for='post1' class=''>직책</label>
+                <SELECT class='form-select' id='post1' name='post1'  size=1 >
+                  <OPTION value=''>선택</OPTION>
+                  <OPTION value='00001'>대표이사</OPTION>
+                  <OPTION value='00002'>전무님</OPTION>
+                  <OPTION value='00003'>과장</OPTION>
+                  <OPTION value='00004'>팀장</OPTION>
+                  <OPTION value='00005'>대리</OPTION>
+                  <OPTION value='00006'>주임</OPTION>
+                  <OPTION value='00007'>실장</OPTION>
+                  <OPTION value='00008'>상무</OPTION>
+                  <OPTION value='00009'>차장</OPTION>
+                  <OPTION value='00010'>이사</OPTION>
+                  <OPTION value='00011'>사원</OPTION>
+                  <OPTION value='00012'>본부장</OPTION>
+                  <OPTION value='00013'>단장</OPTION>
+                </SELECT>
+              </td>
+              <td>
+                <label for='deptCd' class=''>부서명</label>
+                <SELECT class='form-select' id='deptCd' name='deptCd'  size=1 >
+                  <OPTION value=''>선택</OPTION>
+                  <OPTION value='00001'>대표이사</OPTION>
+                  <OPTION value='00002'>전무님</OPTION>
+                  <OPTION value='00003'>과장</OPTION>
+                  <OPTION value='00004'>팀장</OPTION>
+                  <OPTION value='00005'>대리</OPTION>
+                  <OPTION value='00006'>주임</OPTION>
+                  <OPTION value='00007'>실장</OPTION>
+                  <OPTION value='00008'>상무</OPTION>
+                  <OPTION value='00009'>차장</OPTION>
+                  <OPTION value='00010'>이사</OPTION>
+                  <OPTION value='00011'>사원</OPTION>
+                  <OPTION value='00012'>본부장</OPTION>
+                  <OPTION value='00013'>단장</OPTION>
+                </SELECT>
+              </td>
+              <td>
+                <label for="workCd" class="input_labal">업무코드</label>
+                <input id="workCd" th:field="*{workCd}" type="text" size="5" class="form-control">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="phone" class="input_labal">전화번호</label>
+                <input id="phone" th:field="*{phone}" type="text" size="15" class="form-control">
+              </td>
+              <td>
+                <label for="mobile" class="input_labal">모바일</label>
+                <input id="mobile" th:field="*{mobile}" type="text" size="18" class="form-control">
+              </td>
+              <td>
+                <label for="email" class="input_labal">Email</label>
+                <input id="email" th:field="*{email}" type="text" size="30" class="form-control">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="psNo" class="input_labal">여권번호</label>
+                <input id="psNo" th:field="*{psNo}" type="text" size="30" class="form-control">
+              </td>
+              <td>
+                <div class='input-group input-daterange'>
+                  <div class='input-group-addon px-2'>
+                    <label for="leaveDt" class="input_labal">퇴사일자</label>
+                  </div>
+                  <input type="text" id="leaveDt" th:field="*{leaveDt}" size="6" class="input_date" autocomplete="off">
+                </div>
+              </td>
+              <td>
+                <label for="leaveRs">퇴사사유</label>
+                <input id="leaveRs" th:field="*{leaveRs}" type="text" size="30" class="form-control">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for='bankNm' class=''>급여은행</label>
+                <SELECT class='form-select' id='bankNm' name='bankNm'  size=1 >
+                  <OPTION value=''>선택</OPTION>
+                  <OPTION value='00001'>대표이사</OPTION>
+                  <OPTION value='00002'>전무님</OPTION>
+                  <OPTION value='00003'>과장</OPTION>
+                  <OPTION value='00004'>팀장</OPTION>
+                  <OPTION value='00005'>대리</OPTION>
+                  <OPTION value='00006'>주임</OPTION>
+                  <OPTION value='00007'>실장</OPTION>
+                  <OPTION value='00008'>상무</OPTION>
+                  <OPTION value='00009'>차장</OPTION>
+                  <OPTION value='00010'>이사</OPTION>
+                  <OPTION value='00011'>사원</OPTION>
+                  <OPTION value='00012'>본부장</OPTION>
+                  <OPTION value='00013'>단장</OPTION>
+                </SELECT>
+              </td>
+              <td>
+                <label for="aCutNm" class="input_labal">예금주</label>
+                <input id="aCutNm" th:field="*{aCutNm}" type="text" size="20" class="form-control">
+              </td>
+              <td>
+                <label for="aCutNo" class="input_labal">사원계좌번호</label>
+                <input id="aCutNo" th:field="*{aCutNo}" type="text" size="30" class="form-control">
+              </td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <label for="zipCd" class="input_labal">주소</label>
+                <input id="zipCd" th:field="*{zipCd}" type="text" size="5" class="form-control">
+                <button name="search" id="search" type="button" class="btn btn-gfk btn-sm" onclick="openZipSearch('zipCd','address','address1')">검색</button>
+                <input id="address" th:field="*{address}" type="text" size="30" class="form-control">
+                <input id="address1" th:field="*{address1}" type="text" size="50" class="form-control">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <label for="picNm" class="input_labal">사진</label>
+                <input id="picNm" th:field="*{picNm}" type="text" size="20" class="form-control">
+              </td>
+              <td colspan="2">
+                <label for="fileNm" class="input_labal">파일</label>
+                <input id="fileNm" th:field="*{fileNm}" type="text" size="20" class="form-control">
+                <a href="upload\empfile\1.hwp" download="경력증명서 양식.hwp">경력증명서 양식.hwp</a>
+              </td>
+            </tr>
+            <?if ($vpicnm){?>
+            <tr th:if>
+              <td>
+                <label class="input_labal_lg">사진상세</label>
+                <img class="main-style" src="./upload/emp/1.jpg" title="사진" style="" width="100">
+                <button name="print" id="print" type="button" class="btn btn-gfk btn-sm" onclick="imgPopup('upload/emp/1.jpg')">인쇄</button>
+              </td>
+            </tr>
+            <?}?>
+            <tr>
+              <td colspan="2">
+                <label for="note" class="input_labal">비고</label>
+                <input id="note" th:field="*{note}" type="text" size="80" class="form-control">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="input_div button_table">
+          <table class="input_table" >
+            <tr>
+              <td class="float-end">
+                <button name="save" id="save" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">저장</button>
+                <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </main >
+    <input type="hidden" name="vseq" id="vseq" value="1" size="0" class="form-control ">
+    <input type="hidden" name="action" id="action" value="updated" size="0" class="form-control ">
+    <input type="hidden" name="ACD" id="ACD" value="02" size="0" class="form-control ">
+    <input type="hidden" name="BCD" id="BCD" value="01" size="0" class="form-control ">
+    <input type="hidden" name="CCD" id="CCD" value="01" size="0" class="form-control ">
+    <input type="hidden" name="tpid" id="tpid" value="020101" size="0" class="form-control ">
+    <input type="hidden" name="sempnm" id="sempnm" value="" size="0" class="form-control ">
+    <input type="hidden" name="spost" id="spost" value="" size="0" class="form-control ">
+    <input type="hidden" name="sdeptcd" id="sdeptcd" value="" size="0" class="form-control ">
+  </FORM>
+  <script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+  </body>
+</html>

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import project.honey.comm.BaseAtt;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @Table(name = "tb_902")
-public class Tb902 {
+public class Tb902  extends BaseAtt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,15 +42,4 @@ public class Tb902 {
     @Column(name = "useragent")
     private String userAgent;   //사용자사양
 
-    @Column(name = "inputid")
-    private String inputId;     // 입력아이디
-
-    @Column(name = "inputdt", columnDefinition = "char")
-    private String inputDt; //입력일시
-
-    @Column(name = "updateid")
-    private String updateId;    //수정아이디
-
-    @Column(name = "updatedt", columnDefinition = "char")
-    private String updateDt;    //수정일시
 }
