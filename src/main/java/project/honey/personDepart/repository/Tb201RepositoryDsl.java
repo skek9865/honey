@@ -1,10 +1,11 @@
 package project.honey.personDepart.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import project.honey.personDepart.entity.Tb201;
 
-import java.util.List;
 
 public interface Tb201RepositoryDsl {
 
-    List<Tb201> findAllByDsl(String empNm, String postCd, String deptCd);
+    Page<Tb201> findAllByDsl(String empNm, String postCd, String deptCd, Pageable pageable);
 }

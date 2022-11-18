@@ -32,16 +32,6 @@ public class Tb904RepositoryDslImpl implements Tb904RepositoryDsl {
         return result;
     }
 
-    public List<Tb904> findMenuNm(String fstId){
-
-        List<Tb904> result = queryFactory.select(tb904)
-                .from(tb904)
-                .where(tb904.fstId.eq(fstId))
-                .fetch();
-        return result;
-
-    }
-
     private BooleanExpression makeMenu(Integer type, String fcd, String scd, String userId){
         if(type != null){
             switch (type){

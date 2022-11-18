@@ -1,5 +1,7 @@
 package project.honey.personDepart.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.personDepart.dto.Tb201Dto;
 
@@ -9,7 +11,7 @@ public interface Service020101 {
 
     void insert(Tb201Dto tb201Dto);
 
-    List<Tb201Dto> findAll(String empNm, String postCd, String deptCd);
+    Page<Tb201Dto> findAll(String empNm, String postCd, String deptCd, Pageable pageable);
 
     Tb201Dto findById(Integer id);
 

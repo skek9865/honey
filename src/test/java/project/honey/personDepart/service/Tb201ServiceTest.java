@@ -3,6 +3,7 @@ package project.honey.personDepart.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import project.honey.personDepart.dto.Tb201Dto;
 
 @SpringBootTest
@@ -49,7 +50,7 @@ public class Tb201ServiceTest {
 
     @Test
     public void findAll(){
-        service.findAll("6", "00003", "00008")
+        service.findAll("6", "00003", "00008", PageRequest.of(0,10))
                 .forEach(dto -> {
                     System.out.println("dto = " + dto);
                 });

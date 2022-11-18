@@ -2,6 +2,9 @@ package project.honey.personDepart.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 import project.honey.personDepart.entity.Tb201;
 
@@ -19,7 +22,7 @@ public class Tb201RepositoryDslImpl implements Tb201RepositoryDsl {
     }
 
     @Override
-    public List<Tb201> findAllByDsl(String empNm, String postCd, String deptCd) {
+    public Page<Tb201> findAllByDsl(String empNm, String postCd, String deptCd, Pageable pageable) {
 
         List<Tb201> result = queryFactory.select(tb201)
                 .from(tb201)
@@ -28,9 +31,20 @@ public class Tb201RepositoryDslImpl implements Tb201RepositoryDsl {
                         postCdEq(postCd),
                         deptCdEq(deptCd)
                 )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .fetch();
 
-        return result;
+        int total = queryFactory.select(tb201)
+                .from(tb201)
+                .where(
+                        empNmContains(empNm),
+                        postCdEq(postCd),
+                        deptCdEq(deptCd)
+                )
+                .fetch().size();
+
+        return new PageImpl<>(result,pageable,total);
     }
 
     private BooleanExpression empNmContains(String empNm) {
