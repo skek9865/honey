@@ -14,9 +14,15 @@ public class MenuMakerTest {
 
     @Test
     public void menu(){
-        List<MenuIdDto> result1 = menuMaker.getMenuId(3, "01", "02", "aaa");
+        List<MenuIdDto> result1 = menuMaker.getMenuId(3, "02", "01", "aaa");
         result1.forEach(dto -> {
             System.out.println(dto);
         });
+    }
+
+    @Test
+    public void menuNm(){
+        MenuNm menuNm = menuMaker.getMenuNm(new QueryParam("02", "01", "01"));
+        System.out.println(menuNm);
     }
 }

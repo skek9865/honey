@@ -5,77 +5,6 @@
   function lf_confirm(as_action,as_val1,as_val2,as_val3) {// FORM을 서버미트 하기전에 수행할 일
     var form = fm_home;
     switch (as_action) {
-      // case "save" : //저장
-      //   if (!gf_checkSubmit("사원번호",fm_input.vempno,1,0,0,0,0,0)) { break; }
-      //   if (!gf_checkSubmit("사원명",fm_input.vempnm,1,0,0,0,0,0)) { break; }
-      //   if (!gf_checkSubmit("세대주여부",fm_input.vheadyn,1,0,0,0,0,0)) { break; }
-      //   if (!gf_checkSubmit("입사구분",fm_input.vempclass,1,0,0,0,0,0)) { break; }
-      //   if(fm_input.vempno.value.length > 10){
-      //     alert("사원번호는 10자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vempnm.value.length > 30){
-      //     alert("사원명은 30자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vidno.value.length > 20){
-      //     alert("주민등록번호 20자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vempengnm.value.length > 30){
-      //     alert("영문성명은 30자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vemp2nm.value.length > 30){
-      //     alert("제2외국어성명은 30자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vworkcd.value.length > 5){
-      //     alert("업무코드는 5자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vphone.value.length > 20){
-      //     alert("전화번호는 20자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vmobile.value.length > 20){
-      //     alert("모바일은 20자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vemail.value.length > 30){
-      //     alert("Email은 30자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vpsno.value.length > 20){
-      //     alert("여권번호는 20자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vrsntrs.value.length > 20){
-      //     alert("퇴사사유는 20자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vacutnm.value.length > 30){
-      //     alert("예금주는 30자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vacutno.value.length > 30){
-      //     alert("사원계좌번호는 30자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vaddress1.value.length > 50){
-      //     alert("상세주소는 50자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   if(fm_input.vnote.value.length > 255){
-      //     alert("비고는 255자리 이하로 입력하세요");
-      //     break;
-      //   }
-      //   fm_input.submit();
-      //   break;
-      // case "query" : //조회
-      //   form.action ="?action="+as_action;
-      //   form.submit();
-      //   break;
       case "insert" : //등록
       case "update" : //수정
         gf_modal("020101/input","02","01","01",as_action, as_val1);
@@ -100,8 +29,8 @@
       <div class="container-fluid p-2">
         <div class="titleBar" id="titleBar">
           <div class="row">
-            <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i> <?=get_tptitle($gs_tpid)?></div>
-            <div class="col titleBar_path"><?=get_tppath($gs_tpid)?></div>
+            <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+            <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
           </div>
         </div>
         <div class="searchBar" id="searchBar">
@@ -110,11 +39,11 @@
               <table>
                 <tr>
                   <td class="p-1">
-                    <label for="sempNm" class="input_labal">사원명</label>
+                    <label for="sempNm">사원명</label>
                     <input id="sempNm" name="sempNm" type="text" size="15" class="form-control">
                   </td>
                   <td class="p-1">
-                    <label for='spost' class=''>직위/직급</label>
+                    <label for='spost'>직위/직급</label>
                     <SELECT class='form-select' id='spost' name='spost'  size=1 >
                       <OPTION value=''>선택</OPTION>
                       <OPTION value='00001'>대표이사</OPTION>
@@ -133,7 +62,7 @@
                     </SELECT>
                   </td>
                   <td class="p-1">
-                    <label for='sdeptcd' class=''>부서명</label>
+                    <label for='sdeptcd'>부서명</label>
                     <SELECT class='form-select' id='sdeptcd' name='sdeptcd'  size=1 >
                       <OPTION value=''>선택</OPTION>
                       <OPTION value='00001'>대표이사</OPTION>
@@ -152,9 +81,10 @@
                     </SELECT>
                   </td>
                   <td class="p-1">
-                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>
-                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="lf_confirm(this.name,'','','')">등록</button>
-                    <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
+                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="">조회</button>
+                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="gf_modal('020101/input','','','','', '');">등록</button>
+<!--                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="gf_modal('020101/input','02','01','01','insert', '');">등록</button>-->
+                    <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="">엑셀</button>
                   </td>
                 </tr>
               </table>
@@ -164,109 +94,43 @@
         <div class="table-responsive text-nowrap" id="tableWrapper">
           <table class="table table-striped tablesorter-blue" id="datatable_1" >
             <thead>
-            <tr class="tableList_h_tr">
-              <? foreach ($lst_title as $fid => $value ){?>
-              <th ><?=$lst_title[$fid]?></th>
-              <? }?>
-            </tr>
+              <tr class="tableList_h_tr">
+                <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+              </tr>
             </thead>
             <tbody>
-            <?
-            if ($result){
-              while($fdat = $result->fetch(PDO::FETCH_ASSOC)) {
-            //data
-            $iseq      = $fdat["seq"];
-            $iempno    = $fdat["empno"];
-            $iempnm    = $fdat["empnm"];
-            $iemp2nm   = $fdat["emp2nm"];
-            $iempengnm = $fdat["empengnm"];
-            $iidno     = $fdat["idno"];
-            $iheadyn   = $fdat["headyn"];
-            $iempdt    = $fdat["empdt"];
-            $iempclass = $fdat["empclass"];
-            $ipost     = $fdat["post"];
-            $ipost1    = $fdat["post1"];
-            $irsntdt   = $fdat["rsntdt"];
-            $irsntrs   = $fdat["rsntrs"];
-            $iphone    = $fdat["phone"];
-            $imobile   = $fdat["mobile"];
-            $ipsno     = $fdat["psno"];
-            $iemail    = $fdat["email"];
-            $ideptcd   = $fdat["deptcd"];
-            $iworkcd   = $fdat["workcd"];
-            $ibanknm   = $fdat["banknm"];
-            $iacutno   = $fdat["acutno"];
-            $iacutnm   = $fdat["acutnm"];
-            $izipcd    = $fdat["zipcd"];
-            $iaddress  = $fdat["address"];
-            $iaddress1 = $fdat["address1"];
-            $ipicnm    = $fdat["picnm"];
-            $inote     = $fdat["note"];
-            $iinputid  = $fdat["inputid"];
-            $iinputdt  = $fdat["inputdt"];
-            $iupdateid = $fdat["updateid"];
-            $iupdatedt = $fdat["updatedt"];
-
-            $SQL = "select deptnm from tb_202 where deptcd=" . $ideptcd;
-            $deptname = gf_getval($SQL);
-
-            $lst_data[0]  = $irow++;
-            $lst_data[2]  = $iempno;
-            $lst_data[3]  = $iempnm;
-            $lst_data[4]  = $iempdt;
-            $lst_data[5]  = get_comnm("01",$ipost );
-            $lst_data[6]  = $iphone;
-            $lst_data[7]  = $imobile;
-            $lst_data[8]  = $iemail;
-            $lst_data[9]  = $deptname;
-            $lst_data[10]  = $iworkcd;
-            unset($btninfo);
-            $btninfo[0][id] = "update";
-            $btninfo[1][id] = "delete";
-            $btninfo[0][class_] = "btn-ssm";
-            $btninfo[1][class_] = "btn-ssm";
-
-            $btninfo[0][fun] = "lf_confirm(this.name,'$iseq','','')";
-            $btninfo[1][fun] = "lf_confirm(this.name,'$iseq','','')";;
-            //data
-            ?>
-            <tr class="list_tr_1">
-              <? foreach ($lst_title as $fid => $value ){?>
-              <td class="list_td_1 <?=list_align_show($lst_aligen[$fid])?>" ><?=list_data_show($lst_data[$fid],$lst_fmt[$fid],$btninfo,$gs_tpid,$gval_userid)?></td>
-              <? }?>
-            </tr>
-            <?
-              }
-            }
-            ?>
+              <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
+                <td class="list_td_1" th:text="${dtoStat.count}" text-center></td>
+                <td class="list_td_1" text-center></td>
+                <td class="list_td_1" th:text="${dto.empNo}" text-center></td>
+                <td class="list_td_1" th:text="${dto.empNm}" text-center></td>
+                <td class="list_td_1" th:text="${dto.empDt}" text-center></td>
+                <td class="list_td_1" th:text="${dto.post}" text-center></td>
+                <td class="list_td_1" th:text="${dto.phone}" text-center></td>
+                <td class="list_td_1" th:text="${dto.mobile}" text-center></td>
+                <td class="list_td_1" th:text="${dto.email}" text-center></td>
+                <td class="list_td_1" th:text="${dto.deptCd}" text-center></td>
+                <td class="list_td_1" th:text="${dto.workCd}" text-center></td>
+              </tr>
             </tbody>
           </table>
         </div>
-        <?include "inc/page_show.php"?>
       </div>
     </main>
-    <?=text_cpnt("메뉴1","ACD",$ACD,"0","","H","")?>
-    <?=text_cpnt("메뉴2","BCD",$BCD,"0","","H","")?>
-    <?=text_cpnt("메뉴3","CCD",$CCD,"0","","H","")?>
-    <?=text_cpnt("화면번호","tpid",$gs_tpid,"0","","H","")?>
-    <?=text_cpnt("시작","start","Y","0","","H","")?>
+<!--    <?=text_cpnt("메뉴1","ACD",$ACD,"0","","H","")?>-->
+<!--    <?=text_cpnt("메뉴2","BCD",$BCD,"0","","H","")?>-->
+<!--    <?=text_cpnt("메뉴3","CCD",$CCD,"0","","H","")?>-->
+<!--    <?=text_cpnt("화면번호","tpid",$gs_tpid,"0","","H","")?>-->
+<!--    <?=text_cpnt("시작","start","Y","0","","H","")?>-->
   </FORM>
 </main>
 </html>
 
 <script src="/js/scripts_sub.js"></script>
 <script th:inline="javascript">
-  $("#datatable_1").width("[[${global.mainWidth}]]");
-</script>
-<script>
   $(document).ready(function (){
-    $("#modal_main").addClass("modal-xl")
+    gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
+    $("#datatable_1").width([[${global.mainWidth}]]);
+    $("#modal_main").addClass("modal-xl");
   })
 </script>
-
-<!--<script type="text/javascript">-->
-<!--  $(document).ready(function(){-->
-<!--      gf_menu('01','','','systemman');-->
-<!--    }-->
-<!--  )-->
-<!--</script>-->

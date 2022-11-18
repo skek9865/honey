@@ -9,7 +9,7 @@ function gf_modal(as_url,as_acd,as_bcd,as_ccd,as_action,as_val,as_val1) {
 				$("#modalhtml").html(req);
 			}
 		},
-		error: (log)=>{alert("실패" + log)},
+		error: (log)=>{alert("실패" + log.value)},
 	});
 }
 

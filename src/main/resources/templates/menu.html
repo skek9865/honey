@@ -10,8 +10,8 @@
       <div th:classappend="${menu2.scdId} == ${scdId} ? 'show' : _" class="collapse" th:id="|Layout_${menu2Stat.index}|" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
         <nav class="sb-sidenav-menu-nested nav">
           <th:block th:each="menu3 : ${menus3}">
-            <a th:if="${menu3.fstId} == *{fstId} and ${menu3.scdId} == ${menu2.scdId} and ${menu3.thdId} != '00'"
-               th:title="${menu3.menuNm}" th:text="${menu3.menuNm}" th:href="@{|/${menu3.fstId}${menu3.scdId}${menu3.thdId}|}" class="nav-link fs-8" href="#"><div class="sb-nav-link-icon"><i class="bi bi-sticky"></i></div>3차메뉴</a>
+            <a th:if="${menu3.fstId} == *{fstId} and ${menu3.scdId} == ${menu2.scdId} and ${menu3.thdId} != '00'" th:title="${menu3.menuNm}" th:href="@{|/${menu3.fstId}${menu3.scdId}${menu3.thdId}|(fstId = ${menu3.fstId},scdId = ${menu3.scdId},thdId = ${menu3.thdId})}" class="nav-link fs-8">
+              <div class="sb-nav-link-icon"><i class="bi bi-sticky"></i></div>[[${menu3.menuNm}]]</a>
           </th:block>
         </nav>
       </div>

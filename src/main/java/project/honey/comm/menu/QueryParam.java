@@ -1,14 +1,14 @@
 package project.honey.comm.menu;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 @AllArgsConstructor
-@Builder
 @Getter
 @ToString
-public class MenuIdDto {
+public class QueryParam {
     private String fstId;
     private String scdId;
     private String thdId;
-    private String menuNm;
 }
