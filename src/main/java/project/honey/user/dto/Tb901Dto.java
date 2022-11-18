@@ -1,10 +1,7 @@
-package project.honey.user;
+package project.honey.user.dto;
 
 import lombok.*;
 import project.honey.user.entity.Tb901;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,7 +9,7 @@ import javax.persistence.Id;
 @Setter
 @Builder
 @ToString
-public class UserDto {
+public class Tb901Dto {
 
     private String userId;  //아이디
     private String passwd;  //비밀번호
@@ -29,7 +26,7 @@ public class UserDto {
     private String updateId;    //수정아이디
 
     // Entity 변환 메서드
-    public static Tb901 toUser(UserDto dto) {
+    public static Tb901 toTb901(Tb901Dto dto) {
 
         return Tb901.builder()
                 .userId(dto.getUserId())
@@ -47,9 +44,9 @@ public class UserDto {
     }
 
     //Dto 변환 메서드
-    public static UserDto of(Tb901 entity) {
+    public static Tb901Dto of(Tb901 entity) {
 
-        return UserDto.builder()
+        return Tb901Dto.builder()
                 .userId(entity.getUserId())
                 .passwd(entity.getPasswd())
                 .userNm(entity.getUserNm())

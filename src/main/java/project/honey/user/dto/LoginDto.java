@@ -1,4 +1,4 @@
-package project.honey.user;
+package project.honey.user.dto;
 
 import lombok.*;
 
