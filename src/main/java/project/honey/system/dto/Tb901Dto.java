@@ -1,6 +1,8 @@
 package project.honey.system.dto;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.web.multipart.MultipartFile;
 import project.honey.system.entity.Tb901;
 
 @AllArgsConstructor
@@ -24,6 +26,14 @@ public class Tb901Dto {
     private String regDt;   //등록일자
     private String inputId; //입력아이디
     private String updateId;    //수정아이디
+
+    //임시 기본값 설정
+    public void setUseYn(String useYn) {
+        this.useYn = useYn!=null?useYn:"N";
+    }
+    public void setEmpYn(String empYn) {
+        this.empYn = empYn!=null?empYn:"N";
+    }
 
     // Entity 변환 메서드
     public static Tb901 toTb901(Tb901Dto dto) {

@@ -1,7 +1,5 @@
-<html lang="ko-KR" xmlns:th="http://www.thymeleaf.org">
 <!-- 페이징 처리 -->
-<div th:fragment="paging">
-    <div class="pageBar p-2" id="pageBar">
+    <div th:fragment="paging" class="pageBar p-2" id="pageBar">
         <div class="row ">
             <div class="col-3  pageBar_totrow ">
                 페이지 : <span th:text="${pageMaker.pageable.pageNumber + 1}"></span> / <span th:text="${pageMaker.realEnd}"></span> <i class="bi bi-three-dots-vertical sb-nav-link-icon "></i> 총건수 : <span th:text="${pageMaker.total}"></span>							</div>
@@ -12,7 +10,7 @@
                         <th:block th:each="num : ${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}">
                             <li class="page-item" th:classappend="${pageMaker.pageable.pageNumber+1 == num} ? 'active' : ''"><a class="page-link" th:href="${num}" th:text="${num}"></a></li>
                         </th:block>
-                        <li th:if="${pageMaker.next}" class="page-item"><a class="page-link" th:href="${pageMaker.endPage+1}"다음</a></li>
+                        <li th:if="${pageMaker.next}" class="page-item"><a class="page-link" th:href="${pageMaker.endPage+1}">다음</a></li>
                     </ul>
                 </nav>
             </div>
@@ -26,34 +24,34 @@
                     <option value="1000" th:attr="selected=${pageMaker.pageable.pageSize == 1000?'true' : 'false'}">1000 </option>
                     <option value="2000" th:attr="selected=${pageMaker.pageable.pageSize == 2000?'true' : 'false'}">2000 </option>
                 </select>
+                <input type="hidden" id="fstId" name="fstId" th:value="${menuId.fstId}">
+                <input type="hidden" id="scdId" name="scdId" th:value="${menuId.scdId}">
+                <input type="hidden" id="thdId" name="thdId" th:value="${menuId.thdId}">
                 <input type="hidden" id="page" name="page" th:value="${pageMaker.pageable.pageNumber+1}">
                 <input type="hidden" id="size" name="size" th:value="${pageMaker.pageable.pageSize}">
             </div>
         </div>
-    </div>
-    <script>
-        // 페이징
-        $(document).ready(function () {
-            // 조회
-            $('#query').click(function (e){
-                e.preventDefault();
-                console.log("hello")
-                var form = $('form[name="fm_home"]');
-                $('#size').val($('#num_per_page').val());
-                $('#page').val(1);
-                form.attr("method", "get");
-                form.submit();
-            })
-            // 페이징 번호
-            $('.page-link').on('click', function (e) {
-                e.preventDefault();
-                var form = $('form[name="fm_home"]');
-                $('#size').val($('#num_per_page').val());
-                $('#page').val($(this).attr('href'));
-                form.attr("method", "get");
-                form.submit();
+        <script>
+            // 페이징
+            $(document).ready(function () {
+                // 조회
+                $('#query').click(function (e){
+                    e.preventDefault();
+                    console.log("hello")
+                    var form = $('form[name="fm_home"]');
+                    $('#size').val($('#num_per_page').val());
+                    $('#page').val(1);
+                    form.attr("method", "get");
+                    form.submit();
+                })
+                // 페이징 번호
+                $('.page-link').on('click', function (e) {
+                    e.preventDefault();
+                    var form = $('form[name="fm_home"]');
+                    $('#page').val($(this).attr('href'));
+                    form.attr("method", "get");
+                    form.submit();
+                });
             });
-        });
-    </script>
-</div>
-</html>
+        </script>
+    </div>

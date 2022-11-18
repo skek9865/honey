@@ -5,15 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import project.honey.comm.GlobalConst;
+import project.honey.comm.GlobalMethod;
+import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
 import project.honey.comm.PageMaker;
+import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.system.service.Service990101;
 import project.honey.system.dto.Tb901Dto;
+
+import java.util.List;
 
 
 @Controller
@@ -27,16 +33,19 @@ public class Controller990101 {
 
     // 사용자 전체 조회
     @GetMapping
-    public String findAll(Model model, Pageable pageable) {
+    public String findAll(@ModelAttribute("menuId") MenuIdDto menuIdDto, Model model, Pageable pageable) {
 
         log.info("pageable : " + pageable);
+        List<String> titles = GlobalMethod.makeTitle(
+                "순번", "관리", "아이디", "비밀번호", "사용자이름", "전화번호",
+                "모바일", "Email","사용자그룹", "사용여부", "사원여부", "사원명", "등록일자"
+        );
 
         // 임시
+        model.addAttribute("menus", menuMaker.getMenuId(1,"","",""));
+        model.addAttribute("menuNm",menuMaker.getMenuNm(menuIdDto));
+        model.addAttribute("titles",titles);
         model.addAttribute("global", new GlobalConst());
-        model.addAttribute("menus", menuMaker.getMenuId(1,"00","00",""));
-
-        model.addAttribute("title", " 사용자관리 (990101)");
-        model.addAttribute("path", "시스템관리 > 사용자관리 > 사용자관리");
 
         Page<Tb901Dto> users = service990101.findAll(pageable);
         model.addAttribute("pageMaker", new PageMaker(pageable, users.getTotalElements()));
@@ -54,31 +63,44 @@ public class Controller990101 {
     }
 
     // 사용자 저장
-    @PostMapping("/insert")
-    public String insert(Tb901Dto dto) {
-
+    @PostMapping(value = "/insert")
+    @ResponseBody
+    public ResponseEntity<String> insert(Tb901Dto dto) {
         log.info("user : " + dto);
         service990101.insert(dto);
-        return "redirect:/990101";
+        return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
     // 사용자 수정
     @PostMapping("/update")
-    public String update(Tb901Dto dto) {
+    @ResponseBody
+    public ResponseEntity<String> update(Tb901Dto dto) {
 
         log.info("user : " + dto);
-        service990101.insert(dto);
-        return "redirect:/990101";
+        service990101.update(dto);
+        return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
     // 사용자 삭제
     @GetMapping("/delete")
-    public String delete(String id) {
+    @ResponseBody
+    public ResponseEntity<String> delete(String id) {
 
         log.info("id : " + id);
         service990101.delete(id);
-        return "redirect:/990101";
+        return new ResponseEntity<>("ok", HttpStatus.OK);
     }
 
 
+    @GetMapping("/input")
+    public String input(Model model, String id){
+        log.info("input");
+        log.info("id = {}", id);
+        model.addAttribute("dto",
+                id != null
+                        ? service990101.findById(id)
+                        : new Tb901Dto());
+        model.addAttribute("global", new GlobalConst());
+        return "system/990101_input";
+    }
 }
