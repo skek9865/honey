@@ -4,13 +4,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import project.honey.personDepart.dto.Tb201Dto;
-import project.honey.personDepart.entity.Tb201;
 
 @SpringBootTest
 public class Tb201ServiceTest {
 
     @Autowired
-    private Tb201Service service;
+    private Service020101 service;
 
     @Test
     public void save(){

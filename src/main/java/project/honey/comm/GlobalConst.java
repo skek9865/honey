@@ -8,5 +8,5 @@ public class GlobalConst {
     private final String cssDir = "/css";
     private final String jsDir = "/js";
     private final String imgDir = "/images";
-    private final String mainWidth = "1000px";
+    private final String mainWidth = "1200px";
 }

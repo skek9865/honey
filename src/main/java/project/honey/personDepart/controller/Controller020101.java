@@ -11,9 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.comm.menu.QueryParam;
 import project.honey.personDepart.dto.Tb201Dto;
-import project.honey.personDepart.service.Tb201Service;
+import project.honey.personDepart.service.Service020101;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +24,12 @@ import java.util.Map;
 @RequestMapping("/020101")
 public class Controller020101 {
 
-    private final Tb201Service service;
+    private final Service020101 service;
     private final MenuMaker menuMaker;
 
     @GetMapping("")
     public String main(@RequestParam Map<String, String> map,
-                       @ModelAttribute("menuId") QueryParam queryParam, Model model){
+                       @ModelAttribute("menuId")MenuIdDto menuIdDto, Model model){
         log.info("empNm = {}, postCd = {}, deptCd = {}" ,map.get("empNm"), map.get("postCd"), map.get("deptCd"));
         List<String> titles = makeTitle(
                 "순번", "관리", "사원번호", "사원명", "입사일자", "직위/직급",
@@ -38,7 +37,7 @@ public class Controller020101 {
         );
         List<Tb201Dto> resultList = service.findAll(map.get("empNm"), map.get("postCd"), map.get("deptCd"));
         model.addAttribute("menus", menuMaker.getMenuId(1,"","",""));
-        model.addAttribute("menuNm",menuMaker.getMenuNm(queryParam));
+        model.addAttribute("menuNm",menuMaker.getMenuNm(menuIdDto));
         model.addAttribute("titles",titles);
         model.addAttribute("dtos",resultList);
         model.addAttribute("global", new GlobalConst());

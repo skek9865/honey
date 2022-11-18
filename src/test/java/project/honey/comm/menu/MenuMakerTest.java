@@ -22,7 +22,7 @@ public class MenuMakerTest {
 
     @Test
     public void menuNm(){
-        MenuNm menuNm = menuMaker.getMenuNm(new QueryParam("02", "01", "01"));
+        MenuNm menuNm = menuMaker.getMenuNm(new MenuIdDto("02", "01", "01",""));
         System.out.println(menuNm);
     }
 }

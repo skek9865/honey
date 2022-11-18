@@ -132,5 +132,21 @@
     gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
     $("#datatable_1").width([[${global.mainWidth}]]);
     $("#modal_main").addClass("modal-xl");
-  })
+
+    // 삭제
+    $('button[name="delete"]').click(function (e) {
+      e.preventDefault();
+      if(confirm("자료를 삭제하시겠습니까?")){
+        var url = window.location.href + "";
+        $.ajax({
+          url: url.split('?')[0] + "/delete?id=" + $(this).data('id'),
+          type : 'get',
+          success : function (){
+            alert("자료가 삭제되었습니다.");
+            location.reload();
+          }
+        })
+      }
+    });
+  });
 </script>
