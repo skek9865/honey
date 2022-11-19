@@ -17,6 +17,7 @@ import project.honey.comm.menu.MenuMaker;
 import project.honey.comm.PageMaker;
 import project.honey.system.service.Service990101;
 import project.honey.system.dto.Tb901Dto;
+import project.honey.system.service.Service990301;
 
 import java.util.List;
 
@@ -28,6 +29,7 @@ import java.util.List;
 public class Controller990101 {
 
     private final Service990101 service990101;
+    private final Service990301 service990301;
     private final MenuMaker menuMaker;
 
     // 사용자 전체 조회
@@ -61,15 +63,6 @@ public class Controller990101 {
         log.info("userId : " + userId);
         return new ResponseEntity<>(service990101.findById(userId), HttpStatus.OK);
     }
-
-//    // 사용자 저장
-//    @PostMapping("/insert")
-//    @ResponseBody
-//    public ResponseEntity<String> insert(Tb901Dto dto) {
-//        log.info("user : " + dto);
-//        service990101.insert(dto);
-//        return new ResponseEntity<>("ok", HttpStatus.OK);
-//    }
 
     // 사용자 저장
     @PostMapping("/insert")
@@ -122,6 +115,7 @@ public class Controller990101 {
                 id != null
                         ? service990101.findById(id)
                         : new Tb901Dto());
+        model.addAttribute("codes", service990301.findByFstId("99"));
         model.addAttribute("global", new GlobalConst());
         return "system/990101_input";
     }

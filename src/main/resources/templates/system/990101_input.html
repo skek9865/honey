@@ -32,12 +32,9 @@
                             <label for="userGr" class="input_labal">사용자그룹</label>
                             <select class="form-select" id="userGr" th:field="*{userGr}" th:value="*{userGr}" size="1">
                                 <option value="">선택</option>
-                                <option value="00001">시스템관리자</option>
-                                <option value="00002">인사관리</option>
-                                <option value="00003">영업관리</option>
-                                <option value="00004">생산관리</option>
-                                <option value="00005">재고관리</option>
-                                <option value="00006">일반</option>
+                                <th:block th:each="code : ${codes}">
+                                    <option th:value="${code.scdId}" th:text="${code.codeNm}"></option>
+                                </th:block>
                             </select>
                         </td>
                     </tr>
