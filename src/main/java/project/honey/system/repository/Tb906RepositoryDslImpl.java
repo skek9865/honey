@@ -52,8 +52,10 @@ public class Tb906RepositoryDslImpl implements Tb906RepositoryDsl{
                         tb906.scdId,
                         tb906.codeNm))
                 .from(tb906)
-                .where(fstIdEq(fstId))
-                .orderBy(tb906.codeNm.asc())
+                .where(
+                        fstIdEq(fstId), tb906.scdId.ne("00000")
+                )
+                .orderBy(tb906.alien.asc())
                 .fetch();
     }
 

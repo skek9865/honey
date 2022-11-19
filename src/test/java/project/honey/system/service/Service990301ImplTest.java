@@ -14,6 +14,6 @@ class Service990301ImplTest {
 
     @Test
     void findByFstId() {
-        service990301.findByFstId("17").forEach(System.out::println);
+        service990301.findByFstId("99").forEach(System.out::println);
     }
 }
