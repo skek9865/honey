@@ -33,7 +33,7 @@
                             <select class="form-select" id="userGr" th:field="*{userGr}" th:value="*{userGr}" size="1">
                                 <option value="">선택</option>
                                 <th:block th:each="code : ${codes}">
-                                    <option th:value="${code.scdId}" th:text="${code.codeNm}"></option>
+                                    <option th:value="${code.value}" th:text="${code.text}"></option>
                                 </th:block>
                             </select>
                         </td>

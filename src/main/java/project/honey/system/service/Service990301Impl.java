@@ -61,4 +61,10 @@ public class Service990301Impl implements Service990301{
     public List<CodeDto> findByFstId(String fstId) {
         return tb906Repository.findByFstIdByDsl(fstId);
     }
+
+    //대그룹 조회
+    @Override
+    public List<CodeDto> findFstIdAll() {
+        return tb906Repository.findFstIdAllByDsl();
+    }
 }

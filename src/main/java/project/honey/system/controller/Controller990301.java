@@ -52,8 +52,11 @@ public class Controller990301 {
         // 검색 데이터 유지
         model.addAttribute("sfstid", sfstid);
 
+        // 대그룹
+        model.addAttribute("codes", service990301.findFstIdAll());
+
         model.addAttribute("pageMaker", new PageMaker(pageable, codes.getTotalElements()));
-        model.addAttribute("codes", codes.getContent());
+        model.addAttribute("list", codes.getContent());
 
         return "system/990301";
     }
@@ -101,8 +104,6 @@ public class Controller990301 {
         redirectAttributes.addAttribute("size", pageable.getPageSize());
     }
 
-
-    // 사용자 삭제
     @GetMapping("/delete")
     @ResponseBody
     public ResponseEntity<String> delete(Integer id) {

@@ -20,4 +20,6 @@ public interface Service990301 {
     void delete(Integer seq);
 
     List<CodeDto> findByFstId(String fstId);
+
+    List<CodeDto> findFstIdAll();
 }

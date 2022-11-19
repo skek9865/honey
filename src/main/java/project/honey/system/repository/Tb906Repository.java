@@ -10,6 +10,4 @@ import java.util.List;
 
 public interface Tb906Repository extends JpaRepository<Tb906, Integer>, Tb906RepositoryDsl {
 
-    List<Tb906> findByFstId(String fstId);
-
 }

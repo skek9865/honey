@@ -10,12 +10,12 @@ import lombok.*;
 @ToString
 public class CodeDto {
 
-    private String scdId;
-    private String codeNm;
+    private String text;
+    private String value;
 
     @QueryProjection
-    public CodeDto(String scdId, String codeNm) {
-        this.scdId = scdId;
-        this.codeNm = codeNm;
+    public CodeDto(String text, String value) {
+        this.text = text;
+        this.value = value;
     }
 }

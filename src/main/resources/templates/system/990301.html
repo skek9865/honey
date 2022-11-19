@@ -18,32 +18,9 @@
                                     <label for="sfstid" class="">대그룹</label>
                                     <select class="form-select" id="sfstid" name="sfstid" size="1">
                                         <option value="">선택</option>
-                                        <option value="01">직위</option>
-                                        <option value="02">입사구분</option>
-                                        <option value="03">직책</option>
-                                        <option value="04">은행명</option>
-                                        <option value="05">급여구분</option>
-                                        <option value="06">창고구분</option>
-                                        <option value="07">품목구분</option>
-                                        <option value="08">거래처구분</option>
-                                        <option value="09">세무구분</option>
-                                        <option value="10">거래처그룹</option>
-                                        <option value="11">거래유형</option>
-                                        <option value="12">진행상태</option>
-                                        <option value="13">확인구분</option>
-                                        <option value="14">입출구분</option>
-                                        <option value="15">호기</option>
-                                        <option value="16">불량처리방법</option>
-                                        <option value="17">지역구분</option>
-                                        <option value="18">생산상태</option>
-                                        <option value="19">거래유형</option>
-                                        <option value="20">거래방법</option>
-                                        <option value="21">거래상태</option>
-                                        <option value="22">정산방법</option>
-                                        <option value="23">포장</option>
-                                        <option value="24">출금구분</option>
-                                        <option value="25">파일구분</option>
-                                        <option value="99">시스템권한</option>
+                                        <th:block th:each="code : ${codes}">
+                                            <option th:value="${code.value}" th:text="${code.text}"></option>
+                                        </th:block>
                                     </select>
                                 </td>
                                 <td><!--조회 등록 엑셀-->
@@ -64,7 +41,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="list_tr_1" th:each="code, codeStat : ${codes}"><!-- td 렌더링 -->
+                    <tr class="list_tr_1" th:each="code, codeStat : ${list}"><!-- td 렌더링 -->
                         <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + codeStat.count}"></td>
                         <td>
                             <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('990301/input?id=' + [[${code.seq}]],'','','','', '');">수정</button>&nbsp;

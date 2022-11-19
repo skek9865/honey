@@ -49,13 +49,27 @@ public class Tb906RepositoryDslImpl implements Tb906RepositoryDsl{
     public List<CodeDto> findByFstIdByDsl(String fstId) {
         return queryFactory
                 .select(new QCodeDto(
-                        tb906.scdId,
-                        tb906.codeNm))
+                        tb906.codeNm,
+                        tb906.scdId
+                        ))
                 .from(tb906)
                 .where(
                         fstIdEq(fstId), tb906.scdId.ne("00000")
                 )
                 .orderBy(tb906.alien.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<CodeDto> findFstIdAllByDsl() {
+        return queryFactory
+                .select(new QCodeDto(
+                        tb906.codeNm,
+                        tb906.fstId
+                ))
+                .from(tb906)
+                .where(tb906.scdId.eq("00000"))
+                .orderBy(tb906.fstId.asc())
                 .fetch();
     }
 
