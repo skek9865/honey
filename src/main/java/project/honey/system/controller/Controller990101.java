@@ -5,17 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
 import project.honey.comm.PageMaker;
-import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.system.service.Service990101;
 import project.honey.system.dto.Tb901Dto;
 
@@ -36,6 +35,7 @@ public class Controller990101 {
     public String findAll(@ModelAttribute("menuId") MenuIdDto menuIdDto, Model model, Pageable pageable) {
 
         log.info("pageable : " + pageable);
+        log.info("menuIdDto : {}", menuIdDto);
         List<String> titles = GlobalMethod.makeTitle(
                 "순번", "관리", "아이디", "비밀번호", "사용자이름", "전화번호",
                 "모바일", "Email","사용자그룹", "사용여부", "사원여부", "사원명", "등록일자"
@@ -62,24 +62,46 @@ public class Controller990101 {
         return new ResponseEntity<>(service990101.findById(userId), HttpStatus.OK);
     }
 
+//    // 사용자 저장
+//    @PostMapping("/insert")
+//    @ResponseBody
+//    public ResponseEntity<String> insert(Tb901Dto dto) {
+//        log.info("user : " + dto);
+//        service990101.insert(dto);
+//        return new ResponseEntity<>("ok", HttpStatus.OK);
+//    }
+
     // 사용자 저장
-    @PostMapping(value = "/insert")
-    @ResponseBody
-    public ResponseEntity<String> insert(Tb901Dto dto) {
+    @PostMapping("/insert")
+    public String insert(@ModelAttribute Tb901Dto dto, Pageable pageable ,
+                         @ModelAttribute MenuIdDto menuIdDto, RedirectAttributes redirectAttributes) {
         log.info("user : " + dto);
         service990101.insert(dto);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+
+        addRedirect(pageable, menuIdDto, redirectAttributes);
+        return "redirect:/990101";
     }
 
     // 사용자 수정
     @PostMapping("/update")
-    @ResponseBody
-    public ResponseEntity<String> update(Tb901Dto dto) {
+    public String update(@ModelAttribute Tb901Dto dto, Pageable pageable ,
+                         @ModelAttribute MenuIdDto menuIdDto, RedirectAttributes redirectAttributes) {
 
         log.info("user : " + dto);
         service990101.update(dto);
-        return new ResponseEntity<>("ok", HttpStatus.OK);
+
+        addRedirect(pageable, menuIdDto, redirectAttributes);
+        return "redirect:/990101";
     }
+
+    private void addRedirect(Pageable pageable, @ModelAttribute MenuIdDto menuIdDto, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("fstId", menuIdDto.getFstId());
+        redirectAttributes.addAttribute("scdId", menuIdDto.getScdId());
+        redirectAttributes.addAttribute("thdId", menuIdDto.getThdId());
+        redirectAttributes.addAttribute("page", pageable.getPageNumber()+1);
+        redirectAttributes.addAttribute("size", pageable.getPageSize());
+    }
+
 
     // 사용자 삭제
     @GetMapping("/delete")

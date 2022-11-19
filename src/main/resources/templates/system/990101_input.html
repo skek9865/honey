@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
 <body>
-<FORM name="fm_input" enctype="multipart/form-data" method="post" th:object="${dto}">
+<form name="fm_input" enctype="multipart/form-data" method="post" th:object="${dto}">
     <main>
         <div class="container-fluid p-2">
             <div class="input_div">
@@ -127,35 +127,51 @@
             </div>
         </div>
     </main>
-</FORM>
+    <input type="hidden" id="ifstId" name="fstId">
+    <input type="hidden" id="iscdId" name="scdId">
+    <input type="hidden" id="ithdId" name="thdId">
+    <input type="hidden" id="ipage" name="page">
+    <input type="hidden" id="isize" name="size">
+</form>
 <script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
 <script th:inline="javascript">
     $(document).ready(function () {
+
+        $('#ifstId').val($('#fstId').val());
+        $('#iscdId').val($('#scdId').val());
+        $('#ithdId').val($('#thdId').val());
+        $('#ipage').val($('#page').val());
+        $('#isize').val($('#size').val());
 
         // 현재날짜 바인딩
         if($('#regDt').val() == ''){
             $('#regDt').val(new Date().toISOString().slice(0, 10))
         }
 
-        // 등록, 수정 결정
         var method = [[${dto.userId}]]==null?'/insert':'/update'
-
-        // 이미지 X 저장
+        //저장
         $('#save').on('click', function (e){
-            e.preventDefault();
-            var data = $('form[name="fm_input"]').serialize();
 
+            e.preventDefault();
+            var inputForm = $('form[name="fm_input"]');
             var url = window.location.href + "";
-            $.ajax({
-                url: url.split('?')[0] + method,
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                type : 'post',
-                data : data,
-                success : function (result){
-                    alert("저장이 완료되었습니다.");
-                    location.reload();
-                }
-            })
+            console.log(url.split('?')[0])
+            inputForm.attr("action",url.split('?')[0] + method)
+            inputForm.submit();
+            alert("저장이 완료되었습니다.")
+
+            // var data = $('form[name="fm_input"]').serialize();
+
+            // $.ajax({
+            //     url: url.split('?')[0] + method,
+            //     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            //     type : 'post',
+            //     data : data,
+            //     success : function (result){
+            //         alert("저장이 완료되었습니다.");
+            //         location.reload();
+            //     }
+            // })
         })
     });
 </script>
