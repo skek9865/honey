@@ -11,8 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 import project.honey.comm.GlobalConst;
+import project.honey.comm.PageMaker;
 import project.honey.comm.UploadService;
+import project.honey.comm.menu.MenuIdDto;
+import project.honey.comm.menu.MenuMaker;
 import project.honey.company.service.Service010101;
+
+import java.awt.print.Pageable;
 
 
 @Controller
@@ -22,15 +27,19 @@ import project.honey.company.service.Service010101;
 public class Controller010101 {
 
     private final Service010101 service010101;
+    private final MenuMaker menuMaker;
     private final String fileDir = "C:\\JAVA\\honey\\src\\main\\resources\\static\\images\\corp";
 
     @GetMapping("/010101")
-    public String companyInfo(Model model){
+    public String companyInfo(@ModelAttribute("menuId") MenuIdDto menuIdDto, Model model){
         Tb101Dto dto = service010101.findById(27);
 
         model.addAttribute("company", dto);
         model.addAttribute("global", new GlobalConst());
         model.addAttribute("form", new CompanyForm());
+
+        model.addAttribute("menus", menuMaker.getMenuId(1,"","",""));
+        model.addAttribute("menuNm",menuMaker.getMenuNm(menuIdDto));
 
         return "company/companyInfo.html";
     }
