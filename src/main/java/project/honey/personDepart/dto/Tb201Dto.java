@@ -16,7 +16,7 @@ public class Tb201Dto {
     private String emp2Nm;
     private String empEngNm;
     private String idNo;
-    private String headYn;
+    private Boolean headYn;
     private String empDt;
     private String empClass;
     private String post;
@@ -44,13 +44,16 @@ public class Tb201Dto {
     private String updateId;
 
     public static Tb201 toTb201(Tb201Dto dto) {
+        String headYn;
+        if(dto.headYn) headYn = "Y";
+        else headYn = "N";
         return Tb201.builder()
                 .empNo(dto.getEmpNo())
                 .empNm(dto.getEmpNm())
                 .emp2Nm(dto.getEmp2Nm())
                 .empEngNm(dto.getEmpEngNm())
                 .idNo(dto.getIdNo())
-                .headYn(dto.getHeadYn())
+                .headYn(headYn)
                 .empDt(dto.getEmpDt())
                 .empClass(dto.getEmpClass())
                 .post(dto.getPost())
@@ -76,6 +79,9 @@ public class Tb201Dto {
     }
 
     public static Tb201Dto of(Tb201 entity){
+        Boolean headYn;
+        if(entity.getHeadYn() == "Y") headYn = true;
+        else headYn = false;
         return Tb201Dto.builder()
                 .seq(entity.getSeq())
                 .empNo(entity.getEmpNo())
@@ -83,7 +89,7 @@ public class Tb201Dto {
                 .emp2Nm(entity.getEmp2Nm())
                 .empEngNm(entity.getEmpEngNm())
                 .idNo(entity.getIdNo())
-                .headYn(entity.getHeadYn())
+                .headYn(headYn)
                 .empDt(entity.getEmpDt())
                 .empClass(entity.getEmpClass())
                 .post(entity.getPost())

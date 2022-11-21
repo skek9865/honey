@@ -37,7 +37,7 @@ public class Service990101Impl implements Service990101 {
     // User 리스트 불러오기
     @Override
     public Page<Tb901Dto> findAll(Pageable pageable) {
-        return tb901Repository.findAll(pageable).map(Tb901Dto::of);
+        return tb901Repository.findAllByDsl(pageable);
     }
 
     // User 단건 조회
