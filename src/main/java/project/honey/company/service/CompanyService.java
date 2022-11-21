@@ -21,16 +21,6 @@ public class CompanyService {
 
     @Transactional
     public void save(CompanyForm form){
-        if(!form.getLogonm().isEmpty()) {
-            MultipartFile logoFile = form.getLogonm();
-            UploadService.uploadFile(logoFile);
-        }
-
-        if(!form.getStampnm().isEmpty()) {
-            MultipartFile stampFile = form.getStampnm();
-            UploadService.uploadFile(stampFile);
-        }
-
         Tb101 tb101 = companyRepository.findById(27)
                 .orElseThrow(() -> new IllegalArgumentException("회사기본정보를 찾을 수 없습니다."));
         tb101.changeInfo(form);

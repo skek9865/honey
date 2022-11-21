@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 import project.honey.comm.GlobalConst;
+import project.honey.comm.UploadService;
 import project.honey.company.entity.Tb101;
 import project.honey.company.repository.CompanyRepository;
 import project.honey.company.service.CompanyService;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CompanyController {
 
     private final CompanyService companyService;
+    private final String fileDir = "C:\\JAVA\\honey\\src\\main\\resources\\static\\images\\corp";
 
     @GetMapping("/010101")
     public String companyInfo(Model model){
@@ -40,6 +43,15 @@ public class CompanyController {
     @PostMapping("/010101")
     public RedirectView companySave(@ModelAttribute("form") CompanyForm form) {
         log.info("form = "+form);
+        if(!form.getLogonm().isEmpty()) {
+            MultipartFile logoFile = form.getLogonm();
+            UploadService.uploadFile(logoFile,fileDir);
+        }
+
+        if(!form.getStampnm().isEmpty()) {
+            MultipartFile stampFile = form.getStampnm();
+            UploadService.uploadFile(stampFile,fileDir);
+        }
 
         companyService.save(form);
 
