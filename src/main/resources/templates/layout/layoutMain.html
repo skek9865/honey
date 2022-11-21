@@ -53,7 +53,7 @@
       <div >
         <ul class="nav navbar-nav mai-top-nav">
           <th:block th:each="menu : ${menus}">
-            <li class="nav-item " ><div class="div-icon"><i class="bi bi-grip-vertical"></i></div></li>
+            <li class="nav-item " ><div style="margin-top: 9px;"><i class="bi bi-grip-vertical"></i></div></li>
             <li class="nav-item fw-bold "><a href="#" class="nav-link_main" th:onclick="gf_menu([[${menu.fstId}]],'','','systemman')" th:text="${menu.menuNm}">메뉴</a></li>
           </th:block>
         </ul>

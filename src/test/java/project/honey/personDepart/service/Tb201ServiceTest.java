@@ -3,54 +3,33 @@ package project.honey.personDepart.service;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import project.honey.personDepart.dto.Form020101;
 import project.honey.personDepart.dto.Tb201Dto;
-import project.honey.personDepart.entity.Tb201;
+
+import java.io.IOException;
 
 @SpringBootTest
 public class Tb201ServiceTest {
 
     @Autowired
-    private Tb201Service service;
+    private Service020101 service;
 
     @Test
-    public void save(){
-        Tb201Dto dto = Tb201Dto.builder()
-                .empNo   ("test")
-                .empNm   ("test")
-                .emp2Nm  ("test")
-                .empEngNm("test")
-                .idNo    ("test")
-                .headYn  ("Y")
-                .empDt   ("test")
-                .empClass("test")
-                .post    ("test")
-                .post1   ("test")
-                .leaveDt ("test")
-                .leaveRs ("test")
-                .phone   ("test")
-                .mobile  ("test")
-                .psNo    ("test")
-                .email   ("test")
-                .deptCd  ("test")
-                .workCd  ("test")
-                .bankNm  ("test")
-                .aCutNo  ("test")
-                .aCutNm  ("test")
-                .zipCd   ("test")
-                .address ("test")
-                .address1("test")
-                .picNm   ("test")
-                .note    ("test")
-                .fileNm  ("test")
-                .createId("test")
-                .updateId("test")
+    public void save() throws IOException {
+        Form020101 form = Form020101.builder()
+                .seq(100)
+                .empNo("111")
+                .empNm("111")
+                .headYn(false)
+                .empClass("00")
                 .build();
-        service.insert(dto);
+        service.insert(form);
     }
 
     @Test
     public void findAll(){
-        service.findAll("6", "00003", "00008")
+        service.findAll("6", "00003", "00008", PageRequest.of(0,10))
                 .forEach(dto -> {
                     System.out.println("dto = " + dto);
                 });
@@ -62,42 +41,42 @@ public class Tb201ServiceTest {
         System.out.println("dto : " + result);
     }
 
-    @Test
-    public void update(){
-        Tb201Dto dto = Tb201Dto.builder()
-                .seq(42)
-                .empNo   ("test")
-                .empNm   ("update")
-                .emp2Nm  ("update")
-                .empEngNm("update")
-                .idNo    ("update")
-                .headYn  ("Y")
-                .empDt   ("test")
-                .empClass("test")
-                .post    ("test")
-                .post1   ("test")
-                .leaveDt ("test")
-                .leaveRs ("test")
-                .phone   ("test")
-                .mobile  ("test")
-                .psNo    ("test")
-                .email   ("test")
-                .deptCd  ("test")
-                .workCd  ("test")
-                .bankNm  ("test")
-                .aCutNo  ("test")
-                .aCutNm  ("test")
-                .zipCd   ("test")
-                .address ("test")
-                .address1("test")
-                .picNm   ("test")
-                .note    ("test")
-                .fileNm  ("test")
-                .createId("test")
-                .updateId("test")
-                .build();
-        service.update(dto);
-    }
+//    @Test
+//    public void update(){
+//        Tb201Dto dto = Tb201Dto.builder()
+//                .seq(42)
+//                .empNo   ("test")
+//                .empNm   ("update")
+//                .emp2Nm  ("update")
+//                .empEngNm("update")
+//                .idNo    ("update")
+//                .headYn  ("Y")
+//                .empDt   ("test")
+//                .empClass("test")
+//                .post    ("test")
+//                .post1   ("test")
+//                .leaveDt ("test")
+//                .leaveRs ("test")
+//                .phone   ("test")
+//                .mobile  ("test")
+//                .psNo    ("test")
+//                .email   ("test")
+//                .deptCd  ("test")
+//                .workCd  ("test")
+//                .bankNm  ("test")
+//                .aCutNo  ("test")
+//                .aCutNm  ("test")
+//                .zipCd   ("test")
+//                .address ("test")
+//                .address1("test")
+//                .picNm   ("test")
+//                .note    ("test")
+//                .fileNm  ("test")
+//                .createId("test")
+//                .updateId("test")
+//                .build();
+//        service.update(dto);
+//    }
 
     @Test
     public void delete(){

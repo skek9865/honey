@@ -1,0 +1,91 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::form})}"
+      xmlns:th="http://www.thymeleaf.org">
+<form name="fm_home" method="post" >
+    <main >
+        <div class="container-fluid p-2">
+            <div class="titleBar" id="titleBar">
+                <div class="row">
+                    <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+                    <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+                </div>
+            </div>
+            <div class="searchBar" id="searchBar">
+                <div class="row">
+                    <div class="col-12 fixed-right p-2 px-4">
+                        <table>
+                            <tr>
+                                <td class="p-1">
+                                    <label for="sfstid" class="">대그룹</label>
+                                    <select class="form-select" id="sfstid" name="sfstid" size="1">
+                                        <option value="">선택</option>
+                                        <th:block th:each="code : ${codes}">
+                                            <option th:value="${code.value}" th:text="${code.text}"></option>
+                                        </th:block>
+                                    </select>
+                                </td>
+                                <td><!--조회 등록 엑셀-->
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm">조회</button>&nbsp;
+                                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="gf_modal('990301/input','','','','', '');">등록</button>&nbsp;
+                                    <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_1" >
+                    <thead>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="list_tr_1" th:each="code, codeStat : ${list}"><!-- td 렌더링 -->
+                        <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + codeStat.count}"></td>
+                        <td>
+                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('990301/input?id=' + [[${code.seq}]],'','','','', '');">수정</button>&nbsp;
+                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:data-id="${code.seq}">삭제</button>&nbsp;
+                        </td>
+                        <td th:text="${code.fstId}"></td>
+                        <td th:text="${code.scdId}"></td>
+                        <td th:text="${code.alien}"></td>
+                        <td th:text="${code.codeNm}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 페이징 부분 -->
+        <div th:replace="paging.html :: paging">
+        </div>
+    </main>
+    <script th:src="@{|/js/scripts_sub.js|}"></script>
+    <script th:inline="javascript">
+
+        $(document).ready(function () {
+            gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
+            $("#datatable_1").width([[${global.mainWidth}]]);
+
+            // 대그룹 셀렉트박스 기본값 설정
+            $('#sfstid').val([[${sfstid}]])
+
+            // 삭제
+            $('button[name="delete"]').click(function (e) {
+                e.preventDefault();
+                if(confirm("자료를 삭제하시겠습니까?")){
+                    var url = window.location.href + "";
+                    $.ajax({
+                        url: url.split('?')[0] + "/delete?id=" + $(this).data('id'),
+                        type : 'get',
+                        success : function (){
+                            alert("자료가 삭제되었습니다.");
+                            location.reload();
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+
+</form>

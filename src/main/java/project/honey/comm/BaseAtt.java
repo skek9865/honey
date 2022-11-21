@@ -21,7 +21,7 @@ public abstract class BaseAtt {
     private String createDate;
 
     @CreatedBy
-    @Column(name = "inputid", updatable = false)
+    @Column(name = "inputid")
     private String createId;
 
     @LastModifiedDate

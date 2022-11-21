@@ -3,7 +3,6 @@ package project.honey.comm.menu;
 import lombok.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Builder
 @Getter
 @ToString
