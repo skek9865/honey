@@ -9,11 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
+import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
 import project.honey.personDepart.dto.Form020101;
 import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.personDepart.service.Service020101;
+import project.honey.system.service.Service990301;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -26,24 +28,35 @@ import java.util.Map;
 @RequestMapping("/020101")
 public class Controller020101 {
 
-    private final Service020101 service;
+    private final Service020101 service020101;
+    private final Service990301 service990301;
     private final MenuMaker menuMaker;
 
     @GetMapping("")
     public String findAll(@RequestParam Map<String, String> map,
                           @ModelAttribute("menuId")MenuIdDto menuIdDto, Model model, Pageable pageable){
-        log.info("empNm = {}, postCd = {}, deptCd = {}" ,map.get("empNm"), map.get("postCd"), map.get("deptCd"));
+        log.info("empNm = {}, postCd = {}, deptCd = {}" ,map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"));
         log.info("menuId = {}", menuIdDto);
         List<String> titles = GlobalMethod.makeTitle(
                 "순번", "관리", "사원번호", "사원명", "입사일자", "직위/직급",
                 "전화번호", "모바일", "Email", "부서명", "업무코드"
         );
-        Page<Tb201Dto> resultList = service.findAll(map.get("empNm"), map.get("postCd"), map.get("deptCd"), pageable);
+
         model.addAttribute("menus", menuMaker.getMenuId(1,"","",""));
         model.addAttribute("menuNm",menuMaker.getMenuNm(menuIdDto));
         model.addAttribute("titles",titles);
-        model.addAttribute("dtos",resultList);
         model.addAttribute("global", new GlobalConst());
+
+        model.addAttribute("codes",service990301.findByFstId("01"));
+
+        model.addAttribute("sEmpNm", map.get("sEmpNm"));
+        model.addAttribute("sPost", map.get("sPost"));
+        model.addAttribute("sDeptCd", map.get("sDeptCd"));
+
+        Page<Tb201Dto> resultList = service020101.findAll(map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"), pageable);
+        model.addAttribute("dtos",resultList);
+        model.addAttribute("pageMaker", new PageMaker(pageable, resultList.getTotalElements()));
+
         return "personDepart/020101";
     }
 
@@ -62,7 +75,7 @@ public class Controller020101 {
             model.addAttribute("dto",new Tb201Dto());
             return "personDepart/020101_input";
         }
-        model.addAttribute("dto", service.findById(Integer.parseInt(map.get("vseq"))));
+        model.addAttribute("dto", service020101.findById(Integer.parseInt(map.get("vseq"))));
         return "personDepart/020101_input";
     }
 
@@ -70,7 +83,7 @@ public class Controller020101 {
     public String insert(@ModelAttribute Form020101 form, Model model, HttpServletRequest request) throws IOException {
         log.info("input");
         log.info("form = {}", form);
-        if (service.insert(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
+        if (service020101.insert(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
         else model.addAttribute("msg","문제가 발생 하였습니다.");
         model.addAttribute("url", request.getHeader("referer"));
         return "redirect";
@@ -80,14 +93,14 @@ public class Controller020101 {
     public String update(@ModelAttribute Form020101 form, Model model, HttpServletRequest request){
         log.info("update");
         log.info("form = {}", form);
-        if(service.update(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
+        if(service020101.update(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
         else model.addAttribute("msg","문제가 발생 하였습니다.");
         model.addAttribute("url", request.getHeader("referer"));
         return "redirect";
     }
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id, Model model, HttpServletRequest request){
-        if(service.delete(id)) model.addAttribute("msg", "정상적으로 삭제 되었습니다.");
+        if(service020101.delete(id)) model.addAttribute("msg", "정상적으로 삭제 되었습니다.");
         else model.addAttribute("msg", "문제가 발생하였습니다");
         model.addAttribute("url", request.getHeader("referer"));
         return "redirect";

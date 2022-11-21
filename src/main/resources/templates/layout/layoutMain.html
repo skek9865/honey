@@ -129,4 +129,10 @@
   </div>
   <!-- Modal -->
 </body>
+<script th:inline="javascript">
+  $(document).ready(function (){
+    gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
+    $("#datatable_1").width([[${global.mainWidth}]]);
+  })
+</script>
 </html>
