@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
   <body>
-    <FORM name="fm_input" method="post" enctype="multipart/form-data" th:object="${dto}">
+    <form th:action="@{/020101/input}" method="post" enctype="multipart/form-data" th:object="${dto}">
       <div class="container-fluid p-2" >
         <div class="input_div">
           <table class="input_table">
@@ -30,15 +30,15 @@
                 <input id="emp2Nm" th:field="*{emp2Nm}" type="text" size="20" class="form-control">
               </td>
               <td>
+                <label class='input_labal' for="headYn">세대주여부</label>
                 <div class='form-check form-check-inline'>
-                  <input class='form-check-input' id="headYn" th:field="*{headYn}" type="checkbox" value="Y">
-                  <label class='form-check-label' for="headYn">세대주여부</label>
+                    <input class='form-check-input' type="checkbox" style="margin-top: 10px" id="headYn" th:field="*{headYn}">
                 </div>
               </td>
             </tr>
             <tr>
               <td>
-                <label for='empClass' class=''>입사구분</label>
+                <label for='empClass' class='input_labal'>입사구분</label>
                 <SELECT class='form-select' id='empClass' name='empClass'  size=1 >
                   <OPTION value=''>선택</OPTION>
                   <OPTION value='00001'>대표이사</OPTION>
@@ -65,7 +65,7 @@
                 </div>
               </td>
               <td>
-                <label for='post' class=''>직위/직급</label>
+                <label for='post' class='input_labal'>직위/직급</label>
                 <SELECT class='form-select' id='post' name='post'  size=1 >
                   <OPTION value=''>선택</OPTION>
                   <OPTION value='00001'>대표이사</OPTION>
@@ -86,7 +86,7 @@
             </tr>
             <tr>
               <td>
-                <label for='post1' class=''>직책</label>
+                <label for='post1' class='input_labal'>직책</label>
                 <SELECT class='form-select' id='post1' name='post1'  size=1 >
                   <OPTION value=''>선택</OPTION>
                   <OPTION value='00001'>대표이사</OPTION>
@@ -105,7 +105,7 @@
                 </SELECT>
               </td>
               <td>
-                <label for='deptCd' class=''>부서명</label>
+                <label for='deptCd' class='input_labal'>부서명</label>
                 <SELECT class='form-select' id='deptCd' name='deptCd'  size=1 >
                   <OPTION value=''>선택</OPTION>
                   <OPTION value='00001'>대표이사</OPTION>
@@ -156,13 +156,13 @@
                 </div>
               </td>
               <td>
-                <label for="leaveRs">퇴사사유</label>
+                <label for="leaveRs" class="input_labal">퇴사사유</label>
                 <input id="leaveRs" th:field="*{leaveRs}" type="text" size="30" class="form-control">
               </td>
             </tr>
             <tr>
               <td>
-                <label for='bankNm' class=''>급여은행</label>
+                <label for='bankNm' class='input_labal'>급여은행</label>
                 <SELECT class='form-select' id='bankNm' name='bankNm'  size=1 >
                   <OPTION value=''>선택</OPTION>
                   <OPTION value='00001'>대표이사</OPTION>
@@ -198,24 +198,24 @@
                 <input id="address1" th:field="*{address1}" type="text" size="50" class="form-control">
               </td>
             </tr>
-<!--            <tr>-->
-<!--              <td>-->
-<!--                <label for="picNm" class="input_labal">사진</label>-->
-<!--                <input id="picNm" th:field="*{picNm}" type="text" size="20" class="form-control">-->
-<!--              </td>-->
-<!--              <td colspan="2">-->
-<!--                <label for="fileNm" class="input_labal">파일</label>-->
-<!--                <input id="fileNm" th:field="*{fileNm}" type="text" size="20" class="form-control">-->
-<!--                <a href="upload\empfile\1.hwp" download="경력증명서 양식.hwp">경력증명서 양식.hwp</a>-->
-<!--              </td>-->
-<!--            </tr>-->
-<!--            <tr>-->
-<!--              <td>-->
-<!--                <label class="input_labal_lg">사진상세</label>-->
-<!--                <img class="main-style" src="./upload/emp/1.jpg" title="사진" style="" width="100">-->
-<!--                <button name="print" id="print" type="button" class="btn btn-gfk btn-sm" onclick="imgPopup('upload/emp/1.jpg')">인쇄</button>-->
-<!--              </td>-->
-<!--            </tr>-->
+            <tr>
+              <td>
+                <label for="img" class="input_labal">사진</label>
+                <input id="img" name="img" type="file" size="20" class="form-control">
+              </td>
+              <td colspan="2">
+                <label for="file" class="input_labal">파일</label>
+                <input id="file" name="file" type="file" size="20" class="form-control">
+                <a style="font-size: 11px" href="upload\empfile\1.hwp" download="경력증명서 양식.hwp">경력증명서 양식.hwp</a>
+              </td>
+            </tr>
+            <tr th:if="*{picNm}">
+              <td>
+                <label class="input_labal_lg">사진상세</label>
+                <img class="main-style" src="./upload/emp/1.jpg" title="사진" style="" width="100">
+                <button name="print" id="print" type="button" class="btn btn-gfk btn-sm" onclick="imgPopup('upload/emp/1.jpg')">인쇄</button>
+              </td>
+            </tr>
             <tr>
               <td colspan="2">
                 <label for="note" class="input_labal">비고</label>
@@ -228,23 +228,21 @@
           <table class="input_table" >
             <tr>
               <td class="float-end">
-                <button name="save" id="save" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">저장</button>
+                <button name="save" id="save" type="submit" class="btn btn-gfk btn-sm" onclick="alert('저장되었습니다')">저장</button>
                 <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
               </td>
             </tr>
           </table>
         </div>
       </div>
-      <input type="hidden" name="vseq" id="vseq" value="1" size="0" class="form-control ">
-      <input type="hidden" name="action" id="action" value="updated" size="0" class="form-control ">
-      <input type="hidden" name="ACD" id="ACD" value="02" size="0" class="form-control ">
-      <input type="hidden" name="BCD" id="BCD" value="01" size="0" class="form-control ">
-      <input type="hidden" name="CCD" id="CCD" value="01" size="0" class="form-control ">
-      <input type="hidden" name="tpid" id="tpid" value="020101" size="0" class="form-control ">
-      <input type="hidden" name="sempnm" id="sempnm" value="" size="0" class="form-control ">
-      <input type="hidden" name="spost" id="spost" value="" size="0" class="form-control ">
-      <input type="hidden" name="sdeptcd" id="sdeptcd" value="" size="0" class="form-control ">
-    </FORM>
+      <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+      <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+      <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+      <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+      <input type="hidden" id="sEmpNm" name="sEmpNm" size="0" class="form-control ">
+      <input type="hidden" id="sPost" name="sPost" size="0" class="form-control ">
+      <input type="hidden" id="sDeptCd" name="sDeptCd" size="0" class="form-control ">
+    </form>
     <script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
   </body>
 </html>
