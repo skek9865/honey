@@ -6,8 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.honey.comm.file.FileConverter;
-import project.honey.comm.file.FileName;
 import project.honey.personDepart.dto.Form020101;
 import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.personDepart.entity.Tb201;
@@ -21,22 +19,22 @@ import java.io.IOException;
 public class Service020101Impl implements Service020101 {
 
     private final Tb201Repository repository;
-    private final FileConverter fileConverter;
 
     @Override
-    public void insert(Form020101 form) throws IOException {
+    public Boolean insert(Form020101 form) throws IOException {
         String dbFileName = "";
         String dbImgName = "";
-        if(!form.getFile().isEmpty()) {
-            FileName fileName = fileConverter.uploadFile(form.getFile(), "/upload/empFile/");
-            dbFileName = fileName.getDbFileName();
-        }
-        if(!form.getImg().isEmpty()){
-            FileName imgName = fileConverter.uploadFile(form.getImg(), "/upload/empImg/");
-            dbImgName = imgName.getDbFileName();
-        }
+//        if(!form.getFile().isEmpty()) {
+//            FileName fileName = fileConverter.uploadFile(form.getFile(), "C:\\JAVA\\honey\\src\\main\\resources\\static\\images\\emp\\");
+//            dbFileName = fileName.getDbFileName();
+//        }
+//        if(!form.getImg().isEmpty()){
+//            FileName imgName = fileConverter.uploadFile(form.getImg(), "C:\\JAVA\\honey\\src\\main\\resources\\static\\images\\emp\\");
+//            dbImgName = imgName.getDbFileName();
+//        }
         Tb201 entity = Form020101.toTb201(form, dbFileName, dbImgName);
         repository.save(entity);
+        return true;
     }
 
     @Override
@@ -54,13 +52,15 @@ public class Service020101Impl implements Service020101 {
 
     @Transactional
     @Override
-    public void update(Tb201Dto dto) {
-        Tb201 entity = repository.findById(dto.getSeq()).orElseThrow(RuntimeException::new);
-        entity.updateData(dto);
+    public Boolean update(Form020101 form) {
+        Tb201 entity = repository.findById(form.getSeq()).orElseThrow(RuntimeException::new);
+        entity.updateData(form);
+        return true;
     }
 
     @Override
-    public void delete(Integer id) {
+    public Boolean delete(Integer id) {
         repository.deleteById(id);
+        return true;
     }
 }

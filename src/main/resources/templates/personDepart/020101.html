@@ -2,7 +2,22 @@
       xmlns:th="http://www.thymeleaf.org">
 
 <main >
-  <form th:action="@{/020101/insert}" name="fm_home" method="post" enctype="multipart/form-data">
+  <script th:inline="javascript">
+    function lf_confirm(as_action,as_val1,as_val2,as_val3) {// FORM을 서버미트 하기전에 수행할 일
+      switch (as_action) {
+        case "insert" : //저장
+        case "update" : //저장
+          fm_input.action ="/020101/"+as_action;
+          fm_input.submit();
+          break;
+        case "delete" : //저장
+          fm_home.action ="/020101/" + as_action + "/" + as_val1;
+          fm_home.submit();
+          break;
+      }
+    }
+  </script>
+  <form name="fm_home" method="post" enctype="multipart/form-data">
     <main >
       <div class="container-fluid p-2">
         <div class="titleBar" id="titleBar">
@@ -17,12 +32,12 @@
               <table>
                 <tr>
                   <td class="p-1">
-                    <label for="sempNm" class="search_labal">사원명</label>
-                    <input id="sempNm" name="sempNm" type="text" size="15" class="form-control">
+                    <label for="sEmpNm" class="search_labal">사원명</label>
+                    <input id="sEmpNm" name="sEmpNm" type="text" size="15" class="form-control">
                   </td>
                   <td class="p-1">
-                    <label for='spost' class="search_labal_lg">직위/직급</label>
-                    <SELECT class='form-select' id='spost' name='spost'  size=1 >
+                    <label for='sPost' class="search_labal_lg">직위/직급</label>
+                    <SELECT class='form-select' id='sPost' name='sPost'  size=1 >
                       <OPTION value=''>선택</OPTION>
                       <OPTION value='00001'>대표이사</OPTION>
                       <OPTION value='00002'>전무님</OPTION>
@@ -40,8 +55,8 @@
                     </SELECT>
                   </td>
                   <td class="p-1">
-                    <label for='sdeptcd' class="search_labal">부서명</label>
-                    <SELECT class='form-select' id='sdeptcd' name='sdeptcd'  size=1 >
+                    <label for='sDeptcd' class="search_labal">부서명</label>
+                    <SELECT class='form-select' id='sDeptcd' name='sDeptcd'  size=1 >
                       <OPTION value=''>선택</OPTION>
                       <OPTION value='00001'>대표이사</OPTION>
                       <OPTION value='00002'>전무님</OPTION>
@@ -60,7 +75,7 @@
                   </td>
                   <td class="p-1">
                     <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="">조회</button>
-                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'', '','');">등록</button>
+                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">등록</button>
                     <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="">엑셀</button>
                   </td>
                 </tr>
@@ -79,8 +94,8 @@
               <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
                 <td class="list_td_1" th:text="${dtoStat.count}" text-center></td>
                 <td class="list_td_1" text-center>
-                  <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" onclick="lf_confirm(this.name,'systemman','','')">수정</button>&nbsp;
-                  <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm">삭제</button>&nbsp;
+                  <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">수정</button>&nbsp;
+                  <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제</button>&nbsp;
                 </td>
                 <td class="list_td_1" th:text="${dto.empNo}"  text-center>내용</td>
                 <td class="list_td_1" th:text="${dto.empNm}"  text-center>내용</td>
@@ -110,21 +125,10 @@
     gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
     $("#datatable_1").width([[${global.mainWidth}]]);
     $("#modal_main").addClass("modal-xl");
-
-    // 삭제
-    $('button[name="delete"]').click(function (e) {
-      e.preventDefault();
-      if(confirm("자료를 삭제하시겠습니까?")){
-        var url = window.location.href + "";
-        $.ajax({
-          url: url.split('?')[0] + "/delete?id=" + $(this).data('id'),
-          type : 'get',
-          success : function (){
-            alert("자료가 삭제되었습니다.");
-            location.reload();
-          }
-        })
-      }
-    });
   });
+
+  function del(seq){
+    fm_home.action ="/020101/delete/"+seq;
+    fm_home.submit();
+  }
 </script>
