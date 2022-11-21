@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface Service020101 {
 
-    void insert(Form020101 form) throws IOException;
+    Boolean insert(Form020101 form) throws IOException;
 
     Page<Tb201Dto> findAll(String empNm, String postCd, String deptCd, Pageable pageable);
 
     Tb201Dto findById(Integer id);
 
-    void update(Tb201Dto dto);
+    Boolean update(Form020101 form);
 
-    void delete(Integer id);
+    Boolean delete(Integer id);
 }

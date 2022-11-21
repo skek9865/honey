@@ -3,6 +3,7 @@ package project.honey.personDepart.entity;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
+import project.honey.personDepart.dto.Form020101;
 import project.honey.personDepart.dto.Tb201Dto;
 
 import javax.persistence.*;
@@ -135,37 +136,37 @@ public class Tb201 extends BaseAtt {
     @Column(name = "filenm", length = 100)
     private String fileNm;
 
-    public void updateData(Tb201Dto dto) {
+    public void updateData(Form020101 form) {
         String headYn;
-        if (dto.getHeadYn()) headYn = "Y";
+        if (form.getHeadYn()) headYn = "Y";
         else headYn = "N";
-        this.seq      = dto.getSeq();
-        this.empNo    = dto.getEmpNo();
-        this.empNm    = dto.getEmpNm();
-        this.emp2Nm   = dto.getEmp2Nm();
-        this.empEngNm = dto.getEmpEngNm();
-        this.idNo     = dto.getIdNo();
+        this.seq      = form.getSeq();
+        this.empNo    = form.getEmpNo();
+        this.empNm    = form.getEmpNm();
+        this.emp2Nm   = form.getEmp2Nm();
+        this.empEngNm = form.getEmpEngNm();
+        this.idNo     = form.getIdNo();
         this.headYn   = headYn;
-        this.empDt    = dto.getEmpDt();
-        this.empClass = dto.getEmpClass();
-        this.post     = dto.getPost();
-        this.post1    = dto.getPost1();
-        this.leaveDt  = dto.getLeaveDt();
-        this.leaveRs  = dto.getLeaveRs();
-        this.phone    = dto.getPhone();
-        this.mobile   = dto.getMobile();
-        this.psNo     = dto.getPsNo();
-        this.email    = dto.getEmail();
-        this.deptCd   = dto.getDeptCd();
-        this.workCd   = dto.getWorkCd();
-        this.bankNm   = dto.getBankNm();
-        this.aCutNo   = dto.getACutNo();
-        this.aCutNm   = dto.getACutNm();
-        this.zipCd    = dto.getZipCd();
-        this.address  = dto.getAddress();
-        this.address1 = dto.getAddress1();
-        this.picNm    = dto.getPicNm();
-        this.note     = dto.getNote();
-        this.fileNm   = dto.getFileNm();
+        this.empDt    = form.getEmpDt();
+        this.empClass = form.getEmpClass();
+        this.post     = form.getPost();
+        this.post1    = form.getPost1();
+        this.leaveDt  = form.getLeaveDt();
+        this.leaveRs  = form.getLeaveRs();
+        this.phone    = form.getPhone();
+        this.mobile   = form.getMobile();
+        this.psNo     = form.getPsNo();
+        this.email    = form.getEmail();
+        this.deptCd   = form.getDeptCd();
+        this.workCd   = form.getWorkCd();
+        this.bankNm   = form.getBankNm();
+        this.aCutNo   = form.getACutNo();
+        this.aCutNm   = form.getACutNm();
+        this.zipCd    = form.getZipCd();
+        this.address  = form.getAddress();
+        this.address1 = form.getAddress1();
+//        this.picNm    = form.getPicNm();
+        this.note     = form.getNote();
+//        this.fileNm   = form.getFileNm();
     }
 }

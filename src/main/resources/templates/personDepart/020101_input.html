@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
   <script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
   <body>
-    <form th:action="@{/020101/input}" method="post" enctype="multipart/form-data" th:object="${dto}">
+    <form name="fm_input" th:action="@{/020101/input}" method="post" enctype="multipart/form-data" th:object="${dto}">
       <div class="container-fluid p-2" >
         <div class="input_div">
           <table class="input_table">
@@ -211,7 +211,7 @@
             </tr>
             <tr th:if="*{picNm}">
               <td>
-                <label class="input_labal_lg">사진상세</label>
+                <label class="input_labal">사진상세</label>
                 <img class="main-style" src="./upload/emp/1.jpg" title="사진" style="" width="100">
                 <button name="print" id="print" type="button" class="btn btn-gfk btn-sm" onclick="imgPopup('upload/emp/1.jpg')">인쇄</button>
               </td>
@@ -228,7 +228,7 @@
           <table class="input_table" >
             <tr>
               <td class="float-end">
-                <button name="save" id="save" type="submit" class="btn btn-gfk btn-sm" onclick="alert('저장되었습니다')">저장</button>
+                <button name="save" id="save" type="button" class="btn btn-gfk btn-sm" th:onclick="lf_confirm([[${action}]],'','','')">저장</button>
                 <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
               </td>
             </tr>

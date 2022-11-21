@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.menu.MenuIdDto;
@@ -49,7 +48,7 @@ public class Controller020101 {
     }
 
     @GetMapping("/input")
-    public String read(@RequestParam Map<String, String> map, Model model){
+    public String findById(@RequestParam Map<String, String> map, Model model){
         log.info("input");
         log.info("fstId = {}", map.get("fstId"));
         log.info("scdId = {}", map.get("scdId"));
@@ -57,39 +56,40 @@ public class Controller020101 {
         model.addAttribute("fstId", map.get("fstId"));
         model.addAttribute("scdId", map.get("scdId"));
         model.addAttribute("thdId", map.get("thdId"));
-        model.addAttribute("dto",new Tb201Dto());
+        model.addAttribute("action", map.get("action"));
         model.addAttribute("global", new GlobalConst());
+        if(map.get("vseq").isEmpty()){
+            model.addAttribute("dto",new Tb201Dto());
+            return "personDepart/020101_input";
+        }
+        model.addAttribute("dto", service.findById(Integer.parseInt(map.get("vseq"))));
         return "personDepart/020101_input";
     }
 
     @PostMapping("/input")
-    public String insert(@ModelAttribute Form020101 form,@RequestParam Map<String,String> map,
-                         Pageable pageable,RedirectAttributes redirectAttributes) throws IOException {
+    public String insert(@ModelAttribute Form020101 form, Model model, HttpServletRequest request) throws IOException {
         log.info("input");
         log.info("form = {}", form);
-        service.insert(form);
-        redirectAttributes.addAttribute("fstId",map.get("fstId"));
-        redirectAttributes.addAttribute("scdId",map.get("scdId"));
-        redirectAttributes.addAttribute("thdId",map.get("thdId"));
-        redirectAttributes.addAttribute("page",pageable.getPageNumber());
-        redirectAttributes.addAttribute("size",pageable.getPageSize());
-        redirectAttributes.addAttribute("sEmpNm",map.get("sEmpNm"));
-        redirectAttributes.addAttribute("sPost",map.get("sPost"));
-        redirectAttributes.addAttribute("sDeptCd",map.get("sDeptCd"));
-        return "redirect:/020101";
+        if (service.insert(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
+        else model.addAttribute("msg","문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
     }
 
-    @GetMapping("update")
-    public String update(@RequestParam Map<String, String> map, Model model){
+    @PostMapping("/update")
+    public String update(@ModelAttribute Form020101 form, Model model, HttpServletRequest request){
         log.info("update");
-        log.info("fstId = {}", map.get("fstId"));
-        log.info("scdId = {}", map.get("scdId"));
-        log.info("thdId = {}", map.get("thdId"));
-        model.addAttribute("fstId", map.get("fstId"));
-        model.addAttribute("scdId", map.get("scdId"));
-        model.addAttribute("thdId", map.get("thdId"));
-        model.addAttribute("dto",new Tb201Dto());
-        model.addAttribute("global", new GlobalConst());
-        return "personDepart/020101_input";
+        log.info("form = {}", form);
+        if(service.update(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
+        else model.addAttribute("msg","문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
+    @PostMapping("/delete/{id}")
+    public String delete(@PathVariable("id") Integer id, Model model, HttpServletRequest request){
+        if(service.delete(id)) model.addAttribute("msg", "정상적으로 삭제 되었습니다.");
+        else model.addAttribute("msg", "문제가 발생하였습니다");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
     }
 }
