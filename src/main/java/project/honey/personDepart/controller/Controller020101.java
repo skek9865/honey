@@ -15,6 +15,7 @@ import project.honey.comm.menu.MenuMaker;
 import project.honey.personDepart.dto.Form020101;
 import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.personDepart.service.Service020101;
+import project.honey.personDepart.service.Service020102;
 import project.honey.system.service.Service990301;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ import java.util.Map;
 public class Controller020101 {
 
     private final Service020101 service020101;
+    private final Service020102 service020102;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
 
@@ -47,7 +49,8 @@ public class Controller020101 {
         model.addAttribute("titles",titles);
         model.addAttribute("global", new GlobalConst());
 
-        model.addAttribute("codes",service990301.findByFstId("01"));
+        model.addAttribute("postCodes",service990301.findByFstId("01"));
+        model.addAttribute("deptCdCodes",service020102.findAllDept());
 
         model.addAttribute("sEmpNm", map.get("sEmpNm"));
         model.addAttribute("sPost", map.get("sPost"));
@@ -71,6 +74,11 @@ public class Controller020101 {
         model.addAttribute("thdId", map.get("thdId"));
         model.addAttribute("action", map.get("action"));
         model.addAttribute("global", new GlobalConst());
+        model.addAttribute("postCodes",service990301.findByFstId("01"));
+        model.addAttribute("empClassCodes",service990301.findByFstId("02"));
+        model.addAttribute("post1Codes",service990301.findByFstId("03"));
+        model.addAttribute("bankNmCodes",service990301.findByFstId("04"));
+        model.addAttribute("deptCdCodes",service020102.findAllDept());
         if(map.get("vseq").isEmpty()){
             model.addAttribute("dto",new Tb201Dto());
             return "personDepart/020101_input";

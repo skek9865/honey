@@ -113,7 +113,7 @@ public class Tb201Dto {
                 .fileNm(entity.getFileNm())
                 .createDate(entity.getCreateDate())
                 .createId(entity.getCreateId())
-                .modifyDate(entity.getModifyDate())
+                .modifyDate(entity.getUpdateDate())
                 .updateId(entity.getUpdateId())
                 .build();
     }

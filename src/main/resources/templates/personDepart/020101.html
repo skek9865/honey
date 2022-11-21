@@ -1,112 +1,113 @@
 <html th:replace="~{layout/layoutMain:: layout(~{::main})}"
       xmlns:th="http://www.thymeleaf.org">
 
-  <main >
-    <script th:inline="javascript">
-      function lf_confirm(as_action,as_val1,as_val2,as_val3) {// FORM을 서버미트 하기전에 수행할 일
-        switch (as_action) {
-          case "insert" : //저장
-          case "update" : //저장
-            fm_input.action ="/020101/"+as_action;
-            fm_input.submit();
-            break;
-          case "delete" : //저장
-            fm_home.action ="/020101/" + as_action + "/" + as_val1;
-            fm_home.submit();
-            break;
-        }
+<main>
+  <script th:inline="javascript">
+    function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+      switch (as_action) {
+        case "insert" : //저장
+        case "update" : //저장
+          fm_input.action = "/020101/" + as_action;
+          fm_input.submit();
+          break;
+        case "delete" : //저장
+          fm_home.action = "/020101/" + as_action + "/" + as_val1;
+          fm_home.submit();
+          break;
       }
-    </script>
-    <form name="fm_home" method="post" enctype="multipart/form-data">
-        <div class="container-fluid p-2">
-          <div class="titleBar" id="titleBar">
-            <div class="row">
-              <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
-              <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
-            </div>
+    }
+  </script>
+  <form name="fm_home" method="post" enctype="multipart/form-data">
+    <div class="container-fluid p-2">
+      <div class="titleBar" id="titleBar">
+        <div class="row">
+          <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])
           </div>
-          <div class="searchBar" id="searchBar">
-            <div class="row">
-              <div class="col-12 fixed-right">
-                <table>
-                  <tr>
-                    <td class="p-1">
-                      <label for="sEmpNm" class="search_labal">사원명</label>
-                      <input id="sEmpNm" name="sEmpNm" th:value="${sEmpNm}" type="text" size="15" class="form-control">
-                    </td>
-                    <td class="p-1">
-                      <label for='sPost' class="search_labal_lg">직위/직급</label>
-                      <select class='form-select' id='sPost' name="sPost" th:value="${sPost}"  size=1 >
-                        <option value=''>선택</option>
-                          <option th:each="code : ${codes}" th:value="${code.value}" th:text="${code.text}"></option>
-                      </select>
-                    </td>
-                    <td class="p-1">
-                      <label for='sDeptcd' class="search_labal">부서명</label>
-                      <SELECT class='form-select' id='sDeptCd' name="sDeptCd" th:value="${sDeptCd}"  size=1 >
-                        <OPTION value=''>선택</OPTION>
-                        <OPTION value='00001'>대표이사</OPTION>
-                        <OPTION value='00002'>전무님</OPTION>
-                        <OPTION value='00003'>과장</OPTION>
-                        <OPTION value='00004'>팀장</OPTION>
-                        <OPTION value='00005'>대리</OPTION>
-                        <OPTION value='00006'>주임</OPTION>
-                        <OPTION value='00007'>실장</OPTION>
-                        <OPTION value='00008'>상무</OPTION>
-                        <OPTION value='00009'>차장</OPTION>
-                        <OPTION value='00010'>이사</OPTION>
-                        <OPTION value='00011'>사원</OPTION>
-                        <OPTION value='00012'>본부장</OPTION>
-                        <OPTION value='00013'>단장</OPTION>
-                      </SELECT>
-                    </td>
-                    <td class="p-1">
-                      <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" >조회</button>
-                      <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">등록</button>
-                      <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="">엑셀</button>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-          </div>
-          <div class="table-responsive text-nowrap" id="tableWrapper">
-            <table class="table table-striped tablesorter-blue" id="datatable_1" >
-              <thead>
-                <tr class="tableList_h_tr">
-                  <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
-                  <td class="list_td_1" th:text="${dtoStat.count}" text-center></td>
-                  <td class="list_td_1" text-center>
-                    <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">수정</button>&nbsp;
-                    <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제</button>&nbsp;
-                  </td>
-                  <td class="list_td_1" th:text="${dto.empNo}"  text-center>내용</td>
-                  <td class="list_td_1" th:text="${dto.empNm}"  text-center>내용</td>
-                  <td class="list_td_1" th:text="${dto.empDt}"  text-center>내용</td>
-                  <td class="list_td_1" th:text="${dto.post}"   text-center>내용</td>
-                  <td class="list_td_1" th:text="${dto.phone}"  text-center>내용</td>
-                  <td class="list_td_1" th:text="${dto.mobile}" text-center>내용</td>
-                  <td class="list_td_1" th:text="${dto.email}"  text-center>내용</td>
-                  <td class="list_td_1" th:text="${dto.deptCd}" text-center>내용</td>
-                  <td class="list_td_1" th:text="${dto.workCd}" text-center>내용</td>
-                </tr>
-              </tbody>
+          <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+        </div>
+      </div>
+      <div class="searchBar" id="searchBar">
+        <div class="row">
+          <div class="col-12 fixed-right">
+            <table>
+              <tr>
+                <td class="p-1">
+                  <label for="sEmpNm" class="search_labal">사원명</label>
+                  <input id="sEmpNm" name="sEmpNm" th:value="${sEmpNm}" type="text" size="15" class="form-control">
+                </td>
+                <td class="p-1">
+                  <label for='sPost' class="search_labal_lg">직위/직급</label>
+                  <select class='form-select' id='sPost' name="sPost" th:value="${sPost}" size=1>
+                    <option value=''>선택</option>
+                    <option th:each="postCode : ${postCodes}" th:attr="selected=${postCode.value == sPost ?'true' : 'false'}"
+                            th:value="${postCode.value}" th:text="${postCode.text}"></option>
+                  </select>
+                </td>
+                <td class="p-1">
+                  <label for='sDeptcd' class="search_labal">부서명</label>
+                  <select class='form-select' id='sDeptCd' name="sDeptCd" th:value="${sDeptCd}" size=1>
+                    <option value=''>선택</option>
+                    <option th:each="deptCdCode : ${deptCdCodes}" th:attr="selected=${deptCdCode.value == sDeptCd ?'true' : 'false'}"
+                            th:value="${deptCdCode.value}" th:text="${deptCdCode.text}"></option>
+                  </select>
+                </td>
+                <td class="p-1">
+                  <button name="query" id="query" type="button" class="btn btn-gfk btn-sm">조회</button>
+                  <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal"
+                          data-target="#inputpopup"
+                          th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">
+                    등록
+                  </button>
+                  <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="">엑셀</button>
+                </td>
+              </tr>
             </table>
           </div>
         </div>
-      <div th:replace="paging.html :: paging">
       </div>
-    </form>
-  </main>
+      <div class="table-responsive text-nowrap" id="tableWrapper">
+        <table class="table table-striped tablesorter-blue" id="datatable_1">
+          <thead>
+          <tr class="tableList_h_tr">
+            <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
+            <td class="list_td_1" th:text="${dtoStat.count}" text-center></td>
+            <td class="list_td_1" text-center>
+              <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal"
+                      data-target="#inputpopup"
+                      th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
+                수정
+              </button>&nbsp;
+              <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm"
+                      th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제
+              </button>&nbsp;
+            </td>
+            <td class="list_td_1" th:text="${dto.empNo}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.empNm}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.empDt}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.post}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.phone}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.mobile}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.email}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.deptCd}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.workCd}" text-center>내용</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div th:replace="paging.html :: paging">
+    </div>
+  </form>
+</main>
 </html>
 
 <script src="/js/scripts_sub.js"></script>
 <script th:inline="javascript">
-  $(document).ready(function (){
+  $(document).ready(function () {
     $("#modal_main").addClass("modal-xl");
   });
 </script>
