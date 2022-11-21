@@ -24,5 +24,4 @@ public class Tb302Dto {
 
     private Double payAmt;
 
-
 }

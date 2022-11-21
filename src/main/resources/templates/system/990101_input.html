@@ -146,7 +146,7 @@
         }
 
         var method = [[${dto.userId}]]==null?'/insert':'/update'
-        //저장
+        //저장, 수정
         $('#save').on('click', function (e){
 
             e.preventDefault();
@@ -157,18 +157,6 @@
             inputForm.submit();
             alert("저장이 완료되었습니다.")
 
-            // var data = $('form[name="fm_input"]').serialize();
-
-            // $.ajax({
-            //     url: url.split('?')[0] + method,
-            //     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            //     type : 'post',
-            //     data : data,
-            //     success : function (result){
-            //         alert("저장이 완료되었습니다.");
-            //         location.reload();
-            //     }
-            // })
         })
     });
 </script>

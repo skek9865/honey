@@ -1,9 +1,6 @@
 package project.honey.pay.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 
@@ -16,6 +13,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Builder
 @Table(name = "tb_302")
+@ToString
 public class Tb302 {
 
     @Id

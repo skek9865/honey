@@ -7,12 +7,15 @@ import project.honey.personDepart.entity.Tb201;
 
 import javax.persistence.Column;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
 @ToString
 public class Tb302ResultDto {
+
+    private Integer seq;
 
     private String empNo;
 
@@ -33,6 +36,7 @@ public class Tb302ResultDto {
     public static Tb302ResultDto of(Tb201 entity,Integer payout, Integer taxAmt, Integer deduction, Integer actualPayment) {
 
         return Tb302ResultDto.builder()
+                .seq(entity.getSeq())
                 .empNo(entity.getEmpNo())
                 .empNm(entity.getEmpNm())
                 .empDt(entity.getEmpDt())

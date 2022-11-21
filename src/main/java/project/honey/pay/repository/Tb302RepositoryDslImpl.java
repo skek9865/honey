@@ -7,7 +7,6 @@ import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import project.honey.pay.dto.QTb302ResultDto;
 import project.honey.pay.dto.Tb302ResultDto;
 import project.honey.pay.entity.QTb302;
 import project.honey.pay.entity.Tb302;

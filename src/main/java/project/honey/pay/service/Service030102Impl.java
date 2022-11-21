@@ -18,6 +18,7 @@ import project.honey.personDepart.repository.Tb201Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -41,18 +42,21 @@ public class Service030102Impl implements Service030102{
     // 개인별기준급여 리스트 조회
     @Override
     public Page<Tb302ResultDto> findAllByLeave(Pageable pageable, String empNm, String postCd, String deptCd) {
-        Page<Tb201> result = tb201Repository.findAllByDsl(empNm, postCd, deptCd, pageable);
+        Page<Tb201> result = tb201Repository.findAllByLeave(empNm, postCd, deptCd, pageable);
+        log.info("result : {}", result.getContent());
         List<Tb201> content = result.getContent();  // 사원 테이블의 내용
 
         List<Tb302ResultDto> dtos = new ArrayList<>();
         for (Tb201 tb201 : content) {               // 사원번호로 지급액 조회
             int payout = 0; //지급액
             int taxAmt = 0; //과세액
+            double deductionSub = 0.0;
             int deduction = 0;  //공제액
             int actualPayment = 0;  //실지급액
             List<Tb302> list = tb302Repository.findAllByEmpNo(tb201.getEmpNo());
             for (Tb302 tb302 : list) {
-                Double payAmt = tb302.getPayAmt();
+                log.info("tb302 : {}", tb302 );
+                Double payAmt =tb302.getPayAmt();
 
                 if(tb302.getItemDiv().equals("00001")){ // 지급일 떄
                    payout += payAmt;
@@ -60,15 +64,23 @@ public class Service030102Impl implements Service030102{
                         taxAmt += payAmt;
                     }
                 } else if (tb302.getItemDiv().equals("00002")) {    // 공제일 때
-                    deduction += payAmt;
+                    log.info("payAmt = " + payAmt);
+                    deductionSub += payAmt;
                 }
-
             }
+            deduction = (int) (Math.ceil(payout * deductionSub)/100);
             actualPayment = payout - deduction;
             dtos.add(Tb302ResultDto.of(tb201, payout, taxAmt, deduction, actualPayment));
         }
 
-        return new PageImpl<>(dtos, pageable, result.getTotalElements());
+
+        List<Tb302ResultDto> collect = dtos.stream().map(dto -> {
+            String empDt = dto.getEmpDt();
+            dto.setEmpDt(empDt.substring(0, 4) + "-" + empDt.substring(4, 6) + "-" + empDt.substring(6));
+            return dto;
+        }).collect(Collectors.toList());
+
+        return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
     @Override
