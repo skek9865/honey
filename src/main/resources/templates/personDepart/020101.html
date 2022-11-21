@@ -60,7 +60,7 @@
                   </td>
                   <td class="p-1">
                     <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="">조회</button>
-                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="gf_modal('020101/input','','','','', '');">등록</button>
+                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'', '','');">등록</button>
                     <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="">엑셀</button>
                   </td>
                 </tr>
@@ -97,11 +97,9 @@
         </div>
       </div>
     </main>
-<!--    <?=text_cpnt("메뉴1","ACD",$ACD,"0","","H","")?>-->
-<!--    <?=text_cpnt("메뉴2","BCD",$BCD,"0","","H","")?>-->
-<!--    <?=text_cpnt("메뉴3","CCD",$CCD,"0","","H","")?>-->
-<!--    <?=text_cpnt("화면번호","tpid",$gs_tpid,"0","","H","")?>-->
-<!--    <?=text_cpnt("시작","start","Y","0","","H","")?>-->
+    <input type="hidden" id="fstId" th:field="${menuId.fstId}" size="0" class="form-control ">
+    <input type="hidden" id="scdId" th:field="${menuId.scdId}" size="0" class="form-control ">
+    <input type="hidden" id="thdId" th:field="${menuId.thdId}" size="0" class="form-control ">
   </form>
 </main>
 </html>
