@@ -1,9 +1,6 @@
 package project.honey.personDepart.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
 import project.honey.personDepart.dto.Tb201Dto;
@@ -17,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Builder
 @Table(name = "tb_201")
+@ToString
 public class Tb201 extends BaseAtt {
 
     @Id
@@ -138,13 +136,16 @@ public class Tb201 extends BaseAtt {
     private String fileNm;
 
     public void updateData(Tb201Dto dto) {
+        String headYn;
+        if (dto.getHeadYn()) headYn = "Y";
+        else headYn = "N";
         this.seq      = dto.getSeq();
         this.empNo    = dto.getEmpNo();
         this.empNm    = dto.getEmpNm();
         this.emp2Nm   = dto.getEmp2Nm();
         this.empEngNm = dto.getEmpEngNm();
         this.idNo     = dto.getIdNo();
-        this.headYn   = dto.getHeadYn();
+        this.headYn   = headYn;
         this.empDt    = dto.getEmpDt();
         this.empClass = dto.getEmpClass();
         this.post     = dto.getPost();

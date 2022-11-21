@@ -22,7 +22,7 @@
                     <tr>
                         <td>
                             <label for="alien" class="input_labal">정렬순번</label>
-                            <input type="text" th:field="*{alien}" id="alien" th:value="${dto.alien != null} ? *{alien} : 0" size="11" class="form-control input_number ">
+                            <input type="text" th:name="*{alien}" id="alien" th:value="${dto.alien != null ? dto.alien : 0}" size="11" class="form-control input_number ">
                         </td>
                     </tr>
                     <tr>
