@@ -47,6 +47,32 @@ public class Tb201RepositoryDslImpl implements Tb201RepositoryDsl {
         return new PageImpl<>(result,pageable,total);
     }
 
+    @Override
+    public Page<Tb201> findAllByLeave(String empNm, String postCd, String deptCd, Pageable pageable) {
+        List<Tb201> result = queryFactory.select(tb201)
+                .from(tb201)
+                .where(
+                        empNmContains(empNm),
+                        postCdEq(postCd),
+                        deptCdEq(deptCd),
+                        tb201.leaveDt.isNull()
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        int total = queryFactory.select(tb201)
+                .from(tb201)
+                .where(
+                        empNmContains(empNm),
+                        postCdEq(postCd),
+                        deptCdEq(deptCd)
+                )
+                .fetch().size();
+
+        return new PageImpl<>(result,pageable,total);
+    }
+
     private BooleanExpression empNmContains(String empNm) {
         return StringUtils.hasText(empNm) ? tb201.empNm.contains(empNm) : null;
     }
