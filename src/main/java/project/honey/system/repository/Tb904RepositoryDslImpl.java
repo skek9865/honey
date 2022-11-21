@@ -3,12 +3,14 @@ package project.honey.system.repository;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.util.StringUtils;
+import project.honey.system.entity.QTb904;
 import project.honey.system.entity.Tb904;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static project.honey.comm.menu.QTb904.tb904;
+import static project.honey.system.entity.QTb904.*;
+
 
 public class Tb904RepositoryDslImpl implements Tb904RepositoryDsl {
 

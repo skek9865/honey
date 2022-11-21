@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
 import project.honey.system.dto.Tb901Dto;
@@ -49,10 +50,12 @@ public class Tb901 extends BaseAtt {
 
     @Comment("사용여부")
     @Column(name = "useyn", columnDefinition = "char")
+    @ColumnDefault("N")
     private String useYn;
 
     @Comment("사원여부")
     @Column(name = "empyn", columnDefinition = "char")
+    @ColumnDefault("N")
     private String empYn;
 
     @Comment("사원번호")
