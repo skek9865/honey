@@ -9,11 +9,9 @@ import java.io.IOException;
 @Service
 public class UploadService {
 
-    private static final String fileDir = "C:\\JAVA\\honey\\src\\main\\resources\\static\\images\\corp\\";
-
-    public static void uploadFile(MultipartFile multipartFile){
+    public static void uploadFile(MultipartFile multipartFile, String path){
         String originalFilename = multipartFile.getOriginalFilename();
-        String filePath = fileDir+originalFilename;
+        String filePath = path+"/"+originalFilename;
         File file = new File(filePath);
         try{
             multipartFile.transferTo(file);
