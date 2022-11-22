@@ -53,9 +53,10 @@
                     </tbody>
                 </table>
             </div>
+            <!-- 페이징 부분 -->
+            <div th:replace="paging.html :: paging">
         </div>
-        <!-- 페이징 부분 -->
-        <div th:replace="paging.html :: paging">
+
         </div>
     </main>
     <script th:src="@{|/js/scripts_sub.js|}"></script>
