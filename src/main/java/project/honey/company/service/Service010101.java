@@ -3,10 +3,8 @@ package project.honey.company.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import project.honey.comm.UploadService;
-import project.honey.company.CompanyForm;
-import project.honey.company.Tb101Dto;
+import project.honey.company.dto.CompanyForm;
+import project.honey.company.dto.Tb101Dto;
 import project.honey.company.entity.Tb101;
 import project.honey.company.repository.Tb101Repository;
 

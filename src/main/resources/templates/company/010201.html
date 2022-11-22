@@ -1,0 +1,69 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::main})}"
+      xmlns:th="http://www.thymeleaf.org">
+<main>
+    <form action="/010101" method="post" th:object="${form}" enctype="multipart/form-data">
+        <div class="container-fluid p-2">
+            <div class="titleBar" id="titleBar">
+                <div class="row">
+                    <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])
+                    </div>
+                    <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+                </div>
+            </div>
+            <div class="searchBar" id="searchBar">
+                <div class="row">
+                    <div class="col-12 fixed-right p-2 px-4">
+                        <table>
+                            <tr>
+                                <td><!--조회 등록 엑셀-->
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm">조회</button>&nbsp;
+                                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm"
+                                            data-toggle="modal" data-target="#inputpopup"
+                                            onclick="gf_modal('030101/input','','','','', '');">등록
+                                    </button>&nbsp;
+                                    <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm"
+                                            onclick="lf_confirm(this.name,'','','')">엑셀
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_1">
+                    <thead>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="list_tr_1" th:each="pay, payStat : ${list}"><!-- td 렌더링 -->
+                        <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + payStat.count}"></td>
+                        <td>
+                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm"
+                                    data-toggle="modal" data-target="#inputpopup"
+                                    th:onclick="gf_modal('030101/input?id=' + [[${pay.seq}]],'','','','', '');">수정
+                            </button>&nbsp;
+                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm"
+                                    th:data-id="${pay.seq}">삭제
+                            </button>&nbsp;
+                        </td>
+                        <td th:text="${pay.itemDiv}"></td>
+                        <td th:text="${pay.taxDiv}"></td>
+                        <td th:text="${pay.itemCd}"></td>
+                        <td th:text="${pay.itemNm}"></td>
+                        <td th:text="${#numbers.formatDecimal(pay.taxRate,1,2)}"></td>
+                        <td th:text="${pay.useYn}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 페이징 부분 -->
+        <div th:replace="paging.html :: paging">
+        </div>
+    </form>
+</main>
+
+</html>

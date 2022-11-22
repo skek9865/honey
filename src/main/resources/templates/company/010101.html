@@ -5,8 +5,8 @@
             <div class="container-fluid p-2">
                 <div class="titleBar" id="titleBar">
                     <div class="row">
-                        <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i> 뭐고</div>
-                        <div class="col titleBar_path">에헤이</div>
+                        <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+                        <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
                     </div>
                 </div>
                 <div class="table-responsive text-nowrap" id="tableWrapper">
@@ -70,7 +70,7 @@
                                 <td colspan="3">
                                     <label for="zipcd1" class='input_labal'>우편번호1</label>
                                     <input type="text" id="zipcd1" name="zipcd1" th:value="${company.zipcd1}" size="10" class="form-control">
-                                    <button type="button">검색</button>
+                                    <button type="button" onclick="openZipSearch('zipcd1','address1','address11')" class="btn btn-gfk btn-sm">검색</button>
                                     <input type="text" id="address1" name="address1" th:value="${company.address1}" size="50" class="form-control">
                                     <input type="text" id="address11" name="address11" th:value="${company.address11}" size="30" class="form-control">
                                 </td>
@@ -79,7 +79,7 @@
                                 <td colspan="3">
                                     <label for="zipcd2" class='input_labal'>우편번호2</label>
                                     <input type="text" id="zipcd2" name="zipcd2" th:value="${company.zipcd2}" size="10" class="form-control">
-                                    <button type="button">검색</button>
+                                    <button type="button" onclick="openZipSearch('zipcd2','address2','address21')" class="btn btn-gfk btn-sm">검색</button>
                                     <input type="text" id="address2" name="address2" th:value="${company.address2}" size="50" class="form-control">
                                     <input type="text" id="address21" name="address21" th:value="${company.address21}" size="30" class="form-control">
                                 </td>
@@ -88,7 +88,7 @@
                                 <td colspan="3">
                                     <label for="zipcdeng" class='input_labal'>영문우편번호</label>
                                     <input type="text" id="zipcdeng" name="zipcdeng" th:value="${company.zipcdeng}" size="10" class="form-control">
-                                    <button type="button">검색</button>
+                                    <button type="button" onclick="openZipSearch('zipcdeng','addresseng','addresseng1')" class="btn btn-gfk btn-sm">검색</button>
                                     <input type="text" id="addresseng" name="addresseng" th:value="${company.addresseng}" size="50" class="form-control">
                                     <input type="text" id="addresseng1" name="addresseng1" th:value="${company.addresseng1}" size="30" class="form-control">
                                 </td>

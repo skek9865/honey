@@ -29,6 +29,7 @@ public class MainController {
     public String main(Model model){
         log.info("mainController");
         model.addAttribute("menus", menuMaker.getMenuId(1,"00","00",""));
+        model.addAttribute("menuId", new MenuIdDto("01","00","00",""));
         model.addAttribute("global", new GlobalConst());
         return "main";
     }

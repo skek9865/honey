@@ -1,4 +1,4 @@
-package project.honey.company;
+package project.honey.company.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,13 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 import project.honey.comm.GlobalConst;
-import project.honey.comm.PageMaker;
 import project.honey.comm.UploadService;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
+import project.honey.company.dto.CompanyForm;
+import project.honey.company.dto.Tb101Dto;
 import project.honey.company.service.Service010101;
-
-import java.awt.print.Pageable;
 
 
 @Controller
@@ -41,7 +40,7 @@ public class Controller010101 {
         model.addAttribute("menus", menuMaker.getMenuId(1,"","",""));
         model.addAttribute("menuNm",menuMaker.getMenuNm(menuIdDto));
 
-        return "company/companyInfo.html";
+        return "company/010101.html";
     }
     @PostMapping("/010101")
     public RedirectView companySave(@ModelAttribute("form") CompanyForm form) {
