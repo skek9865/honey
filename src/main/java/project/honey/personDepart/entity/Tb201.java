@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
 import project.honey.personDepart.dto.Form020101;
-import project.honey.personDepart.dto.Tb201Dto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
