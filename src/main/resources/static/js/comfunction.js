@@ -1,7 +1,4 @@
 function gf_modal(as_url,as_acd,as_bcd,as_ccd,as_action,as_val,as_val1) {
-	console.log(as_acd);
-	console.log(as_bcd);
-	console.log(as_ccd);
 	$.ajax({
 		url:as_url,
 		type:"GET",

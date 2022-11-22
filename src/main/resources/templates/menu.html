@@ -1,8 +1,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
-  <div class="nav" th:object="${fst}">
-    <div class="sb-sidenav-menu-heading " th:title="*{menuNm}" th:text="*{menuNm}">1차메뉴</div>
+  <div class="nav">
+    <div class="sb-sidenav-menu-heading " th:title="${menuNm}" th:text="${menuNm}">1차메뉴</div>
     <th:block th:each="menu2, menu2Stat : ${menus2}">
-      <a class="nav-link collapsed" th:if="${menu2.scdId} != '00' and ${menu2.thdId} == '00'" th:title="${menu2.menuNm}" href="#" data-bs-toggle="collapse" th:data-bs-target="|#Layout_${menu2Stat.index}|" aria-expanded="true" th:aria-controls="|Layout_${menu2Stat.index}|">
+      <a class="nav-link collapsed" th:title="${menu2.menuNm}" href="#" data-bs-toggle="collapse" th:data-bs-target="|#Layout_${menu2Stat.index}|" aria-expanded="true" th:aria-controls="|Layout_${menu2Stat.index}|">
         <div class="sb-nav-link-icon"><i class="bi bi-stickies-fill"></i></div>
         [[${menu2.menuNm}]]
         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -10,8 +10,8 @@
       <div th:classappend="${menu2.scdId} == ${scdId} ? 'show' : _" class="collapse" th:id="|Layout_${menu2Stat.index}|" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
         <nav class="sb-sidenav-menu-nested nav">
           <th:block th:each="menu3 : ${menus3}">
-            <a th:if="${menu3.fstId} == *{fstId} and ${menu3.scdId} == ${menu2.scdId} and ${menu3.thdId} != '00'" th:title="${menu3.menuNm}" th:href="@{|/${menu3.fstId}${menu3.scdId}${menu3.thdId}|(fstId = ${menu3.fstId},scdId = ${menu3.scdId},thdId = ${menu3.thdId})}" class="nav-link fs-8">
-              <div class="sb-nav-link-icon"><i class="bi bi-sticky"></i></div>[[${menu3.menuNm}]]</a>
+            <a th:if="${menu3.scdId} == ${menu2.scdId}" th:title="${menu3.menuNm}" th:href="@{|/${menu3.fstId}${menu3.scdId}${menu3.thdId}|(fstId = ${menu3.fstId},scdId = ${menu3.scdId},thdId = ${menu3.thdId})}" class="nav-link fs-8">
+            <div class="sb-nav-link-icon"><i class="bi bi-sticky"></i></div>[[${menu3.menuNm}]]</a>
           </th:block>
         </nav>
       </div>
