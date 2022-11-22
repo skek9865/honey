@@ -40,7 +40,7 @@ public class Controller010101 {
         model.addAttribute("menus", menuMaker.getMenuId(1,"","",""));
         model.addAttribute("menuNm",menuMaker.getMenuNm(menuIdDto));
 
-        return "company/010101.html";
+        return "company/010101";
     }
     @PostMapping("/010101")
     public RedirectView companySave(@ModelAttribute("form") CompanyForm form) {
