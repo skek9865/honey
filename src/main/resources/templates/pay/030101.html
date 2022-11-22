@@ -85,8 +85,8 @@
                 if(confirm("자료를 삭제하시겠습니까?")){
                     var url = window.location.href + "";
                     $.ajax({
-                        url: url.split('?')[0] + "/delete?id=" + $(this).data('id'),
-                        type : 'get',
+                        url: url.split('?')[0] + "/delete/" + $(this).data('id'),
+                        type : 'post',
                         success : function (){
                             alert("자료가 삭제되었습니다.");
                             location.reload();

@@ -19,5 +19,5 @@ public interface Service990101 {
     Tb901Dto findById(String userId);
 
     // 사용자 삭제
-    void delete(String userId);
+    String delete(String userId);
 }

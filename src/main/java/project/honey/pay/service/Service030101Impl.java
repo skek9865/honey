@@ -51,7 +51,8 @@ public class Service030101Impl implements Service030101{
 
     @Override
     @Transactional
-    public void delete(Integer seq) {
+    public Integer delete(Integer seq) {
         tb301Repository.deleteById(seq);
+        return seq;
     }
 }

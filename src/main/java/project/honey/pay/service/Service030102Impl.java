@@ -8,11 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.pay.dto.Tb301Dto;
-import project.honey.pay.dto.Tb302Dto;
-import project.honey.pay.dto.Tb302ResultDto;
+import project.honey.pay.dto.Tb302PopupDto;
+import project.honey.pay.dto.Tb302HomeDto;
 import project.honey.pay.entity.Tb302;
 import project.honey.pay.repository.Tb302Repository;
-import project.honey.pay.repository.Tb302RepositoryDsl;
 import project.honey.personDepart.entity.Tb201;
 import project.honey.personDepart.repository.Tb201Repository;
 
@@ -39,14 +38,39 @@ public class Service030102Impl implements Service030102{
         return null;
     }
 
+    @Override
+    public List<Tb302PopupDto> findAll(String empNo) {
+        Tb201 tb201 = tb201Repository.findByEmpNo(empNo).orElseThrow(RuntimeException::new);
+        List<Tb302> list = tb302Repository.findAllByEmpNo(empNo);
+
+        log.info("list.size() = {}", list.size());
+
+        List<Tb302PopupDto> dtos = new ArrayList<>();
+
+        for (Tb302 tb302 : list) {
+            Tb302PopupDto dto = Tb302PopupDto.builder()
+                    .seq(tb302.getSeq())
+                    .empNo(tb302.getEmpNo())
+                    .empNm(tb201.getEmpNm())
+                    .post(tb201.getPost())
+                    .itemDiv(tb302.getItemDiv())
+                    .taxDiv(tb302.getTaxDiv())
+                    .itemCd(tb302.getItemCd())
+                    .payAmt(tb302.getPayAmt())
+                    .build();
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
     // 개인별기준급여 리스트 조회
     @Override
-    public Page<Tb302ResultDto> findAllByLeave(Pageable pageable, String empNm, String postCd, String deptCd) {
+    public Page<Tb302HomeDto> findAllByLeave(Pageable pageable, String empNm, String postCd, String deptCd) {
         Page<Tb201> result = tb201Repository.findAllByLeave(empNm, postCd, deptCd, pageable);
         log.info("result : {}", result.getContent());
         List<Tb201> content = result.getContent();  // 사원 테이블의 내용
 
-        List<Tb302ResultDto> dtos = new ArrayList<>();
+        List<Tb302HomeDto> dtos = new ArrayList<>();
         for (Tb201 tb201 : content) {               // 사원번호로 지급액 조회
             int payout = 0; //지급액
             int taxAmt = 0; //과세액
@@ -70,11 +94,11 @@ public class Service030102Impl implements Service030102{
             }
             deduction = (int) (Math.ceil(payout * deductionSub)/100);
             actualPayment = payout - deduction;
-            dtos.add(Tb302ResultDto.of(tb201, payout, taxAmt, deduction, actualPayment));
+            dtos.add(Tb302HomeDto.of(tb201, payout, taxAmt, deduction, actualPayment));
         }
 
 
-        List<Tb302ResultDto> collect = dtos.stream().map(dto -> {
+        List<Tb302HomeDto> collect = dtos.stream().map(dto -> {
             String empDt = dto.getEmpDt();
             dto.setEmpDt(empDt.substring(0, 4) + "-" + empDt.substring(4, 6) + "-" + empDt.substring(6));
             return dto;
@@ -89,7 +113,7 @@ public class Service030102Impl implements Service030102{
     }
 
     @Override
-    public void delete(Integer seq) {
-
+    public Integer delete(Integer seq) {
+        return null;
     }
 }

@@ -1,0 +1,51 @@
+package project.honey.personDepart.dto;
+
+import lombok.*;
+import project.honey.personDepart.entity.Tb202;
+
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@ToString
+public class Tb202Dto {
+
+    private Integer seq;
+    private String deptCd;
+    private String deptNm;
+    private Boolean useYn;
+    private String createDate;
+    private String createId;
+    private String modifyDate;
+    private String updateId;
+
+    public static Tb202 toTb202(Tb202Dto dto) {
+        String useYn;
+        if(dto.useYn) useYn = "Y";
+        else useYn = "N";
+
+        return Tb202.builder()
+                .deptCd(dto.deptCd)
+                .deptNm(dto.deptNm)
+                .useYn(useYn)
+                .build();
+    }
+
+    public static Tb202Dto of(Tb202 entity) {
+        Boolean useYn;
+        if(entity.getUseYn() == "Y") useYn = true;
+        else useYn = false;
+
+        return Tb202Dto.builder()
+                .seq(entity.getSeq())
+                .deptCd(entity.getDeptCd())
+                .deptNm(entity.getDeptNm())
+                .useYn(useYn)
+                .createDate(entity.getCreateDate())
+                .createId(entity.getCreateId())
+                .modifyDate(entity.getUpdateDate())
+                .updateId(entity.getUpdateId())
+                .build();
+    }
+}

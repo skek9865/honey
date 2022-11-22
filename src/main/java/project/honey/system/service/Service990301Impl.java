@@ -52,8 +52,10 @@ public class Service990301Impl implements Service990301{
 
     @Override
     @Transactional
-    public void delete(Integer seq) {
+    public Integer delete(Integer seq) {
         tb906Repository.deleteById(seq);
+
+        return seq;
     }
 
     // 대그룹으로 중그룹ID, 코드명 조회 메서드

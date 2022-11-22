@@ -49,7 +49,8 @@ public class Service990101Impl implements Service990101 {
     // 사용자 삭제
     @Override
     @Transactional
-    public void delete(String userId) {
+    public String delete(String userId) {
         tb901Repository.deleteById(userId);
+        return userId;
     }
 }

@@ -16,10 +16,11 @@
                             <tr>
                                 <td class="p-1">
                                     <label for="sfstid" class="">대그룹</label>
-                                    <select class="form-select" id="sfstid" name="sfstid" size="1">
+                                    <select class="form-select" id="sfstid" name="sfstid" th:value="${sfstid}" size="1">
                                         <option value="">선택</option>
                                         <th:block th:each="code : ${codes}">
-                                            <option th:value="${code.value}" th:text="${code.text}"></option>
+<!--                                            <option th:value="${code.value}" th:text="${code.text}"></option>-->
+                                            <option th:value="${code.value}" th:attr="selected=${code.value == sfstid ?'true' : 'false'}" th:text="${code.text}"></option>
                                         </th:block>
                                     </select>
                                 </td>
@@ -68,7 +69,7 @@
             $("#datatable_1").width([[${global.mainWidth}]]);
 
             // 대그룹 셀렉트박스 기본값 설정
-            $('#sfstid').val([[${sfstid}]])
+            // $('#sfstid').val([[${sfstid}]])
 
             // 삭제
             $('button[name="delete"]').click(function (e) {
@@ -76,8 +77,8 @@
                 if(confirm("자료를 삭제하시겠습니까?")){
                     var url = window.location.href + "";
                     $.ajax({
-                        url: url.split('?')[0] + "/delete?id=" + $(this).data('id'),
-                        type : 'get',
+                        url: url.split('?')[0] + "/delete/" + $(this).data('id'),
+                        type : 'post',
                         success : function (){
                             alert("자료가 삭제되었습니다.");
                             location.reload();

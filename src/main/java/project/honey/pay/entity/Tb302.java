@@ -37,7 +37,7 @@ public class Tb302 {
 
     @Comment("항목코드")
     @Column(name = "itemcd", columnDefinition = "char")
-    private Integer itemCd;
+    private String itemCd;
 
     @Comment("금액")
     @Column(name = "payamt", columnDefinition = "float")

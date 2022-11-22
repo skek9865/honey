@@ -26,7 +26,7 @@ public abstract class BaseAtt {
 
     @LastModifiedDate
     @Column(name = "updatedt", columnDefinition = "char")
-    private String modifyDate;
+    private String updateDate;
 
     @LastModifiedBy
     @Column(name = "updateid")
@@ -36,12 +36,12 @@ public abstract class BaseAtt {
     @PrePersist
     public void onPrePersist(){
         this.createDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
-        this.modifyDate = this.createDate;
+        this.updateDate = this.createDate;
     }
 
     @PreUpdate
     public void onPreUpdate(){
-        this.modifyDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+        this.updateDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     }
 
 }

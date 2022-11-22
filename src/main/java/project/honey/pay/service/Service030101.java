@@ -13,5 +13,5 @@ public interface Service030101 {
 
     Tb301Dto findById(Integer seq);
 
-    void delete(Integer seq);
+    Integer delete(Integer seq);
 }
