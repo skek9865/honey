@@ -1,19 +1,13 @@
-package project.honey.company;
+package project.honey.company.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.ToString;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.persistence.Column;
-import java.time.LocalDateTime;
-
-@Getter
-@Builder
-public class Tb101Dto {
-
-    private Integer seq;
+@Getter @Setter
+@ToString
+public class CompanyForm {
 
     private String corpnm;
 
@@ -61,15 +55,7 @@ public class Tb101Dto {
 
     private String item;
 
-    private String logonm;
+    private MultipartFile logonm;
 
-    private String stampnm;
-
-    private String createDate;
-
-    private String createId;
-
-    private String modifyDate;
-
-    private String updateId;
+    private MultipartFile stampnm;
 }

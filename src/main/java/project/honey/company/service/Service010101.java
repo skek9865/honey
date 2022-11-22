@@ -3,10 +3,8 @@ package project.honey.company.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import project.honey.comm.UploadService;
-import project.honey.company.CompanyForm;
-import project.honey.company.Tb101Dto;
+import project.honey.company.dto.CompanyForm;
+import project.honey.company.dto.Tb101Dto;
 import project.honey.company.entity.Tb101;
 import project.honey.company.repository.Tb101Repository;
 
@@ -19,16 +17,6 @@ public class Service010101 {
 
     @Transactional
     public void save(CompanyForm form){
-        if(!form.getLogonm().isEmpty()) {
-            MultipartFile logoFile = form.getLogonm();
-            UploadService.uploadFile(logoFile);
-        }
-
-        if(!form.getStampnm().isEmpty()) {
-            MultipartFile stampFile = form.getStampnm();
-            UploadService.uploadFile(stampFile);
-        }
-
         Tb101 tb101 = tb101Repository.findById(27)
                 .orElseThrow(() -> new IllegalArgumentException("회사기본정보를 찾을 수 없습니다."));
         tb101.changeInfo(form);
@@ -72,7 +60,7 @@ public class Service010101 {
                 .createId(entity.getCreateId())
                 .createDate(entity.getCreateDate())
                 .updateId(entity.getUpdateId())
-                .modifyDate(entity.getModifyDate())
+                .updateDate(entity.getUpdateDate())
                 .build();
     }
 

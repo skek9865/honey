@@ -40,8 +40,7 @@ public class Controller020101 {
         log.info("empNm = {}, postCd = {}, deptCd = {}" ,map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"));
         log.info("menuId = {}", menuIdDto);
         List<String> titles = GlobalMethod.makeTitle(
-                "순번", "관리", "사원번호", "사원명", "입사일자", "직위/직급",
-                "전화번호", "모바일", "Email", "부서명", "업무코드"
+                "순번", "관리", "인증서명","만료일","사용용도", "보관형태"
         );
 
         model.addAttribute("menus", menuMaker.getMenuId(1,"","",""));
