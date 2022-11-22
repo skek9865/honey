@@ -60,7 +60,7 @@ public class Service010101 {
                 .createId(entity.getCreateId())
                 .createDate(entity.getCreateDate())
                 .updateId(entity.getUpdateId())
-                .modifyDate(entity.getModifyDate())
+                .updateDate(entity.getUpdateDate())
                 .build();
     }
 

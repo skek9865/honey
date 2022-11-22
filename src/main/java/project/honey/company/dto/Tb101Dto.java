@@ -69,7 +69,7 @@ public class Tb101Dto {
 
     private String createId;
 
-    private String modifyDate;
+    private String updateDate;
 
     private String updateId;
 }
