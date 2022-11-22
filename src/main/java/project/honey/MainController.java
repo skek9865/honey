@@ -38,16 +38,13 @@ public class MainController {
         log.info("menuController");
         log.info("fstId = {}, scdId = {}, thdId = {}, userId = {}", map.get("fstId"), map.get("scdId"), map.get("thdId"), map.get("userId"));
 
-        List<MenuIdDto> result2 = menuMaker.getMenuId(2, map.get("fstId"), "00", map.get("userId"));
-        List<MenuIdDto> result3 = menuMaker.getMenuId(3, map.get("fstId"), map.get("scdId"), map.get("userId"));
+        List<MenuIdDto> result = menuMaker.getMenuId(2, map.get("fstId"), "00", map.get("userId"));
+        MenuIdDto fst = result.stream().filter(dto -> dto.getScdId().equals("00")).findAny().orElseThrow(RuntimeException::new);
 
-        Optional<MenuIdDto> any = result2.stream().filter(dto -> dto.getScdId().equals("00")).findAny();
+        List<MenuIdDto> menus2 = result.stream().filter(dto -> !dto.getScdId().equals("00")).filter(dto -> dto.getThdId().equals("00")).collect(Collectors.toList());
+        List<MenuIdDto> menus3 = result.stream().filter(dto -> !dto.getScdId().equals("00")).filter(dto -> !dto.getThdId().equals("00")).collect(Collectors.toList());
 
-        List<MenuIdDto> menus2 = result2.stream().filter(dto -> !dto.getScdId().equals("00")).collect(Collectors.toList());
-        List<MenuIdDto> menus3 = result3.stream().filter(dto -> !dto.getScdId().equals("00")).filter(dto -> !dto.getThdId().equals("00")).collect(Collectors.toList());
-
-        MenuIdDto fst = any.orElseThrow(() -> new RuntimeException());
-        model.addAttribute("fst", fst);
+        model.addAttribute("menuNm", fst.getMenuNm());
         model.addAttribute("scdId",map.get("scdId"));
         model.addAttribute("menus2", menus2);
         model.addAttribute("menus3", menus3);

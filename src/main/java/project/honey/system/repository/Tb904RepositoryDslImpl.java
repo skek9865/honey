@@ -41,11 +41,7 @@ public class Tb904RepositoryDslImpl implements Tb904RepositoryDsl {
                     return tb904.scdId.eq("00").and(tb904.useYn.eq("Y"));
                 case 2:
                     if(StringUtils.hasText(fcd)){
-                        return tb904.fstId.eq(fcd).and(tb904.thdId.eq("00")).and(tb904.useYn.eq("Y"));
-                    }
-                case 3:
-                    if(StringUtils.hasText(fcd) && StringUtils.hasText(scd)){
-                        return tb904.fstId.eq(fcd).and(tb904.scdId.eq(scd)).and(tb904.useYn.eq("Y"));
+                        return tb904.fstId.eq(fcd).and(tb904.useYn.eq("Y"));
                     }
             }
         }
