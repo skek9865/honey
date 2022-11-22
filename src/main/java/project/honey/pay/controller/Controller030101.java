@@ -23,6 +23,7 @@ import project.honey.system.dto.Tb906Dto;
 import project.honey.system.entity.Tb903;
 import project.honey.system.service.Service990301;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -57,38 +58,26 @@ public class Controller030101 {
     }
 
     @PostMapping("/insert")
-    public String insert(@ModelAttribute Tb301Dto dto, Pageable pageable ,
-                         @ModelAttribute MenuIdDto menuIdDto, RedirectAttributes redirectAttributes) {
+    public String insert(@ModelAttribute Tb301Dto dto, Model model,HttpServletRequest request) {
         log.info("dto : {}", dto);
-        service030101.insert(dto);
 
-        addRedirect(pageable, menuIdDto, redirectAttributes);
-        return "redirect:/030101";
+        model.addAttribute("msg", service030101.insert(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+
+        return "redirect";
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Tb301Dto dto, Pageable pageable ,
-                         @ModelAttribute MenuIdDto menuIdDto, RedirectAttributes redirectAttributes) {
+    public String update(@ModelAttribute Tb301Dto dto, Model model, HttpServletRequest request) {
 
-        service030101.update(dto);
-
-        addRedirect(pageable, menuIdDto, redirectAttributes);
-        return "redirect:/030101";
+        model.addAttribute("msg", service030101.update(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
     }
 
-    private void addRedirect(Pageable pageable, @ModelAttribute MenuIdDto menuIdDto,
-                             RedirectAttributes redirectAttributes) {
-
-        redirectAttributes.addAttribute("fstId", menuIdDto.getFstId());
-        redirectAttributes.addAttribute("scdId", menuIdDto.getScdId());
-        redirectAttributes.addAttribute("thdId", menuIdDto.getThdId());
-        redirectAttributes.addAttribute("page", pageable.getPageNumber()+1);
-        redirectAttributes.addAttribute("size", pageable.getPageSize());
-    }
-
-    @GetMapping("/delete")
+    @PostMapping("/delete/{id}")
     @ResponseBody
-    public ResponseEntity<String> delete(Integer id) {
+    public ResponseEntity<String> delete(@PathVariable Integer id) {
 
         log.info("id : " + id);
         service030101.delete(id);

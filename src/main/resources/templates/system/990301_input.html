@@ -75,10 +75,8 @@
             e.preventDefault();
             var inputForm = $('form[name="fm_input"]');
             var url = window.location.href + "";
-            console.log(url.split('?')[0])
             inputForm.attr("action",url.split('?')[0] + method)
             inputForm.submit();
-            alert("저장이 완료되었습니다.")
         })
     });
 </script>

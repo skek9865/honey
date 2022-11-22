@@ -6,22 +6,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.function.ServerRequest;
+import org.springframework.web.bind.annotation.*;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.pay.dto.Tb301Dto;
-import project.honey.pay.dto.Tb302ResultDto;
+import project.honey.pay.dto.Tb302HomeDto;
 import project.honey.pay.service.Service030102;
+import project.honey.personDepart.repository.Tb201Repository;
 import project.honey.system.service.Service990301;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +28,7 @@ public class Controller030102 {
 
     private final Service030102 service030102;
     private final Service990301 service990301;
+    private final Tb201Repository tb201Repository;  //임시
     private final MenuMaker menuMaker;
 
     @GetMapping
@@ -52,16 +48,16 @@ public class Controller030102 {
         model.addAttribute("global", new GlobalConst());
 
 
-        Page<Tb302ResultDto> list = service030102.findAllByLeave(pageable, map.get("empNm"), map.get("post"), map.get("deptCd"));
-        List<Tb302ResultDto> content = list.getContent();
+        Page<Tb302HomeDto> list = service030102.findAllByLeave(pageable, map.get("empNm"), map.get("post"), map.get("deptCd"));
+        List<Tb302HomeDto> content = list.getContent();
 
         model.addAttribute("posts", service990301.findByFstId("01"));
 
         // 총합 구하기
-        model.addAttribute("totalPayout", content.stream().mapToInt(Tb302ResultDto::getPayout).sum());
-        model.addAttribute("totalTaxAmt", content.stream().mapToInt(Tb302ResultDto::getTaxAmt).sum());
-        model.addAttribute("totalDeduction", content.stream().mapToInt(Tb302ResultDto::getDeduction).sum());
-        model.addAttribute("totalActualPayment", content.stream().mapToInt(Tb302ResultDto::getActualPayment).sum());
+        model.addAttribute("totalPayout", content.stream().mapToInt(Tb302HomeDto::getPayout).sum());
+        model.addAttribute("totalTaxAmt", content.stream().mapToInt(Tb302HomeDto::getTaxAmt).sum());
+        model.addAttribute("totalDeduction", content.stream().mapToInt(Tb302HomeDto::getDeduction).sum());
+        model.addAttribute("totalActualPayment", content.stream().mapToInt(Tb302HomeDto::getActualPayment).sum());
 
 
         model.addAttribute("pageMaker", new PageMaker(pageable, list.getTotalElements()));
@@ -69,4 +65,19 @@ public class Controller030102 {
 
         return "pay/030102";
     }
+
+    @GetMapping("/popup/{empNo}")
+    public String popup(@PathVariable String empNo, Model model) {
+        model.addAttribute("global", new GlobalConst());
+        List<String> titles = GlobalMethod.makeTitle(
+                "순번", "관리", "공제/지급", "과세여부", "급여항목", "금액"
+        );
+
+        model.addAttribute("titles", titles);
+
+        model.addAttribute("dtos", service030102.findAll(empNo));
+        model.addAttribute("emp", tb201Repository.findByEmpNo(empNo).get());
+        return "pay/030102_1";
+    }
 }
+

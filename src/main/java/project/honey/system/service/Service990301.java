@@ -17,7 +17,7 @@ public interface Service990301 {
 
     Tb906Dto findById(Integer seq);
 
-    void delete(Integer seq);
+    Integer delete(Integer seq);
 
     List<CodeDto> findByFstId(String fstId);
 

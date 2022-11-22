@@ -69,7 +69,7 @@
                     <tr class="list_tr_1" th:each="dto, dtoStat : ${list}"><!-- td 렌더링 -->
                         <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
                         <td class="list_td_1 text-center">
-                            <button name="paymnt" id="paymnt" type="button" class="btn btn-gfk btn-ssm" onclick="lf_confirm(this.name,'0001','','')">급여내역</button>&nbsp;
+                            <button name="paymnt" id="paymnt" type="button" class="btn btn-gfk btn-ssm" th:data-empNo="${dto.empNo}">급여내역</button>&nbsp;
                             <button name="pitemesave_one" id="pitemesave_one" type="button" class="btn btn-gfk btn-ssm" onclick="lf_confirm(this.name,'0001','','')">급여항목추가</button>&nbsp;
                             <button name="pitemedel_one" id="pitemedel_one" type="button" class="btn btn-gfk btn-ssm" onclick="lf_confirm(this.name,'0001','','')">급여항목삭제</button>&nbsp;
                         </td>
@@ -122,8 +122,8 @@
                 if(confirm("자료를 삭제하시겠습니까?")){
                     var url = window.location.href + "";
                     $.ajax({
-                        url: url.split('?')[0] + "/delete?id=" + $(this).data('id'),
-                        type : 'get',
+                        url: url.split('?')[0] + "/delete/" + $(this).data('id'),
+                        type : 'post',
                         success : function (){
                             alert("자료가 삭제되었습니다.");
                             location.reload();
@@ -131,6 +131,13 @@
                     })
                 }
             });
+
+            $('button[name="paymnt"]').click(function (e) {
+                e.preventDefault();
+                var url = window.location.href + "";
+                gf_popup("550","800","030102_inputbox",url.split('?')[0] + "/popup/" + $(this).data("empno")) ;
+            });
+
         });
     </script>
 

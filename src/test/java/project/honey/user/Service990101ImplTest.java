@@ -82,8 +82,6 @@ class Service990101ImplTest {
         Tb901Dto findUser = service990101.findById(userId);
         //then
         assertThat(findUser.getUserId()).isEqualTo(userId);
-        assertThat(findUser.getInputId()).isEqualTo("hello");
-        assertThat(findUser.getUpdateId()).isEqualTo("hello2");
     }
 
     @Test

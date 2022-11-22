@@ -1,11 +1,7 @@
 package project.honey.pay.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
-import org.hibernate.annotations.Comment;
 import project.honey.personDepart.entity.Tb201;
-
-import javax.persistence.Column;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -13,7 +9,7 @@ import javax.persistence.Column;
 @Getter
 @Setter
 @ToString
-public class Tb302ResultDto {
+public class Tb302HomeDto {
 
     private Integer seq;
 
@@ -33,9 +29,9 @@ public class Tb302ResultDto {
     private Integer actualPayment;  //실지급액
 
     //Dto 변환 메서드
-    public static Tb302ResultDto of(Tb201 entity,Integer payout, Integer taxAmt, Integer deduction, Integer actualPayment) {
+    public static Tb302HomeDto of(Tb201 entity, Integer payout, Integer taxAmt, Integer deduction, Integer actualPayment) {
 
-        return Tb302ResultDto.builder()
+        return Tb302HomeDto.builder()
                 .seq(entity.getSeq())
                 .empNo(entity.getEmpNo())
                 .empNm(entity.getEmpNm())
