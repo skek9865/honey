@@ -12,6 +12,8 @@ import project.honey.personDepart.entity.Tb201;
 import project.honey.personDepart.repository.Tb201Repository;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -42,6 +44,11 @@ public class Service020101Impl implements Service020101 {
         Page<Tb201> result = repository.findAllByDsl(empNm, postCd, deptCd, pageable);
         Page<Tb201Dto> resultList = result.map(Tb201Dto::of);
         return resultList;
+    }
+
+    @Override
+    public List<Tb201Dto> findAllByExcel(String empNm, String postCd, String deptCd) {
+        return repository.findAllByExcel(empNm, postCd, deptCd).stream().map(Tb201Dto::of).collect(Collectors.toList());
     }
 
     @Override
