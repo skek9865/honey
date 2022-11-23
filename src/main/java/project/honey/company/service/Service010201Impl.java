@@ -10,7 +10,9 @@ import project.honey.company.dto.Tb102Dto;
 import project.honey.company.entity.Tb102;
 import project.honey.company.repository.Tb102Repository;
 
-import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 @Service
@@ -23,8 +25,20 @@ public class Service010201Impl implements Service010201{
 
     @Override
     @Transactional
-    public void save(Tb102Dto dto) {
-        tb102Repository.save(dtoToEntity(dto));
+    public Integer insert(Tb102Dto dto) {
+        // date 수정 , useyn수정
+        dto.beforeProcess();
+        return tb102Repository.save(dtoToEntity(dto)).getSeq();
+    }
+
+    @Override
+    @Transactional
+    public Integer update(Tb102Dto dto) {
+        dto.beforeProcess();
+        Tb102 entity = tb102Repository.findById(dto.getSeq())
+                .orElseThrow(() -> new IllegalArgumentException("해당 통장을 찾을 수 없습니다"));
+        entity.changeInfo(dto);
+        return entity.getSeq();
     }
 
     @Override
@@ -42,7 +56,25 @@ public class Service010201Impl implements Service010201{
         return entityToDto(entity);
     }
 
+    @Override
+    @Transactional
+    public Integer delete(Integer id) {
+        tb102Repository.deleteById(id);
+        return id;
+    }
+
     private Tb102Dto entityToDto(Tb102 entity){
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat beforeSdf= new SimpleDateFormat("yyyyMMdd");
+        Date date = null;
+        try{
+            date = beforeSdf.parse(entity.getStdate());
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
+        String stdate = sdf.format(date);
+
         return Tb102Dto.builder()
                 .seq(entity.getSeq())
                 .fk_tb_101(entity.getFk_tb_101())
@@ -51,7 +83,7 @@ public class Service010201Impl implements Service010201{
                 .accounhd(entity.getAccounhd())
                 .usenote(entity.getUsenote())
                 .accountid(entity.getAccountid())
-                .stdate(entity.getStdate())
+                .stdate(stdate)
                 .note(entity.getNote())
                 .note1(entity.getNote1())
                 .useyn(entity.getUseyn())
@@ -63,6 +95,9 @@ public class Service010201Impl implements Service010201{
     }
 
     private Tb102 dtoToEntity(Tb102Dto dto){
+
+        if(dto.getFk_tb_101()==null) dto.setFk_tb_101(27);
+
         return Tb102.builder()
                 .seq(dto.getSeq())
                 .fk_tb_101(dto.getFk_tb_101())

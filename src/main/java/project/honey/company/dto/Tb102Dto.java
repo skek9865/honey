@@ -3,6 +3,7 @@ package project.honey.company.dto;
 import lombok.*;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -37,4 +38,9 @@ public class Tb102Dto {
     private String updateDate;
 
     private String updateId;
+
+    public void beforeProcess(){
+        this.stdate = stdate.replace("-","");
+        if(useyn == null) useyn = "N";
+    }
 }

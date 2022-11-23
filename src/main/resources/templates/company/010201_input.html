@@ -3,6 +3,7 @@
 <script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
 <body>
 <form name="fm_input" th:action="@{/010201/input}" method="post" th:object="${dto}">
+    <input type="hidden" name ="fk_tb_101"  th:value="*{fk_tb_101}">
     <div class="container-fluid p-2">
         <div class="input_div">
             <table class="input_table">
@@ -43,8 +44,12 @@
                 </tr>
                 <tr>
                     <td>
-                        <label for="stdate" class="input_labal">개설일</label>
-                        <input type="date" id="stdate" th:field="*{stdate}" th:value="*{stdate}"  size="25" class="form-control ">
+                        <div class='input-group input-daterange'>
+                            <div class='input-group-addon px-2'>
+                                <label for="stdate" class="input_labal">개설일</label>
+                            </div>
+                            <input type="text" id="stdate" th:field="*{stdate}" th:value="*{stdate}"  size="6" class="input_date" autocomplete="off">
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -59,15 +64,14 @@
                         <input type="text" id="note1" th:field="*{note1}" th:value="*{note1}" size="25" class="form-control ">
                     </td>
                 </tr>
-<!--                    <td>-->
-<!--                        <label for='useyn' class='input_labal'>사용여부</label>-->
-<!--                        <input type="text" id="useyn" th:field="*{useyn}"  size="25" class="form-control ">-->
-<!--                    </td>-->
-<!--                <label for="taxDiv" class="input_labal">과세여부</label>-->
-<!--                <div class="form-check form-check-inline">-->
-<!--                    <input class="form-check-input" th:field="*{taxDiv}" th:attr="checked=${dto.taxDiv == 'Y'?'true' : 'false'}" id="taxDiv"  type="checkbox" value="Y">-->
-<!--                    <label class="form-check-label" for="taxDiv"></label>-->
-<!--                </div>-->
+                    <td>
+                        <label for="useyn" class="input_labal">사용여부</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" id="useyn" th:field="*{useyn}" th:attr="checked=${dto.useyn == 'Y'?'true' : 'false'}" type="checkbox" value="Y">
+                        <label class="form-check-label" for="useyn"></label>
+                    </div>
+                    </td>
+
                 </tr>
             </table>
         </div>
