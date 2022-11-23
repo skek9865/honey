@@ -15,6 +15,8 @@ public interface Service020101 {
 
     Page<Tb201Dto> findAll(String empNm, String postCd, String deptCd, Pageable pageable);
 
+    List<Tb201Dto> findAllByExcel(String empNm, String postCd, String deptCd);
+
     Tb201Dto findById(Integer id);
 
     Boolean update(Form020101 form);
