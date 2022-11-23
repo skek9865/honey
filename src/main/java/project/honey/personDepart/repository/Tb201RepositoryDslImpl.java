@@ -76,6 +76,20 @@ public class Tb201RepositoryDslImpl implements Tb201RepositoryDsl {
         return new PageImpl<>(result,pageable,total);
     }
 
+    @Override
+    public List<Tb201> findAllByExcel(String empNm, String postCd, String deptCd) {
+        List<Tb201> result = queryFactory.select(tb201)
+                .from(tb201)
+                .where(
+                        empNmContains(empNm),
+                        postCdEq(postCd),
+                        deptCdEq(deptCd)
+                )
+                .fetch();
+
+        return result;
+    }
+
     private BooleanExpression empNmContains(String empNm) {
         return StringUtils.hasText(empNm) ? tb201.empNm.contains(empNm) : null;
     }

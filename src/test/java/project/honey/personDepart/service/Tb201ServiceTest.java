@@ -36,6 +36,11 @@ public class Tb201ServiceTest {
     }
 
     @Test
+    public void findAllByExcel(){
+        service.findAllByExcel(null, null, null).forEach(System.out::println);
+    }
+
+    @Test
     public void findById(){
         Tb201Dto result = service.findById(1);
         System.out.println("dto : " + result);
