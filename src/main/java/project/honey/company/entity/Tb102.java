@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
+import project.honey.company.dto.Tb102Dto;
 
 import javax.persistence.*;
 
@@ -62,5 +63,16 @@ public class Tb102 extends BaseAtt {
     @Comment("사용여부")
     private String useyn;
 
+    public void changeInfo(Tb102Dto dto){
+        this.accountno = dto.getAccountno();
+        this.banknm = dto.getBanknm();
+        this.accounhd = dto.getAccounhd();
+        this.usenote = dto.getUsenote();
+        this.accountid = dto.getAccountid();
+        this.stdate = dto.getStdate();
+        this.note = dto.getNote();
+        this.note1 = dto.getNote1();
+        this.useyn = dto.getUseyn();
+    }
 
 }
