@@ -15,22 +15,20 @@
                         <table>
                             <tr>
                                 <td class="p-1">
-                                    <label for="empNm" class="search_labal">사원명</label>
-                                    <input id="empNm" name="empNm" type="text" size="15" class="form-control">
+                                    <label for="sEmpNm" class="search_labal">사원명</label>
+                                    <input id="sEmpNm" name="sEmpNm" th:value="${sEmpNm}" type="text" size="15" class="form-control">
                                 </td>
                                 <td class="p-1">
-                                    <label for='post' class="search_labal_lg">직위/직급</label>
-                                    <SELECT class='form-select' id='post' name='post'  size=1 >
+                                    <label for='sPost' class="search_labal_lg">직위/직급</label>
+                                    <SELECT class='form-select' id='sPost' name='sPost' th:value="${sPost}"  size=1 >
                                         <OPTION value=''>선택</OPTION>
-                                        <th:block th:each="post : ${posts}">
-                                            <OPTION th:value="${post.value}" th:text="${post.text}"></OPTION>
-                                        </th:block>
-
+                                        <OPTION th:each="post : ${posts}" th:value="${post.value}" th:text="${post.text}"
+                                        th:attr="selected=${post.value == sPost ? 'true' : 'false'}"></OPTION>
                                     </SELECT>
                                 </td>
                                 <td class="p-1">
-                                    <label for='deptCd' class="search_labal">부서명</label>
-                                    <SELECT class='form-select' id='deptCd' name='deptCd'  size=1 >
+                                    <label for='sDeptCd' class="search_labal">부서명</label>
+                                    <SELECT class='form-select' id='sDeptCd' name='sDeptCd' th:value="${sDeptCd}"  size=1 >
                                         <OPTION value=''>선택</OPTION>
                                         <OPTION value='00001'>대표이사</OPTION>
                                         <OPTION value='00002'>전무님</OPTION>
@@ -101,9 +99,10 @@
                     </tfoot>
                 </table>
             </div>
+            <!-- 페이징 부분 -->
+            <div th:replace="paging.html :: paging">
         </div>
-        <!-- 페이징 부분 -->
-        <div th:replace="paging.html :: paging">
+
         </div>
     </main>
     <script th:src="@{|/js/scripts_sub.js|}"></script>
