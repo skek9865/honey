@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.honey.personDepart.dto.Form020102;
+import project.honey.personDepart.form.Tb202Form;
 import project.honey.personDepart.dto.Tb202Dto;
 import project.honey.personDepart.entity.Tb202;
 import project.honey.personDepart.repository.Tb202Repository;
@@ -21,8 +21,8 @@ public class Service020102Impl implements Service020102{
     private final Tb202Repository tb202Repository;
 
     @Override
-    public Boolean insert(Form020102 form) {
-        Tb202 entity = Form020102.toTb202(form);
+    public Boolean insert(Tb202Form form) {
+        Tb202 entity = Tb202Form.toTb202(form);
         tb202Repository.save(entity);
         return true;
     }
@@ -42,7 +42,7 @@ public class Service020102Impl implements Service020102{
 
     @Transactional
     @Override
-    public Boolean update(Form020102 form) {
+    public Boolean update(Tb202Form form) {
         Tb202 entity = tb202Repository.findById(form.getSeq()).orElseThrow(RuntimeException::new);
         entity.updateData(form);
         return true;

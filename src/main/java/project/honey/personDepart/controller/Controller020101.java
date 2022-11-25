@@ -14,9 +14,8 @@ import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.personDepart.dto.Form020101;
+import project.honey.personDepart.form.Tb201Form;
 import project.honey.personDepart.dto.Tb201Dto;
-import project.honey.personDepart.entity.Tb201;
 import project.honey.personDepart.service.Service020101;
 import project.honey.personDepart.service.Service020102;
 import project.honey.system.service.Service990301;
@@ -97,7 +96,7 @@ public class Controller020101 {
     }
 
     @PostMapping("/insert")
-    public String insert(@ModelAttribute Form020101 form, Model model, HttpServletRequest request) throws IOException {
+    public String insert(@ModelAttribute Tb201Form form, Model model, HttpServletRequest request) throws IOException {
         log.info("사원관리 insert");
         log.info("form = {}", form);
         if (service020101.insert(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
@@ -107,7 +106,7 @@ public class Controller020101 {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Form020101 form, Model model, HttpServletRequest request){
+    public String update(@ModelAttribute Tb201Form form, Model model, HttpServletRequest request){
         log.info("사원관리 update");
         log.info("form = {}", form);
         if(service020101.update(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");

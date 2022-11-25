@@ -7,13 +7,11 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 import project.honey.personDepart.entity.Tb201;
-import project.honey.system.entity.QTb906;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static project.honey.personDepart.entity.QTb201.tb201;
-import static project.honey.system.entity.QTb906.*;
 
 public class Tb201RepositoryDslImpl implements Tb201RepositoryDsl {
 

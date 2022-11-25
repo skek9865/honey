@@ -3,8 +3,7 @@ package project.honey.personDepart.entity;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
-import project.honey.personDepart.dto.Form020102;
-import project.honey.personDepart.dto.Tb202Dto;
+import project.honey.personDepart.form.Tb202Form;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -39,7 +38,7 @@ public class Tb202 extends BaseAtt {
     @Column(name = "useyn", length = 2, columnDefinition = "char")
     private String useYn;
 
-    public void updateData(Form020102 form){
+    public void updateData(Tb202Form form){
         String useYn = "N";
         if(form.getUseYn()) useYn = "Y";
 

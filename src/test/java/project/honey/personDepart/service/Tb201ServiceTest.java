@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import project.honey.personDepart.dto.Form020101;
+import project.honey.personDepart.form.Tb201Form;
 import project.honey.personDepart.dto.Tb201Dto;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ public class Tb201ServiceTest {
 
     @Test
     public void save() throws IOException {
-        Form020101 form = Form020101.builder()
+        Tb201Form form = Tb201Form.builder()
                 .seq(100)
                 .empNo("111")
                 .empNm("111")

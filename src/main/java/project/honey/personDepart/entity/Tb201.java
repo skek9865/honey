@@ -3,7 +3,7 @@ package project.honey.personDepart.entity;
 import lombok.*;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
-import project.honey.personDepart.dto.Form020101;
+import project.honey.personDepart.form.Tb201Form;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -135,7 +135,7 @@ public class Tb201 extends BaseAtt {
     @Column(name = "filenm", length = 100)
     private String fileNm;
 
-    public void updateData(Form020101 form) {
+    public void updateData(Tb201Form form) {
         String headYn;
         if (form.getHeadYn()) headYn = "Y";
         else headYn = "N";

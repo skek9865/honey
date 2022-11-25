@@ -1,4 +1,4 @@
-package project.honey.personDepart.dto;
+package project.honey.personDepart.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,14 +10,14 @@ import project.honey.personDepart.entity.Tb202;
 @Getter
 @Builder
 @ToString
-public class Form020102 {
+public class Tb202Form {
 
     private Integer seq;
     private String deptCd;
     private String deptNm;
     private Boolean useYn;
 
-    public static Tb202 toTb202(Form020102 form) {
+    public static Tb202 toTb202(Tb202Form form) {
         String useYn = "N";
         if(form.getUseYn()) useYn = "Y";
 
