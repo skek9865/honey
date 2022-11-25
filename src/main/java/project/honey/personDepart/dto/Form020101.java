@@ -45,9 +45,8 @@ public class Form020101 {
     private String thdId;
 
     public static Tb201 toTb201(Form020101 form, String fileName, String imgName) {
-        String headYn;
+        String headYn = "N";
         if(form.headYn) headYn = "Y";
-        else headYn = "N";
         return Tb201.builder()
                 .seq(form.getSeq())
                 .empNo(form.getEmpNo())

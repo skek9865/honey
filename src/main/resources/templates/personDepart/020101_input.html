@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
 <body>
-<form name="fm_input" th:action="@{/020101/input}" method="post" enctype="multipart/form-data" th:object="${dto}">
+<form name="fm_input" th:action="@{/020101/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
   <div class="container-fluid p-2">
     <div class="input_div">
       <table class="input_table">
