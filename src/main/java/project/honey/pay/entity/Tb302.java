@@ -3,6 +3,7 @@ package project.honey.pay.entity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
+import project.honey.comm.BaseAtt;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -14,7 +15,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @Table(name = "tb_302")
 @ToString
-public class Tb302 {
+public class Tb302 extends BaseAtt {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -37,7 +37,7 @@ public class Tb301 extends BaseAtt {
 
     @Comment("항목코드")
     @Column(name = "itemcd", columnDefinition = "char")
-    private Integer itemCd;
+    private String itemCd;
 
     @Comment("항목명")
     @Column(name = "itemnm")

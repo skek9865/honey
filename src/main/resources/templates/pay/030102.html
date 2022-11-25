@@ -2,6 +2,47 @@
       xmlns:th="http://www.thymeleaf.org">
 <form name="fm_home" method="post" >
     <main >
+        <script th:inline="javascript">
+            function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+                switch (as_action) {
+                    case "insert" : //저장
+                    case "update" : //저장
+                        gf_modal('/030102/input','','','','', '');
+                        fm_input.action = "/020101/" + as_action;
+                        break;
+                    case "delete" : //저장
+                        fm_home.action = "/020101/" + as_action + "/" + as_val1;
+                        fm_home.submit();
+                        break;
+
+                    case "pitemedel" :  //급여항목삭제
+                        if (confirm("자료를 삭제 하시겠습니까?")) {
+                            fm_home.action = "/030102/pitemedel"
+                            fm_home.submit();
+                            break;
+                        } else {
+                            break;
+                        }
+                    case "pitemesave" : //급여항목추가
+                        fm_home.action = "/030102/pitemesave"
+                        fm_home.submit();
+                        break;
+
+                    case "pitemedel_one" :  //급여항목삭제
+                        if (confirm("자료를 삭제 하시겠습니까?")) {
+                            fm_home.action = "/030102/pitemedel/" + as_val1;
+                            fm_home.submit();
+                            break;
+                        } else {
+                            break;
+                        }
+                    case "pitemesave_one" : //급여항목추가
+                        fm_home.action = "/030102/pitemesave/" + as_val1;
+                        fm_home.submit();
+                        break;
+                }
+            }
+        </script>
         <div class="container-fluid p-2">
             <div class="titleBar" id="titleBar">
                 <div class="row">
@@ -68,8 +109,8 @@
                         <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
                         <td class="list_td_1 text-center">
                             <button name="paymnt" id="paymnt" type="button" class="btn btn-gfk btn-ssm" th:data-empNo="${dto.empNo}">급여내역</button>&nbsp;
-                            <button name="pitemesave_one" id="pitemesave_one" type="button" class="btn btn-gfk btn-ssm" onclick="lf_confirm(this.name,'0001','','')">급여항목추가</button>&nbsp;
-                            <button name="pitemedel_one" id="pitemedel_one" type="button" class="btn btn-gfk btn-ssm" onclick="lf_confirm(this.name,'0001','','')">급여항목삭제</button>&nbsp;
+                            <button name="pitemesave_one" id="pitemesave_one" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.empNo}]],'','')">급여항목추가</button>&nbsp;
+                            <button name="pitemedel_one" id="pitemedel_one" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.empNo}]],'','')">급여항목삭제</button>&nbsp;
                         </td>
                         <td th:text="${dto.empNo}"></td>
                         <td th:text="${dto.empNm}"></td>

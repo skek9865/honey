@@ -54,7 +54,9 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;<button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="lf_confirm(this.name,'','','')">등록</button>&nbsp;<button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
+                                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('/030102/input','','','','insert', '','');">등록</button>&nbsp;
+                                    <button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
                                 </td>
                                 <td th:text="${'사원명 : ' +  emp.empNm}"></td>
                                 <td th:text="${'직위/직급 : ' + emp.post}"></td>
@@ -78,8 +80,8 @@
                     <tr th:each="dto,dtoStat : ${dtos}" class="list_tr_1">
                         <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
                         <td class="list_td_1 text-center">
-                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" onclick="lf_confirm(this.name,'1972','','')">수정</button>&nbsp;
-                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" onclick="lf_confirm(this.name,'1972','','')">삭제</button>&nbsp;
+                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('/030102/input',[[${dto.seq}]],'','','update', '','');">수정</button>&nbsp;
+                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제</button>&nbsp;
                         </td>
                         <td class="list_td_1 text-center" th:text="${dto.itemDiv}">지급</td>
                         <td class="list_td_1 text-center" th:text="${dto.taxDiv}">Y</td>
@@ -101,7 +103,22 @@
             </div>
         </div>
     </main>
-    <input type="hidden" name="ACD" id="ACD" value="03" size="0" class="form-control "> 		<input type="hidden" name="BCD" id="BCD" value="01" size="0" class="form-control "> 		<input type="hidden" name="CCD" id="CCD" value="02" size="0" class="form-control "> 		<input type="hidden" name="tpid" id="tpid" value="030102" size="0" class="form-control "> 		<input type="hidden" name="start" id="start" value="Y" size="0" class="form-control "> 		<input type="hidden" name="sempno" id="sempno" value="0001" size="0" class="form-control ">
+    <input type="hidden" name="ACD" id="ACD" value="03" size="0" class="form-control ">
+    <input type="hidden" name="BCD" id="BCD" value="01" size="0" class="form-control ">
+    <input type="hidden" name="CCD" id="CCD" value="02" size="0" class="form-control ">
+    <input type="hidden" name="tpid" id="tpid" value="030102" size="0" class="form-control ">
+    <input type="hidden" name="start" id="start" value="Y" size="0" class="form-control ">
+    <input type="hidden" name="sempno" id="sempno" value="0001" size="0" class="form-control ">
 </form>
+<!-- Modal -->
+<div class="modal fade" id="inputpopup" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div id="modal_main" class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body" id="modalhtml">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 </body>
 </html>
