@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class Service030102Impl implements Service030102{
+public class Service030102Impl implements Service030102 {
 
     private final Tb201Repository tb201Repository;
     private final Tb302Repository tb302Repository;
@@ -40,14 +40,25 @@ public class Service030102Impl implements Service030102{
 
     @Override
     public List<Tb302PopupDto> findAll(String empNo) {
+        // 사원 조회
         Tb201 tb201 = tb201Repository.findByEmpNo(empNo).orElseThrow(RuntimeException::new);
-        List<Tb302> list = tb302Repository.findAllByEmpNo(empNo);
+
+        // 사원의 급여정보 조회
+        List<Tb302> list = tb302Repository.findAllByEmpNoOrderByItemCdAsc(empNo);
 
         log.info("list.size() = {}", list.size());
 
+        // 총합 계산
         List<Tb302PopupDto> dtos = new ArrayList<>();
+        int price = 0;
+        for (Tb302 tb302 : list) {
+            if (tb302.getItemDiv().equals("00001") && tb302.getTaxDiv().equals("Y")) {
+                price += tb302.getPayAmt();
+            }
+        }
 
         for (Tb302 tb302 : list) {
+
             Tb302PopupDto dto = Tb302PopupDto.builder()
                     .seq(tb302.getSeq())
                     .empNo(tb302.getEmpNo())
@@ -56,10 +67,23 @@ public class Service030102Impl implements Service030102{
                     .itemDiv(tb302.getItemDiv())
                     .taxDiv(tb302.getTaxDiv())
                     .itemCd(tb302.getItemCd())
-                    .payAmt(tb302.getPayAmt())
                     .build();
+
+            if (tb302.getItemDiv().equals("00002")) {
+                if (price == 0) {
+                    dto.setPayAmt(0.0);
+                }else{
+                    dto.setPayAmt((Math.floor(price * tb302.getPayAmt()/100)* -1));
+                }
+            }else{
+                dto.setPayAmt(tb302.getPayAmt());
+            }
+
             dtos.add(dto);
         }
+
+
+
         return dtos;
     }
 
@@ -77,14 +101,14 @@ public class Service030102Impl implements Service030102{
             double deductionSub = 0.0;
             int deduction = 0;  //공제액
             int actualPayment = 0;  //실지급액
-            List<Tb302> list = tb302Repository.findAllByEmpNo(tb201.getEmpNo());
+            List<Tb302> list = tb302Repository.findAllByEmpNoOrderByItemCdAsc(tb201.getEmpNo());
             for (Tb302 tb302 : list) {
-                log.info("tb302 : {}", tb302 );
-                Double payAmt =tb302.getPayAmt();
+                log.info("tb302 : {}", tb302);
+                Double payAmt = tb302.getPayAmt();
 
-                if(tb302.getItemDiv().equals("00001")){ // 지급일 떄
-                   payout += payAmt;
+                if (tb302.getItemDiv().equals("00001")) { // 지급일 떄
                     if (tb302.getTaxDiv().equals("Y")) { // 지급이면서 과세일 떄
+                        payout += payAmt;
                         taxAmt += payAmt;
                     }
                 } else if (tb302.getItemDiv().equals("00002")) {    // 공제일 때
@@ -92,7 +116,7 @@ public class Service030102Impl implements Service030102{
                     deductionSub += payAmt;
                 }
             }
-            deduction = (int) (Math.ceil(payout * deductionSub)/100);
+            deduction = (int) (Math.ceil(payout * deductionSub) / 100);
             actualPayment = payout - deduction;
             dtos.add(Tb302HomeDto.of(tb201, payout, taxAmt, deduction, actualPayment));
         }

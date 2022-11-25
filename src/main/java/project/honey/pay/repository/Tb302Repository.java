@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface Tb302Repository extends JpaRepository<Tb302, Integer> {
 
-    List<Tb302> findAllByEmpNo(String empNo);
+    List<Tb302> findAllByEmpNoOrderByItemCdAsc(String empNo);
 }

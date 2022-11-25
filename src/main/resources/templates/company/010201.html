@@ -1,7 +1,22 @@
 <html th:replace="~{layout/layoutMain:: layout(~{::main})}"
       xmlns:th="http://www.thymeleaf.org">
 <main>
-    <form action="/010101" method="post" th:object="${form}" enctype="multipart/form-data">
+    <script th:inline="javascript">
+        function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+            switch (as_action) {
+                case "insert" : //저장
+                case "update" : //저장
+                    fm_input.action = "/010201/" + as_action;
+                    fm_input.submit();
+                    break;
+                case "delete" : //저장
+                    fm_home.action = "/010201/" + as_action + "/" + as_val1;
+                    fm_home.submit();
+                    break;
+            }
+        }
+    </script>
+    <form name="fm_home" method="post">
         <div class="container-fluid p-2">
             <div class="titleBar" id="titleBar">
                 <div class="row">
@@ -16,13 +31,14 @@
                         <table>
                             <tr>
                                 <td><!--조회 등록 엑셀-->
-                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm">조회</button>&nbsp;
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm"
+                                    onclick="javascript:history.go(0);">조회</button>&nbsp;
                                     <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm"
                                             data-toggle="modal" data-target="#inputpopup"
-                                            onclick="gf_modal('030101/input','','','','', '');">등록
+                                            th:onclick="gf_modal('010201/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">등록
                                     </button>&nbsp;
                                     <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm"
-                                            onclick="lf_confirm(this.name,'','','')">엑셀
+                                            onclick="">엑셀
                                     </button>
                                 </td>
                             </tr>
@@ -38,23 +54,26 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr class="list_tr_1" th:each="pay, payStat : ${list}"><!-- td 렌더링 -->
-                        <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + payStat.count}"></td>
-                        <td>
+                    <tr class="list_tr_1" th:each="bank, bankStat : ${dtos}"><!-- td 렌더링 -->
+                        <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + bankStat.count}" class="list_td_1 text-center"></td>
+                        <td class="list_td_1 text-center">
                             <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm"
                                     data-toggle="modal" data-target="#inputpopup"
-                                    th:onclick="gf_modal('030101/input?id=' + [[${pay.seq}]],'','','','', '');">수정
+                                    th:onclick="gf_modal('010201/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update',[[${bank.seq}]],'');">수정
                             </button>&nbsp;
                             <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm"
-                                    th:data-id="${pay.seq}">삭제
+                                    th:onclick="lf_confirm(this.name, [[${bank.seq}]],'','')">삭제
                             </button>&nbsp;
                         </td>
-                        <td th:text="${pay.itemDiv}"></td>
-                        <td th:text="${pay.taxDiv}"></td>
-                        <td th:text="${pay.itemCd}"></td>
-                        <td th:text="${pay.itemNm}"></td>
-                        <td th:text="${#numbers.formatDecimal(pay.taxRate,1,2)}"></td>
-                        <td th:text="${pay.useYn}"></td>
+                        <td th:text="${bank.accountno}" class="list_td_1 text-center"></td>
+                        <td th:text="${bank.banknm}" class="list_td_1 text-center"></td>
+                        <td th:text="${bank.accounhd}" class="list_td_1 text-center"></td>
+                        <td th:text="${bank.usenote}" class="list_td_1 text-center"></td>
+                        <td th:text="${bank.accountid}" class="list_td_1 text-center"></td>
+                        <td th:text="${bank.stdate}" class="list_td_1 text-center"></td>
+                        <td th:text="${bank.note}" class="list_td_1 text-center"></td>
+                        <td th:text="${bank.note1}" class="list_td_1 text-center"></td>
+                        <td th:text="${bank.useyn}" class="list_td_1 text-center"></td>
                     </tr>
                     </tbody>
                 </table>
