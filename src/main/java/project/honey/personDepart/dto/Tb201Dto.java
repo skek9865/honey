@@ -40,48 +40,12 @@ public class Tb201Dto {
     private String fileNm;
     private String createDate;
     private String createId;
-    private String modifyDate;
+    private String updateDate;
     private String updateId;
 
-    public static Tb201 toTb201(Tb201Dto dto) {
-        String headYn;
-        if(dto.headYn) headYn = "Y";
-        else headYn = "N";
-        return Tb201.builder()
-                .empNo(dto.getEmpNo())
-                .empNm(dto.getEmpNm())
-                .emp2Nm(dto.getEmp2Nm())
-                .empEngNm(dto.getEmpEngNm())
-                .idNo(dto.getIdNo())
-                .headYn(headYn)
-                .empDt(dto.getEmpDt())
-                .empClass(dto.getEmpClass())
-                .post(dto.getPost())
-                .post1(dto.getPost1())
-                .leaveDt(dto.getLeaveDt())
-                .leaveRs(dto.getLeaveRs())
-                .phone(dto.getPhone())
-                .mobile(dto.getMobile())
-                .psNo(dto.getPsNo())
-                .email(dto.getEmail())
-                .deptCd(dto.getDeptCd())
-                .workCd(dto.getWorkCd())
-                .bankNm(dto.getBankNm())
-                .aCutNo(dto.getACutNo())
-                .aCutNm(dto.getACutNm())
-                .zipCd(dto.getZipCd())
-                .address(dto.getAddress())
-                .address1(dto.getAddress1())
-                .picNm(dto.getPicNm())
-                .note(dto.getNote())
-                .fileNm(dto.getFileNm())
-                .build();
-    }
-
     public static Tb201Dto of(Tb201 entity){
-        Boolean headYn;
-        if(entity.getHeadYn() == "Y") headYn = true;
-        else headYn = false;
+        Boolean headYn = false;
+        if(entity.getHeadYn().equals("Y")) headYn = true;
         return Tb201Dto.builder()
                 .seq(entity.getSeq())
                 .empNo(entity.getEmpNo())
@@ -113,7 +77,7 @@ public class Tb201Dto {
                 .fileNm(entity.getFileNm())
                 .createDate(entity.getCreateDate())
                 .createId(entity.getCreateId())
-                .modifyDate(entity.getUpdateDate())
+                .updateDate(entity.getUpdateDate())
                 .updateId(entity.getUpdateId())
                 .build();
     }
