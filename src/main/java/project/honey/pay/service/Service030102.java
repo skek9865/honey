@@ -3,6 +3,7 @@ package project.honey.pay.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.honey.pay.dto.Tb301Dto;
+import project.honey.pay.dto.Tb302Dto;
 import project.honey.pay.dto.Tb302PopupDto;
 import project.honey.pay.dto.Tb302HomeDto;
 
@@ -18,7 +19,15 @@ public interface Service030102 {
 
     Page<Tb302HomeDto> findAllByLeave(Pageable pageable, String empNm, String postCd, String deptCd);
 
-    Tb301Dto findById(Integer seq);
+    Tb302Dto findById(Integer seq);
 
     Integer delete(Integer seq);
+
+    String pitemeSaveOne(String empNo);
+
+    String pitemeDelOne(String empNo);
+
+    String pitemeSave();
+
+    String pitemeDel();
 }

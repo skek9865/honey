@@ -8,9 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.pay.dto.Tb301Dto;
+import project.honey.pay.dto.Tb302Dto;
 import project.honey.pay.dto.Tb302PopupDto;
 import project.honey.pay.dto.Tb302HomeDto;
+import project.honey.pay.entity.Tb301;
 import project.honey.pay.entity.Tb302;
+import project.honey.pay.repository.Tb301Repository;
 import project.honey.pay.repository.Tb302Repository;
 import project.honey.personDepart.entity.Tb201;
 import project.honey.personDepart.repository.Tb201Repository;
@@ -27,6 +30,7 @@ public class Service030102Impl implements Service030102 {
 
     private final Tb201Repository tb201Repository;
     private final Tb302Repository tb302Repository;
+    private final Tb301Repository tb301Repository;
 
     @Override
     public Integer insert(Tb301Dto dto) {
@@ -57,6 +61,7 @@ public class Service030102Impl implements Service030102 {
             }
         }
 
+        // 팝업에 출력할 데이터 계산
         for (Tb302 tb302 : list) {
 
             Tb302PopupDto dto = Tb302PopupDto.builder()
@@ -107,8 +112,8 @@ public class Service030102Impl implements Service030102 {
                 Double payAmt = tb302.getPayAmt();
 
                 if (tb302.getItemDiv().equals("00001")) { // 지급일 떄
+                    payout += payAmt;
                     if (tb302.getTaxDiv().equals("Y")) { // 지급이면서 과세일 떄
-                        payout += payAmt;
                         taxAmt += payAmt;
                     }
                 } else if (tb302.getItemDiv().equals("00002")) {    // 공제일 때
@@ -116,28 +121,81 @@ public class Service030102Impl implements Service030102 {
                     deductionSub += payAmt;
                 }
             }
-            deduction = (int) (Math.ceil(payout * deductionSub) / 100);
+            // 지급액 - 과세아닌 금액 * 세제율
+            deduction = (int) (Math.ceil((payout- (payout - taxAmt)) * deductionSub) / 100);
             actualPayment = payout - deduction;
             dtos.add(Tb302HomeDto.of(tb201, payout, taxAmt, deduction, actualPayment));
         }
 
 
-        List<Tb302HomeDto> collect = dtos.stream().map(dto -> {
+        List<Tb302HomeDto> collect = dtos.stream().peek(dto -> {
             String empDt = dto.getEmpDt();
             dto.setEmpDt(empDt.substring(0, 4) + "-" + empDt.substring(4, 6) + "-" + empDt.substring(6));
-            return dto;
         }).collect(Collectors.toList());
 
         return new PageImpl<>(collect, pageable, result.getTotalElements());
     }
 
     @Override
-    public Tb301Dto findById(Integer seq) {
-        return null;
+    public Tb302Dto findById(Integer seq) {
+        return Tb302Dto.of(tb302Repository.findById(seq).orElseThrow(RuntimeException::new));
     }
 
     @Override
     public Integer delete(Integer seq) {
         return null;
+    }
+
+    // 급여항목추가(단건)
+    @Override
+    @Transactional
+    public String pitemeSaveOne(String empNo) {
+        log.info("empNo : {}", empNo);
+        createTb302AndSave(empNo);
+        return empNo;
+    }
+
+    // 급여항목삭제(단건)
+    @Override
+    @Transactional
+    public String pitemeDelOne(String empNo) {
+        tb302Repository.deleteAllByEmpNo(empNo);
+
+        return empNo;
+    }
+
+    @Override
+    @Transactional
+    public String pitemeSave() {
+        List<Tb201> tb201s = tb201Repository.findAll();
+        for (Tb201 tb201 : tb201s) {
+            createTb302AndSave(tb201.getEmpNo());
+        }
+
+        return "ok";
+    }
+
+    private void createTb302AndSave(String empNo) {
+        List<Tb301> tb301s = tb301Repository.findAll().stream()
+                .filter(f -> f.getUseYn().equals("Y"))
+                .collect(Collectors.toList());
+
+        for (Tb301 tb301 : tb301s) {
+            Tb302 tb302 = Tb302.builder()
+                    .empNo(empNo)
+                    .itemDiv(tb301.getItemDiv())
+                    .taxDiv(tb301.getTaxDiv())
+                    .itemCd(tb301.getItemCd())
+                    .payAmt(tb301.getTaxRate())
+                    .build();
+            tb302Repository.save(tb302);
+        }
+    }
+
+    @Override
+    @Transactional
+    public String pitemeDel() {
+        tb302Repository.deleteAll();
+        return "ok";
     }
 }

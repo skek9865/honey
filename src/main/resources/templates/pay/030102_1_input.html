@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" enctype="multipart/form-data" method="post" th:object="${dto}">
+    <main>
+        <div class="container-fluid p-2">
+            <div class="input_div">
+                <table class="input_table">
+                    <tbody><tr>
+                        <td>
+                            <label for="itemCd" class="input_labal">급여항목명</label>
+                            <select class="form-select" id="itemCd" th:field="*{itemCd}" size="1">
+                                <option value="">선택</option>
+                                <option th:each="code : ${codes}" th:value="${code.value}" th:attr="selected=${code.value == dto.itemCd ?'true' : 'false'}" th:text="${code.text}">선택</option>
+
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="payAmt" class="input_labal">금액</label>
+                            <input type="text" th:name="*{payAmt}" id="payAmt" th:value="${dto.seq != null ? dto.payAmt : 0}" size="20" class="form-control input_number ">
+                        </td>
+                    </tr>
+                    </tbody></table>
+            </div>
+            <div class="input_div button_table">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td class="float-end">
+                            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+                            </button>
+                            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>&nbsp;
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <input type="hidden" id="iseq" name="seq" th:value="*{seq}">
+    <input type="hidden" id="ifstId" name="fstId">
+    <input type="hidden" id="iscdId" name="scdId">
+    <input type="hidden" id="ithdId" name="thdId">
+    <input type="hidden" id="ipage" name="page">
+    <input type="hidden" id="isize" name="size">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+
+        $('#ifstId').val($('#fstId').val());
+        $('#iscdId').val($('#scdId').val());
+        $('#ithdId').val($('#thdId').val());
+        $('#ipage').val($('#page').val());
+        $('#isize').val($('#size').val());
+
+        var method = [[${dto.seq}]]==null?'/insert':'/update'
+        //저장
+        $('#save').on('click', function (e){
+
+            e.preventDefault();
+            var inputForm = $('form[name="fm_input"]');
+            var url = window.location.href + "";
+            inputForm.attr("action",url.split('?')[0] + method)
+            inputForm.submit();
+        })
+    });
+</script>
+</body>
+</html>
