@@ -11,9 +11,9 @@ import java.util.List;
 
 public interface Service030102 {
 
-    Integer insert(Tb301Dto dto);
+    Integer insert(Tb302Dto dto);
 
-    Integer update(Tb301Dto dto);
+    Integer update(Tb302Dto dto);
 
     List<Tb302PopupDto> findAll(String empNo);
 

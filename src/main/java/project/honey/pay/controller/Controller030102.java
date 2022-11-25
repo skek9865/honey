@@ -12,13 +12,13 @@ import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.pay.dto.Tb301Dto;
 import project.honey.pay.dto.Tb302Dto;
 import project.honey.pay.dto.Tb302HomeDto;
 import project.honey.pay.dto.Tb302PopupDto;
 import project.honey.pay.service.Service030101;
 import project.honey.pay.service.Service030102;
-import project.honey.personDepart.repository.Tb201Repository;
+import project.honey.personDepart.service.Service020101;
+import project.honey.personDepart.service.Service020201;
 import project.honey.system.service.Service990301;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,10 +31,10 @@ import java.util.Map;
 @RequestMapping("/030102")
 public class Controller030102 {
 
+    private final Service020101 service020101;
     private final Service030101 service030101;
     private final Service030102 service030102;
     private final Service990301 service990301;
-    private final Tb201Repository tb201Repository;  //임시
     private final MenuMaker menuMaker;
 
     @GetMapping
@@ -77,16 +77,40 @@ public class Controller030102 {
         return "pay/030102";
     }
 
+    //급여항목 등록
+    @PostMapping("/insert")
+    public String insert(Tb302Dto dto, HttpServletRequest request, Model model) {
+        log.info("dto = {}", dto);
+        model.addAttribute("msg", service030102.insert(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
+
+    @PostMapping("/update")
+    public String update(Tb302Dto dto, HttpServletRequest request, Model model) {
+        model.addAttribute("msg", service030102.update(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
+
+    @PostMapping("/delete/{seq}")
+    public String update(@PathVariable Integer seq, HttpServletRequest request, Model model) {
+        model.addAttribute("msg", service030102.delete(seq) != null ? "정상적으로 삭제 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
+
     @GetMapping("/popup/{empNo}")
-    public String popup(@PathVariable String empNo, Model model) {
+    public String popup(@PathVariable String empNo, MenuIdDto menuIdDto, Model model) {
         model.addAttribute("global", new GlobalConst());
+        model.addAttribute("menuNm", menuMaker.getMenuNm(menuIdDto));
         List<String> titles = GlobalMethod.makeTitle(
                 "순번", "관리", "공제/지급", "과세여부", "급여항목", "금액"
         );
 
         List<Tb302PopupDto> list = service030102.findAll(empNo);
         model.addAttribute("dtos", list);
-        model.addAttribute("emp", tb201Repository.findByEmpNo(empNo).orElseThrow(RuntimeException::new));
+        model.addAttribute("emp", service020101.findByEmpNo(empNo));
 
         model.addAttribute("titles", titles);
         model.addAttribute("totalPayAmt", list.stream().mapToDouble(Tb302PopupDto::getPayAmt).sum());
@@ -127,8 +151,9 @@ public class Controller030102 {
     }
 
     @GetMapping("/input")
-    public String input(Model model, String action, Integer id){
+    public String input(Model model,String empNo, String action, Integer id){
         log.info("input");
+        log.info("action = {}", action);
         log.info("id = {}", id);
         model.addAttribute("dto",
                 id != null
@@ -136,6 +161,7 @@ public class Controller030102 {
                         : new Tb302Dto());
         model.addAttribute("global", new GlobalConst());
         model.addAttribute("action", action);
+        model.addAttribute("empNo", empNo);
         model.addAttribute("codes", service030101.findAllItem());
         return "pay/030102_1_input";
     }

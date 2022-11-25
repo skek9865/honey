@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
+import project.honey.pay.dto.Tb302Dto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -43,4 +44,9 @@ public class Tb302 extends BaseAtt {
     @Comment("금액")
     @Column(name = "payamt", columnDefinition = "float")
     private Double payAmt;
+
+    public void changeInfo(Tb302Dto dto) {
+        this.itemCd = dto.getItemCd();
+        this.payAmt = dto.getPayAmt().doubleValue();
+    }
 }

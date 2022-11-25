@@ -61,11 +61,10 @@ public class Service030101Impl implements Service030101{
     @Override
     public List<CodeDto> findAllItem() {
         List<Tb301> findList = tb301Repository.findAll();
-        List<CodeDto> resultList = findList.stream()
+        return findList.stream()
                 .filter(f -> f.getUseYn().equals("Y"))
                 .map(entity -> (CodeDto.builder().text(entity.getItemNm()).value(entity.getItemCd()).build()))
                 .collect(Collectors.toList());
-        return resultList;
     }
 
 
