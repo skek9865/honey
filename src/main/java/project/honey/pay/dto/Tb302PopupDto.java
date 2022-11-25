@@ -3,6 +3,7 @@ package project.honey.pay.dto;
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
 
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
@@ -16,13 +17,14 @@ public class Tb302PopupDto {
     private String empNm;
     private String post;
 
+    private Double taxRate;
     private String itemDiv;
     private String taxDiv;
     private String itemCd;
     private Double payAmt;
 
     @QueryProjection
-    public Tb302PopupDto(Integer seq, String empNo, String empNm, String post, String itemDiv, String taxDiv, String itemCd, Double payAmt) {
+    public Tb302PopupDto(Integer seq, String empNo, String empNm, String post, String itemDiv, String taxDiv, String itemCd, Double payAmt, Double taxRate) {
         this.seq = seq;
         this.empNo = empNo;
         this.empNm = empNm;
@@ -31,5 +33,6 @@ public class Tb302PopupDto {
         this.taxDiv = taxDiv;
         this.itemCd = itemCd;
         this.payAmt = payAmt;
+        this.taxRate = taxRate;
     }
 }

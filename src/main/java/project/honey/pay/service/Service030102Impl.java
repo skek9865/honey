@@ -33,13 +33,27 @@ public class Service030102Impl implements Service030102 {
     private final Tb301Repository tb301Repository;
 
     @Override
-    public Integer insert(Tb301Dto dto) {
-        return null;
+    @Transactional
+    public Integer insert(Tb302Dto dto) {
+        Tb301 tb301 = tb301Repository.findByItemCd(dto.getItemCd()).orElseThrow(RuntimeException::new);
+        Tb302 tb302 = Tb302.builder()
+                .empNo(dto.getEmpNo())
+                .itemDiv(tb301.getItemDiv())
+                .taxDiv(tb301.getTaxDiv())
+                .itemCd(tb301.getItemCd())
+                .payAmt(dto.getPayAmt().doubleValue())
+                .build();
+
+        return tb302Repository.save(tb302).getSeq();
     }
 
     @Override
-    public Integer update(Tb301Dto dto) {
-        return null;
+    @Transactional
+    public Integer update(Tb302Dto dto) {
+        Tb302 tb302 = tb302Repository.findById(dto.getSeq()).orElseThrow(RuntimeException::new);
+        tb302.changeInfo(dto);
+
+        return tb302.getSeq();
     }
 
     @Override
@@ -61,9 +75,9 @@ public class Service030102Impl implements Service030102 {
             }
         }
 
-        // 팝업에 출력할 데이터 계산
+        // 팝업에 출력할 데이터 계산, 성능 안나오면 QueryDsl로 변경
         for (Tb302 tb302 : list) {
-
+            Tb301 tb301 = tb301Repository.findByItemCd(tb302.getItemCd()).orElseThrow(RuntimeException::new);
             Tb302PopupDto dto = Tb302PopupDto.builder()
                     .seq(tb302.getSeq())
                     .empNo(tb302.getEmpNo())
@@ -72,16 +86,22 @@ public class Service030102Impl implements Service030102 {
                     .itemDiv(tb302.getItemDiv())
                     .taxDiv(tb302.getTaxDiv())
                     .itemCd(tb302.getItemCd())
+                    .taxRate(tb301.getTaxRate())
                     .build();
 
-            if (tb302.getItemDiv().equals("00002")) {
+            if (tb302.getItemDiv().equals("00001")) {
+                dto.setPayAmt(tb302.getPayAmt());
+            }else{
                 if (price == 0) {
                     dto.setPayAmt(0.0);
-                }else{
-                    dto.setPayAmt((Math.floor(price * tb302.getPayAmt()/100)* -1));
+                } else {
+                    if (tb301.getTaxRate() > 0) {
+                        dto.setPayAmt(Math.floor(price * tb302.getPayAmt() / 100) * -1);
+                    }else{
+                        dto.setPayAmt(tb302.getPayAmt() * -1);
+                    }
+
                 }
-            }else{
-                dto.setPayAmt(tb302.getPayAmt());
             }
 
             dtos.add(dto);
@@ -96,7 +116,6 @@ public class Service030102Impl implements Service030102 {
     @Override
     public Page<Tb302HomeDto> findAllByLeave(Pageable pageable, String empNm, String postCd, String deptCd) {
         Page<Tb201> result = tb201Repository.findAllByLeave(empNm, postCd, deptCd, pageable);
-        log.info("result : {}", result.getContent());
         List<Tb201> content = result.getContent();  // 사원 테이블의 내용
 
         List<Tb302HomeDto> dtos = new ArrayList<>();
@@ -107,8 +126,9 @@ public class Service030102Impl implements Service030102 {
             int deduction = 0;  //공제액
             int actualPayment = 0;  //실지급액
             List<Tb302> list = tb302Repository.findAllByEmpNoOrderByItemCdAsc(tb201.getEmpNo());
+            // 성능 안나오면 QueryDsl로 변경
             for (Tb302 tb302 : list) {
-                log.info("tb302 : {}", tb302);
+                Tb301 tb301 = tb301Repository.findByItemCd(tb302.getItemCd()).orElseThrow(RuntimeException::new);
                 Double payAmt = tb302.getPayAmt();
 
                 if (tb302.getItemDiv().equals("00001")) { // 지급일 떄
@@ -117,12 +137,12 @@ public class Service030102Impl implements Service030102 {
                         taxAmt += payAmt;
                     }
                 } else if (tb302.getItemDiv().equals("00002")) {    // 공제일 때
-                    log.info("payAmt = " + payAmt);
-                    deductionSub += payAmt;
+                    if(tb301.getTaxRate() > 0) deductionSub += payAmt;
+                    else deduction += payAmt;
                 }
             }
             // 지급액 - 과세아닌 금액 * 세제율
-            deduction = (int) (Math.ceil((payout- (payout - taxAmt)) * deductionSub) / 100);
+            deduction += (int) (Math.ceil((payout- (payout - taxAmt)) * deductionSub) / 100);
             actualPayment = payout - deduction;
             dtos.add(Tb302HomeDto.of(tb201, payout, taxAmt, deduction, actualPayment));
         }
@@ -142,8 +162,10 @@ public class Service030102Impl implements Service030102 {
     }
 
     @Override
+    @Transactional
     public Integer delete(Integer seq) {
-        return null;
+        tb302Repository.deleteById(seq);
+        return seq;
     }
 
     // 급여항목추가(단건)
