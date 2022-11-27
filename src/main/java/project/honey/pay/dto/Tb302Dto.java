@@ -1,16 +1,8 @@
 package project.honey.pay.dto;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.Comment;
-import project.honey.pay.entity.Tb301;
 import project.honey.pay.entity.Tb302;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotNull;
 
 @AllArgsConstructor
 @NoArgsConstructor

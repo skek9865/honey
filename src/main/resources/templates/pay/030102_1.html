@@ -104,10 +104,10 @@
                                     data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('/030102/input?id=' + [[${dto.seq}]],'','','','update', '','');">수정</button>&nbsp;
                             <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제</button>&nbsp;
                         </td>
-                        <td class="list_td_1 text-center" th:text="${dto.itemDiv}">지급</td>
-                        <td class="list_td_1 text-center" th:text="${dto.taxDiv}">Y</td>
-                        <td class="list_td_1 text-center" th:text="${dto.itemCd}">기본급</td>
-                        <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.payAmt,0,'COMMA')}">0</td>
+                        <td class="list_td_1 text-center" th:text="${dto.itemDiv}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.taxDiv}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.itemCd}"></td>
+                        <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.payAmt,0,'COMMA')}"></td>
                     </tr>
                     </tbody>
                     <tfoot>

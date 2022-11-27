@@ -9,5 +9,7 @@ public interface Tb302Repository extends JpaRepository<Tb302, Integer> {
 
     List<Tb302> findAllByEmpNoOrderByItemCdAsc(String empNo);
 
+    boolean existsByEmpNo(String empNo);
+
     void deleteAllByEmpNo(String empNo);
 }

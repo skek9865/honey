@@ -18,6 +18,7 @@ import project.honey.pay.dto.Tb302PopupDto;
 import project.honey.pay.service.Service030101;
 import project.honey.pay.service.Service030102;
 import project.honey.personDepart.service.Service020101;
+import project.honey.personDepart.service.Service020102;
 import project.honey.personDepart.service.Service020201;
 import project.honey.system.service.Service990301;
 
@@ -35,6 +36,7 @@ public class Controller030102 {
     private final Service030101 service030101;
     private final Service030102 service030102;
     private final Service990301 service990301;
+    private final Service020102 service020102;
     private final MenuMaker menuMaker;
 
     @GetMapping
@@ -58,6 +60,7 @@ public class Controller030102 {
         List<Tb302HomeDto> content = list.getContent();
 
         model.addAttribute("posts", service990301.findByFstId("01"));
+        model.addAttribute("depts", service020102.findAllDept());
 
         // 총합 구하기
         model.addAttribute("totalPayout", content.stream().mapToInt(Tb302HomeDto::getPayout).sum());
