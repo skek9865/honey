@@ -8,7 +8,7 @@ import project.honey.pay.entity.Tb303;
 import java.util.List;
 import java.util.Optional;
 
-public interface Tb303Repository extends JpaRepository<Tb303, Integer> {
+public interface Tb303Repository extends JpaRepository<Tb303, Integer>, Tb303RepositoryDsl {
 
     @Query("select t from Tb303 t where t.empNo= :empNo and t.payDt = :payDt order by t.itemCd asc ")
     List<Tb303> findAllByEmpNoAndPayDt(@Param("empNo") String empNo,@Param("payDt") String payDt);

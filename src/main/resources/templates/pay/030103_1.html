@@ -77,7 +77,6 @@
                                     <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" th:onclick="lf_confirm(this.name,[[${emp.empNo}]],'','')">조회</button>&nbsp;
                                     <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup"
                                             th:onclick="gf_modal('/030103/input?empNo=' + [[${emp.empNo}]] + '&payDt=' + [[${payDt}]] + '&rPayDt=' + [[${rPayDt}]],'','','','insert', '','');">등록</button>&nbsp;
-                                    <button name="save_money" id="save_money" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">계산</button>
                                     <button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
                                 </td>
                                 <td th:text="${'사원명 : ' +  emp.empNm}"></td>

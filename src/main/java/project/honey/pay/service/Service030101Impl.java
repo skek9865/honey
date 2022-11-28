@@ -67,5 +67,10 @@ public class Service030101Impl implements Service030101{
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public List<String> findAllByUseItemNm() {
+        return tb301Repository.findAllByUseItemNm();
+    }
+
 
 }
