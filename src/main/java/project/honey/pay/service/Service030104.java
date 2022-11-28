@@ -6,5 +6,5 @@ import project.honey.pay.dto.PayrollDto;
 
 public interface Service030104 {
 
-    Page<PayrollDto> findAllByPay(Pageable pageable, String payDt, String empNm, String postCd, String deptCd);
+    Page<PayrollDto> findAll(Pageable pageable, String payDt, String empNm, String postCd, String deptCd);
 }
