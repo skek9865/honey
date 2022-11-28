@@ -5,6 +5,7 @@ import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
 import project.honey.pay.dto.Tb302Dto;
+import project.honey.pay.dto.Tb303Dto;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -52,7 +53,7 @@ public class Tb303 extends BaseAtt {
     @Column(name = "rpaydt", columnDefinition = "char")
     private String rPayDt;
 
-    public void changeInfo(Tb302Dto dto) {
+    public void changeInfo(Tb303Dto dto) {
         this.itemCd = dto.getItemCd();
         this.payAmt = dto.getPayAmt().doubleValue();
     }

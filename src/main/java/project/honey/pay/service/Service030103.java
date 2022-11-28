@@ -12,7 +12,7 @@ public interface Service030103 {
 
     Integer update(Tb303Dto dto);
 
-    List<Tb302PopupDto> findAll(String empNo);
+    List<Tb303PopupDto> findAll(String empNo, String payDt);
 
     Page<Tb303HomeDto> findAllByLeave(Pageable pageable,String payDt, String empNm, String postCd, String deptCd);
 

@@ -33,11 +33,18 @@
                     case "payload_one" :    //이전달급여
                         fm_home.action = "/030103/payload/" + as_val1;
                         fm_home.submit();
+                        break;
 
                     case "payload" :    //이전달급여
                         fm_home.action = "/030103/payload";
                         fm_home.submit();
-
+                        break;
+                    case "paymnt":
+                        var payDt = $('#sPayDt').val();
+                        var rPayDt = $('#sRPayDt').val();
+                        gf_popup("550","800","030103_inputbox","/030103/popup/" + as_val1 + "?payDt=" + payDt +
+                            "&rPayDt=" + rPayDt + "&fstId=" + [[${menuId.fstId}]]
+                            + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]);
                 }
             }
         </script>
@@ -112,7 +119,7 @@
                     <tr class="list_tr_1" th:each="dto, dtoStat : ${list}"><!-- td 렌더링 -->
                         <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
                         <td class="list_td_1 text-center">
-                            <button name="paymnt" id="paymnt" type="button" class="btn btn-gfk btn-ssm" th:data-empNo="${dto.empNo}">급여내역</button>&nbsp;
+                            <button name="paymnt" id="paymnt" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.empNo}]], '','')">급여내역</button>&nbsp;
                             <button name="pitemesave_one" id="pitemesave_one" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.empNo}]],'','')">급여계산</button>&nbsp;
                             <button name="pitemedel_one" id="pitemedel_one" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.empNo}]],'','')">급여삭제</button>
                             <button name="payload_one" id="payload_one" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.empNo}]],'','')">이전달급여</button>&nbsp;
@@ -181,12 +188,12 @@
                 }
             });
 
-            $('button[name="paymnt"]').click(function (e) {
-                e.preventDefault();
-                var url = window.location.href + "";
-                gf_popup("550","800","030103_inputbox",url.split('?')[0] + "/popup/" + $(this).data("empno") + "?fstId=" + [[${menuId.fstId}]]
-                    + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]) ;
-            });
+            // $('button[name="paymnt"]').click(function (e) {
+            //     e.preventDefault();
+            //     var url = window.location.href + "";
+            //     gf_popup("550","800","030103_inputbox",url.split('?')[0] + "/popup/" + $(this).data("empno") + "?fstId=" + [[${menuId.fstId}]]
+            //         + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]) ;
+            // });
 
         });
     </script>

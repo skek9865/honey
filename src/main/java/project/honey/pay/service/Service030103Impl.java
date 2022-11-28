@@ -36,18 +36,75 @@ public class Service030103Impl implements Service030103{
     private final Tb303Repository tb303Repository;
 
     @Override
+    @Transactional
     public Integer insert(Tb303Dto dto) {
-        return null;
+        String pay = dto.getPayDt().replaceAll("-","");
+        String rPay = dto.getRPayDt().replaceAll("-", "");
+
+        Tb301 tb301 = tb301Repository.findByItemCd(dto.getItemCd()).orElseThrow(RuntimeException::new);
+        Tb303 tb303 = Tb303.builder()
+                .empNo(dto.getEmpNo())
+                .itemDiv(tb301.getItemDiv())
+                .itemCd(tb301.getItemCd())
+                .payAmt(dto.getPayAmt().doubleValue())
+                .payDt(pay)
+                .rPayDt(rPay)
+                .taxRate(tb301.getTaxRate())
+                .build();
+
+        return tb303Repository.save(tb303).getSeq();
     }
 
     @Override
+    @Transactional
     public Integer update(Tb303Dto dto) {
-        return null;
+        Tb303 tb303 = tb303Repository.findById(dto.getSeq()).orElseThrow(RuntimeException::new);
+        tb303.changeInfo(dto);
+
+        return tb303.getSeq();
     }
 
     @Override
-    public List<Tb302PopupDto> findAll(String empNo) {
-        return null;
+    public List<Tb303PopupDto> findAll(String empNo, String payDt) {
+
+        String replace = payDt.replace("-", "");
+
+        // 사원 조회
+        Tb201 tb201 = tb201Repository.findByEmpNo(empNo).orElseThrow(RuntimeException::new);
+
+        List<Tb303> tb303s = tb303Repository.findAllByEmpNoAndPayDt(empNo, replace);
+
+        List<Tb303PopupDto> dtos = new ArrayList<>();
+        for (Tb303 tb303 : tb303s) {
+            Tb302 tb302 = tb302Repository.findByEmpNoAndItemCd(empNo,tb303.getItemCd()).orElseThrow(RuntimeException::new);
+            String pay = tb303.getPayDt();
+            String rPay = tb303.getRPayDt();
+            Tb303PopupDto dto = Tb303PopupDto.builder()
+                    .seq(tb303.getSeq())
+                    .empNo(tb303.getEmpNo())
+                    .empNm(tb201.getEmpNm())
+                    .post(tb201.getPost())
+                    .payDt(pay.substring(0, 4) + "-" + pay.substring(4))
+                    .rPayDt(rPay.substring(0, 4) + "-" + rPay.substring(4, 6) + "-" + rPay.substring(6))
+                    .taxRate(tb303.getTaxRate())
+                    .itemDiv(tb303.getItemDiv())
+                    .taxDiv(tb302.getTaxDiv())
+                    .itemCd(tb303.getItemCd())
+                    .build();
+            if (tb303.getItemDiv().equals("00001")) {
+                dto.setPayAmt(tb303.getPayAmt());
+            }else{
+                if (tb303.getPayAmt() > 0) {
+                    dto.setPayAmt(tb303.getPayAmt() * -1);
+                }else{
+                    dto.setPayAmt(tb303.getPayAmt());
+                }
+            }
+
+            dtos.add(dto);
+        }
+
+        return dtos;
     }
 
     @Override
@@ -112,12 +169,14 @@ public class Service030103Impl implements Service030103{
 
     @Override
     public Tb303Dto findById(Integer seq) {
-        return null;
+        return Tb303Dto.of(tb303Repository.findById(seq).orElseThrow(RuntimeException::new));
     }
 
     @Override
+    @Transactional
     public Integer delete(Integer seq) {
-        return null;
+        tb303Repository.deleteById(seq);
+        return seq;
     }
 
     @Override
@@ -193,7 +252,7 @@ public class Service030103Impl implements Service030103{
                     .empNo(empNo)
                     .itemDiv(tb302.getItemDiv())
                     .itemCd(tb302.getItemCd())
-                    .taxRate(tb302.getPayAmt())
+                    .taxRate(tb301.getTaxRate())
                     .payAmt(payAmt)
                     .rPayDt(rPayDt)
                     .build();

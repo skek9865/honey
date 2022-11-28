@@ -6,14 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.pay.dto.Tb302HomeDto;
-import project.honey.pay.dto.Tb303HomeDto;
+import project.honey.pay.dto.*;
 import project.honey.pay.service.Service030101;
 import project.honey.pay.service.Service030102;
 import project.honey.pay.service.Service030103;
@@ -90,6 +90,29 @@ public class Controller030103 {
         return "pay/030103";
     }
 
+    //급여항목 등록
+    @PostMapping("/insert")
+    public String insert(Tb303Dto dto, HttpServletRequest request, Model model) {
+        log.info("dto = {}", dto);
+        model.addAttribute("msg", service030103.insert(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
+
+    @PostMapping("/update")
+    public String update(Tb303Dto dto, HttpServletRequest request, Model model) {
+        model.addAttribute("msg", service030103.update(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
+
+    @PostMapping("/delete/{seq}")
+    public String update(@PathVariable Integer seq, HttpServletRequest request, Model model) {
+        model.addAttribute("msg", service030103.delete(seq) != null ? "정상적으로 삭제 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
+
     //급여항목 추가(단건)
     @PostMapping("/pitemesave/{empNo}")
     public String pitemeSaveOne(@PathVariable String empNo,String sPayDt, String sRPayDt, HttpServletRequest request, Model model) {
@@ -136,6 +159,47 @@ public class Controller030103 {
         model.addAttribute("msg", service030103.payload(sPayDt, sRPayDt) != null ? "정상적으로 계산 되었습니다." : "문제가 발생 하였습니다.");
         model.addAttribute("url", request.getHeader("referer"));
         return "redirect";
+    }
+
+    @GetMapping("/popup/{empNo}")
+    public String popup(@PathVariable String empNo, String payDt,String rPayDt, MenuIdDto menuIdDto, Model model) {
+        model.addAttribute("global", new GlobalConst());
+        model.addAttribute("menuNm", menuMaker.getMenuNm(menuIdDto));
+        List<String> titles = GlobalMethod.makeTitle(
+                "순번", "관리", "공제/지급", "과세여부", "급여항목", "금액"
+        );
+
+        List<Tb303PopupDto> list = service030103.findAll(empNo, payDt);
+        model.addAttribute("dtos", list);
+
+        // 상단에 출력할 데이터
+        model.addAttribute("emp", service020101.findByEmpNo(empNo));
+        model.addAttribute("payDt", payDt);
+        model.addAttribute("rPayDt", rPayDt);
+
+        model.addAttribute("titles", titles);
+        model.addAttribute("totalPayAmt", list.stream().mapToDouble(Tb303PopupDto::getPayAmt).sum());
+
+        return "pay/030103_1";
+    }
+
+    @GetMapping("/input")
+    public String input(Model model,String empNo,String payDt, String rPayDt,
+                        String action, Integer id){
+        log.info("input");
+        log.info("action = {}", action);
+        log.info("id = {}", id);
+        model.addAttribute("dto",
+                id != null
+                        ? service030103.findById(id)
+                        : new Tb303Dto());
+        model.addAttribute("global", new GlobalConst());
+        model.addAttribute("action", action);
+        model.addAttribute("empNo", empNo);
+        model.addAttribute("payDt", payDt);
+        model.addAttribute("rPayDt", rPayDt);
+        model.addAttribute("codes", service030101.findAllItem());
+        return "pay/030103_1_input";
     }
 
 }
