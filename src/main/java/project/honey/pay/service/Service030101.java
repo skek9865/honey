@@ -20,4 +20,6 @@ public interface Service030101 {
     Integer delete(Integer seq);
 
     List<CodeDto> findAllItem();
+
+    List<String> findAllByUseItemNm();
 }

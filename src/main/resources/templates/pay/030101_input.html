@@ -41,7 +41,7 @@
                     <tr>
                         <td>
                             <label for="taxRate" class="input_labal">세제율</label>
-                            <input type="text" id="taxRate" th:name="*{taxRate}" th:value="${dto.taxRate == null? 0:#numbers.formatDecimal(dto.taxRate,1,2)}"  size="11" class="form-control input_number ">
+                            <input type="text" id="taxRate" name="taxRate" th:value="${dto.taxRate == null? 0:#numbers.formatDecimal(dto.taxRate,1,2)}"  size="11" class="form-control input_number ">
                         </td>
                     </tr>
                     <tr>
