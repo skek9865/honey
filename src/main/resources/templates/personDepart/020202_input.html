@@ -2,16 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
 <body>
-<form name="fm_input" th:action="@{/020201/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+<form name="fm_input" th:action="@{/020202/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
   <div class="container-fluid p-2">
     <div class="input_div">
       <table class="input_table">
-        <tr>
-          <td>
-            <label for="empNo" class="input_labal">사원명</label>
-            <input id="empNo" th:field="*{empNo}" type="text" size="15" class="form-control" readonly>
-          </td>
-        </tr>
         <tr>
           <td>
             <label for='part' class='input_labal'>구분명</label>
@@ -32,7 +26,7 @@
         <tr>
           <td>
             <label for="idNo" class="input_labal">비고</label>
-            <input id="idNo" th:field="*{note}" type="text" size="20" class="form-control">
+            <input id="idNo" th:field="*{note}" type="text" size="40" class="form-control">
           </td>
         </tr>
       </table>
@@ -51,6 +45,7 @@
     </div>
   </div>
   <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" th:field="*{compNo}" size="0" class="form-control ">
   <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
   <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
   <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
