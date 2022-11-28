@@ -97,8 +97,10 @@ public class Service030102Impl implements Service030102 {
                 } else {
                     if (tb301.getTaxRate() > 0) {
                         dto.setPayAmt(Math.floor(price * tb302.getPayAmt() / 100) * -1);
-                    }else{
+                    } else if (tb302.getPayAmt() != 0) {
                         dto.setPayAmt(tb302.getPayAmt() * -1);
+                    } else {
+                        dto.setPayAmt(tb302.getPayAmt());
                     }
 
                 }
@@ -112,7 +114,7 @@ public class Service030102Impl implements Service030102 {
         return dtos;
     }
 
-    // 개인별기준급여 리스트 조회
+    // 개인별기준급여 리스트 조회, 퇴사안한 사원들만 조회
     @Override
     public Page<Tb302HomeDto> findAllByLeave(Pageable pageable, String empNm, String postCd, String deptCd) {
         Page<Tb201> result = tb201Repository.findAllByLeave(empNm, postCd, deptCd, pageable);
@@ -172,6 +174,11 @@ public class Service030102Impl implements Service030102 {
     @Override
     @Transactional
     public String pitemeSaveOne(String empNo) {
+        // 이미 있으면 패스
+        if (tb302Repository.existsByEmpNo(empNo)) {
+            return empNo;
+        }
+
         log.info("empNo : {}", empNo);
         createTb302AndSave(empNo);
         return empNo;
@@ -191,6 +198,7 @@ public class Service030102Impl implements Service030102 {
     public String pitemeSave() {
         List<Tb201> tb201s = tb201Repository.findAll();
         for (Tb201 tb201 : tb201s) {
+            if (tb302Repository.existsByEmpNo(tb201.getEmpNo())) continue;
             createTb302AndSave(tb201.getEmpNo());
         }
 

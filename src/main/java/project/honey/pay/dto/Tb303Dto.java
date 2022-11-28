@@ -2,7 +2,7 @@ package project.honey.pay.dto;
 
 import lombok.*;
 import project.honey.pay.entity.Tb302;
-
+import project.honey.pay.entity.Tb303;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -10,7 +10,7 @@ import project.honey.pay.entity.Tb302;
 @Getter
 @Setter
 @ToString
-public class Tb302Dto {
+public class Tb303Dto {
 
     private Integer seq;
 
@@ -18,22 +18,25 @@ public class Tb302Dto {
 
     private String itemDiv;
 
-    private String taxDiv;
-
     private String itemCd;
 
     private Integer payAmt;
 
-    //Dto 변환 메서드
-    public static Tb302Dto of(Tb302 entity) {
+    private String payDt;
 
-        return Tb302Dto.builder()
+    private String rPayDt;
+
+    //Dto 변환 메서드
+    public static Tb303Dto of(Tb303 entity) {
+
+        return Tb303Dto.builder()
                 .seq(entity.getSeq())
                 .itemDiv(entity.getItemDiv())
-                .taxDiv(entity.getTaxDiv())
                 .itemCd(entity.getItemCd())
                 .empNo(entity.getEmpNo())
                 .payAmt(entity.getPayAmt().intValue())
+                .payDt(entity.getPayDt())
+                .rPayDt(entity.getRPayDt())
                 .build();
     }
 }
