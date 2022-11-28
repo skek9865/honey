@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>퇴직증명서</title>
+</head>
+<style>
+    .main-table{border-collapse: collapse; border: 1px solid black;}
+    .main-table td{text-align: center; width: 300px; height: 40px;  border: 1px solid black;}
+    .text{margin-top: 30px; text-align: center}
+    .text-bold{margin-top: 50px; text-align: center; font-weight: bold}
+    .text-bold-img{margin-top: 20px; text-align: right; font-weight: bold;}
+    @page  {size: A4; margin: 0;}
+    @media print {
+        .print-background {background-color:#eee !important; -webkit-print-color-adjust:exact;}
+    }
+</style>
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<div id='report'>
+  <div id="Preview_btn"></div>
+  <button id="btnPrint" onclick="this.style.display='none'; pagePrintPreview(); this.style.display='block'; ">미리보기</button>
+  <div th:object="${data}">
+    <div>
+      <h1 style="text-align: center; text-decoration: underline; margin-top: 20px;">퇴직증명서</h1>
+      <p style="text-align: right">발급번호 : [[*{date}]]</p>
+      <table class="main-table">
+        <tr>
+          <td class="print-background" rowspan="3" style="background-color: #eee; font-weight: bold">인적사항</td>
+          <td style="font-weight: bold">성명</td>
+          <td colspan="3" th:text="*{name}"></td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">주민등록번호</td>
+          <td colspan="3" th:text="*{idNo}"></td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">주소</td>
+          <td colspan="3" th:text="*{address}"></td>
+        </tr>
+        <tr>
+          <td class="print-background" rowspan="5" style="background-color: #eee; font-weight: bold" >경력사항</td>
+          <td style="font-weight: bold">회사명</td>
+          <td colspan="3" th:text="*{compNm}"></td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">사업자등록번호</td>
+          <td colspan="3" th:text="*{compIdNo}"></td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">부서명</td>
+          <td th:text="*{deptNm}"></td>
+          <td style="font-weight: bold">직위</td>
+          <td th:text="*{post}"></td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">입사일</td>
+          <td th:text="${wordDate}"></td>
+          <td style="font-weight: bold">퇴사일</td>
+          <td th:text="${leaveDate}"></td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">근속기간</td>
+          <td colspan="3">[[${wordDate}]] ~ [[${leaveDate}]]</td>
+        </tr>
+        <tr>
+          <td class="print-background" rowspan="2" style="background-color: #eee; font-weight: bold">발급부서</td>
+          <td style="font-weight: bold">부서명</td>
+          <td th:text="*{deptNm}"></td>
+          <td style="font-weight: bold">직위</td>
+          <td th:text="*{post}"></td>
+        </tr>
+        <tr>
+          <td style="font-weight: bold">성명</td>
+          <td th:text="*{name}"></td>
+          <td style="font-weight: bold">전화번호</td>
+          <td th:text="*{phone}"></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="font-weight: bold">퇴직사유</td>
+          <td colspan="3" style="text-align: left; padding-left: 10px" th:text="*{leaveRs}"></td>
+        </tr>
+        <tr>
+          <td colspan="2" style="font-weight: bold">발급용도</td>
+          <td colspan="3" style="text-align: left; padding-left: 10px"></td>
+        </tr>
+      </table>
+    </div >
+    <p class="text">상기인은 당사에 재직하였음을 증명합니다.</p>
+    <p class="text">[[${nowYear}]]년 [[${nowMonth}]]월 [[${nowDay}]]일</p>
+    <p class="text-bold">농업회사법인허니엣비 주식회사</p>
+    <table width="100%">
+      <tr>
+        <td style="width: 36%"></td>
+        <td class="text-bold-img" style="width: 20%">대표이사 권 오 길</td>
+        <td>
+          <img class="main-style" th:src="@{|/images/corp/*{stampFNm}|}" title="회사도장" style="" width="50">
+        </td>
+      </tr>
+    </table>
+    <div style="text-align: center; margin-top: 50px">
+      <img class="main-style" th:src="@{|/images/corp/*{logoFNm}|}" title="회사로고" style="" width="150">
+    </div>
+  </div >
+</div>
+</html>
