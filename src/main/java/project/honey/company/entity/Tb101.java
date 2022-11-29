@@ -9,6 +9,7 @@ import project.honey.comm.BaseAtt;
 import project.honey.company.dto.CompanyForm;
 
 import javax.persistence.*;
+import java.util.Map;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -122,7 +123,7 @@ public class Tb101 extends BaseAtt {
     @Comment("도장이미지파일명")
     private String stampnm;
 
-    public void changeInfo(CompanyForm form){
+    public void changeInfo(CompanyForm form, Map<String, String> imagenm){
         this.corpnm = form.getCorpnm();
         this.corpno = form.getCorpno();
         this.ceonm = form.getCorpnm();
@@ -146,7 +147,7 @@ public class Tb101 extends BaseAtt {
         this.corpregno = form.getCorpregno();
         this.bsns = form.getBsns();
         this.item = form.getItem();
-        if(!form.getLogonm().isEmpty()) this.logonm = form.getLogonm().getOriginalFilename();
-        if(!form.getStampnm().isEmpty()) this.stampnm = form.getStampnm().getOriginalFilename();
+        if(imagenm.get("logonm") != null) this.logonm = imagenm.get("logonm");
+        if(imagenm.get("stampnm") != null) this.stampnm = imagenm.get("stampnm");
     }
 }

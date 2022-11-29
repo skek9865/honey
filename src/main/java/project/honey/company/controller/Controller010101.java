@@ -18,18 +18,21 @@ import project.honey.company.dto.CompanyForm;
 import project.honey.company.dto.Tb101Dto;
 import project.honey.company.service.Service010101;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("")
+@RequestMapping("/010101")
 public class Controller010101 {
 
     private final Service010101 service010101;
     private final MenuMaker menuMaker;
     private final String fileDir = "C:\\JAVA\\honey\\src\\main\\resources\\static\\images\\corp";
 
-    @GetMapping("/010101")
+    @GetMapping()
     public String companyInfo(@ModelAttribute("menuId") MenuIdDto menuIdDto, Model model){
         Tb101Dto dto = service010101.findById(27);
 
@@ -42,20 +45,25 @@ public class Controller010101 {
 
         return "company/010101";
     }
-    @PostMapping("/010101")
+    @PostMapping()
     public RedirectView companySave(@ModelAttribute("form") CompanyForm form) {
         log.info("form = "+form);
+
+        Map<String, String> imagenm = new HashMap<>();
+
         if(!form.getLogonm().isEmpty()) {
             MultipartFile logoFile = form.getLogonm();
-            UploadService.uploadFile(logoFile,fileDir);
+            String path = UploadService.uploadFile(logoFile, fileDir);
+            imagenm.put("logonm",path);
         }
 
         if(!form.getStampnm().isEmpty()) {
             MultipartFile stampFile = form.getStampnm();
-            UploadService.uploadFile(stampFile,fileDir);
+            String path = UploadService.uploadFile(stampFile, fileDir);
+            imagenm.put("stampnm",path);
         }
 
-        service010101.save(form);
+        service010101.save(form, imagenm);
 
         return new RedirectView("/010101");
     }

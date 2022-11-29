@@ -8,6 +8,8 @@ import project.honey.company.dto.Tb101Dto;
 import project.honey.company.entity.Tb101;
 import project.honey.company.repository.Tb101Repository;
 
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -16,10 +18,10 @@ public class Service010101 {
     private final Tb101Repository tb101Repository;
 
     @Transactional
-    public void save(CompanyForm form){
+    public void save(CompanyForm form, Map<String,String> imagenm){
         Tb101 tb101 = tb101Repository.findById(27)
                 .orElseThrow(() -> new IllegalArgumentException("회사기본정보를 찾을 수 없습니다."));
-        tb101.changeInfo(form);
+        tb101.changeInfo(form,imagenm);
     }
 
     public Tb101Dto findById(int id){
@@ -30,6 +32,11 @@ public class Service010101 {
 
 
     private Tb101Dto entityToDto(Tb101 entity){
+        String logonm = entity.getLogonm();
+        logonm = logonm.substring(logonm.indexOf("#"));
+
+        String stampnm = entity.getStampnm();
+        stampnm = stampnm.substring(stampnm.indexOf("#"));
         return Tb101Dto.builder()
                 .seq(entity.getSeq())
                 .corpnm(entity.getCorpnm())
@@ -55,8 +62,8 @@ public class Service010101 {
                 .corpregno(entity.getCorpregno())
                 .bsns(entity.getBsns())
                 .item(entity.getItem())
-                .logonm(entity.getLogonm())
-                .stampnm(entity.getStampnm())
+                .logonm(logonm)
+                .stampnm(stampnm)
                 .createId(entity.getCreateId())
                 .createDate(entity.getCreateDate())
                 .updateId(entity.getUpdateId())
