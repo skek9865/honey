@@ -135,7 +135,7 @@ public class Tb201 extends BaseAtt {
     @Column(name = "filenm", length = 100)
     private String fileNm;
 
-    public void updateData(Tb201Form form) {
+    public void updateData(Tb201Form form, String fileNm, String imgNm) {
         String headYn;
         if (form.getHeadYn()) headYn = "Y";
         else headYn = "N";
@@ -164,8 +164,8 @@ public class Tb201 extends BaseAtt {
         this.zipCd    = form.getZipCd();
         this.address  = form.getAddress();
         this.address1 = form.getAddress1();
-//        this.picNm    = form.getPicNm();
+        this.picNm    = imgNm;
         this.note     = form.getNote();
-//        this.fileNm   = form.getFileNm();
+        this.fileNm   = fileNm;
     }
 }

@@ -91,7 +91,14 @@ public class Controller020101 {
             model.addAttribute("dto",new Tb201Dto());
             return "personDepart/020101_input";
         }
-        model.addAttribute("dto", service020101.findById(Integer.parseInt(map.get("vseq"))));
+
+        Tb201Dto dto = service020101.findById(Integer.parseInt(map.get("vseq")));
+        String fileName = "/files/emp/" + makeFileName(dto.getFileNm(), dto.getSeq());
+        String imgName = "/images/emp/" + makeFileName(dto.getPicNm(), dto.getSeq());
+
+        model.addAttribute("dto", dto);
+        model.addAttribute("fileName", fileName);
+        model.addAttribute("imgName", imgName);
         return "personDepart/020101_input";
     }
 
@@ -197,5 +204,11 @@ public class Controller020101 {
         widthMap.put(6,5000);
         widthMap.put(7,5000);
         return widthMap;
+    }
+
+    private String makeFileName(String originalFilename, Integer id){
+        int pos = originalFilename.lastIndexOf(".");
+        String ext = originalFilename.substring(pos + 1);
+        return String.valueOf(id) + "." + ext;
     }
 }
