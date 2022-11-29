@@ -164,15 +164,15 @@
           <td colspan="2">
             <label for="file" class="input_labal">파일</label>
             <input id="file" name="file" type="file" size="20" class="form-control">
-            <a style="font-size: 11px" href="upload\empfile\1.hwp" download="경력증명서 양식.hwp">경력증명서 양식.hwp</a>
+            <a th:if="*{fileNm}" style="font-size: 11px" th:href="@{${fileName}}" th:download="*{fileNm}" th:text="*{fileNm}"></a>
           </td>
         </tr>
         <tr th:if="*{picNm}">
           <td>
             <label class="input_labal">사진상세</label>
-            <img class="main-style" src="./upload/emp/1.jpg" title="사진" style="" width="100">
+            <img class="main-style" th:src="@{${imgName}}" title="사진" style="" width="100">
             <button name="print" id="print" type="button" class="btn btn-gfk btn-sm"
-                    onclick="imgPopup('upload/emp/1.jpg')">인쇄
+                    th:onclick="imgPopup([[${imgName}]])">인쇄
             </button>
           </td>
         </tr>
