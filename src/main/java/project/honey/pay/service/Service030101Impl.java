@@ -9,11 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import project.honey.pay.dto.Tb301Dto;
 import project.honey.pay.entity.Tb301;
 import project.honey.pay.repository.Tb301Repository;
+import project.honey.personDepart.entity.Tb202;
 import project.honey.system.dto.CodeDto;
 import project.honey.system.entity.Tb906;
 import project.honey.system.repository.Tb906Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -55,4 +57,20 @@ public class Service030101Impl implements Service030101{
         tb301Repository.deleteById(seq);
         return seq;
     }
+
+    @Override
+    public List<CodeDto> findAllItem() {
+        List<Tb301> findList = tb301Repository.findAll();
+        return findList.stream()
+                .filter(f -> f.getUseYn().equals("Y"))
+                .map(entity -> (CodeDto.builder().text(entity.getItemNm()).value(entity.getItemCd()).build()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<String> findAllByUseItemNm() {
+        return tb301Repository.findAllByUseItemNm();
+    }
+
+
 }

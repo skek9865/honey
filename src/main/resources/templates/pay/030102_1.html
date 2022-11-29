@@ -3,15 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
+    <link rel="shortcut icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
+    <link th:href="@{|${global.cssDir}/bootstrap.min.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/bootstrap-datepicker3.min.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/bootstrap-icons.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/bootstrap.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/styles.css|}" rel="stylesheet" />
+    <link th:href="@{|${global.cssDir}/style_old.css|}" rel="stylesheet" />
+    <link th:href="@{|${global.cssDir}/bootstrap4-toggle.min.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/theme.blue.css|}" rel="stylesheet" >
+
+    <script th:src="@{|${global.jsDir}/all.min.js|}" crossorigin="anonymous"></script>
+    <script th:src="@{|${global.jsDir}/jquery-3.4.1.min.js|}"></script>
+    <script th:src="@{|${global.jsDir}/jquery-ui.min.js|}"></script>
+
+    <script th:src="@{|${global.jsDir}/colResizable-1.6.js|}"></script>
+    <script th:src="@{|${global.jsDir}/jquery.tablesorter.min.js|}"></script>
+    <script th:src="@{|${global.jsDir}/bootstrap4-toggle.min.js|}"></script>
+    <script th:src="@{|${global.jsDir}/popper.min.js|}"></script>
+
+    <script th:src="@{|${global.jsDir}/bootstrap.min.js|}"></script>
+    <script th:src="@{|${global.jsDir}/bootstrap-datepicker.min.js|}" type='text/javascript' ></script>
+    <script th:src="@{|${global.jsDir}/bootstrap-datepicker.ko.min.js|}" charset="UTF-8"></script>
+
+    <script th:src="@{|${global.jsDir}/showModalDialog.js|}" type="text/javascript"></script>
+    <script th:src="@{|${global.jsDir}/showModalDialogCallee.js|}" type="text/javascript"></script>
+
+    <script th:src="@{|${global.jsDir}/comfunction.js|}"></script>
+    <script th:src="@{|${global.jsDir}/comfunction_src.js|}"></script>
+    <script th:src="@{|${global.jsDir}/clientValidate.js|}"></script>
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 </head>
 <body>
 <form name="fm_home" method="post">
     <main>
+        <script th:inline="javascript">
+            function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+                switch (as_action) {
+                    case "insert" : //저장
+                    case "update" : //수정
+                        fm_input.action = "/030102/" + as_action
+                        fm_input.submit();
+                        break;
+
+                    case "delete" : //삭제
+                        fm_home.action = "/030102/" + as_action + "/" + as_val1;
+                        fm_home.submit();
+                        break;
+
+                    case "query" : //조회
+                        location.reload();
+                        break;
+                }
+            }
+        </script>
         <div class="container-fluid p-2">
             <div class="titleBar" id="titleBar">
                 <div class="row">
                     <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i> 급여내역</div>
-                    <div class="col titleBar_path">급여관리 &gt; 급여관리 &gt; 개인별기준급여관리</div>
+                    <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
                 </div>
             </div>
             <div class="searchBar" id="searchBar">
@@ -21,7 +74,9 @@
                             <tbody>
                             <tr>
                                 <td>
-                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;<button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="lf_confirm(this.name,'','','')">등록</button>&nbsp;<button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" th:onclick="lf_confirm(this.name,[[${emp.empNo}]],'','')">조회</button>&nbsp;
+                                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('/030102/input?empNo=' + [[${emp.empNo}]],'','','','insert', '','');">등록</button>&nbsp;
+                                    <button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
                                 </td>
                                 <td th:text="${'사원명 : ' +  emp.empNm}"></td>
                                 <td th:text="${'직위/직급 : ' + emp.post}"></td>
@@ -45,13 +100,14 @@
                     <tr th:each="dto,dtoStat : ${dtos}" class="list_tr_1">
                         <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
                         <td class="list_td_1 text-center">
-                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" onclick="lf_confirm(this.name,'1972','','')">수정</button>&nbsp;
-                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" onclick="lf_confirm(this.name,'1972','','')">삭제</button>&nbsp;
+                            <button th:if="${dto.taxRate == 0}" name="update" id="update" type="button" class="btn btn-gfk btn-ssm"
+                                    data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('/030102/input?id=' + [[${dto.seq}]],'','','','update', '','');">수정</button>&nbsp;
+                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제</button>&nbsp;
                         </td>
-                        <td class="list_td_1 text-center" th:text="${dto.itemDiv}">지급</td>
-                        <td class="list_td_1 text-center" th:text="${dto.taxDiv}">Y</td>
-                        <td class="list_td_1 text-center" th:text="${dto.itemCd}">기본급</td>
-                        <td class="list_td_1 text-end" th:text="${dto.payAmt}">0</td>
+                        <td class="list_td_1 text-center" th:text="${dto.itemDiv}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.taxDiv}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.itemCd}"></td>
+                        <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.payAmt,0,'COMMA')}"></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -61,14 +117,29 @@
                         <th class="tableList_f_td" data-column="2"></th>
                         <th class="tableList_f_td" data-column="3"></th>
                         <th class="tableList_f_td" data-column="4"></th>
-                        <th class="tableList_f_td" data-column="5">0</th>
+                        <th class="tableList_f_td" data-column="5" th:text="${#numbers.formatInteger(totalPayAmt,0,'COMMA')}"></th>
                     </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
     </main>
-    <input type="hidden" name="ACD" id="ACD" value="03" size="0" class="form-control "> 		<input type="hidden" name="BCD" id="BCD" value="01" size="0" class="form-control "> 		<input type="hidden" name="CCD" id="CCD" value="02" size="0" class="form-control "> 		<input type="hidden" name="tpid" id="tpid" value="030102" size="0" class="form-control "> 		<input type="hidden" name="start" id="start" value="Y" size="0" class="form-control "> 		<input type="hidden" name="sempno" id="sempno" value="0001" size="0" class="form-control ">
+    <input type="hidden" name="ACD" id="ACD" value="03" size="0" class="form-control ">
+    <input type="hidden" name="BCD" id="BCD" value="01" size="0" class="form-control ">
+    <input type="hidden" name="CCD" id="CCD" value="02" size="0" class="form-control ">
+    <input type="hidden" name="tpid" id="tpid" value="030102" size="0" class="form-control ">
+    <input type="hidden" name="start" id="start" value="Y" size="0" class="form-control ">
+    <input type="hidden" name="sempno" id="sempno" value="0001" size="0" class="form-control ">
 </form>
+<!-- Modal -->
+<div class="modal fade" id="inputpopup" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div id="modal_main" class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-body" id="modalhtml">
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
 </body>
 </html>

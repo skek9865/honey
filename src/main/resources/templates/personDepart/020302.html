@@ -1,0 +1,86 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::main})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<main>
+  <form name="fm_home" method="post" enctype="multipart/form-data">
+    <div class="container-fluid p-2">
+      <div class="titleBar" id="titleBar">
+        <div class="row">
+          <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+          <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+        </div>
+      </div>
+      <div class="searchBar" id="searchBar">
+        <div class="row">
+          <div class="col-12 fixed-right p-2 px-4">
+            <table>
+              <tr>
+                <td class="p-1">
+                  <label for="sEmpNm" class="search_labal">사원명</label>
+                  <input id="sEmpNm" name="sEmpNm" th:value="${sEmpNm}" type="text" size="15" class="form-control">
+                </td>
+                <td class="p-1">
+                  <label for='sPost' class="search_labal_lg">직위/직급</label>
+                  <select class='form-select' id='sPost' name="sPost" th:value="${sPost}" size=1>
+                    <option value=''>선택</option>
+                    <option th:each="postCode : ${postCodes}" th:attr="selected=${postCode.value == sPost ?'true' : 'false'}"
+                            th:value="${postCode.value}" th:text="${postCode.text}"></option>
+                  </select>
+                </td>
+                <td class="p-1">
+                  <label for='sDeptcd' class="search_labal">부서명</label>
+                  <select class='form-select' id='sDeptCd' name="sDeptCd" th:value="${sDeptCd}" size=1>
+                    <option value=''>선택</option>
+                    <option th:each="deptCdCode : ${deptCdCodes}" th:attr="selected=${deptCdCode.value == sDeptCd ?'true' : 'false'}"
+                            th:value="${deptCdCode.value}" th:text="${deptCdCode.text}"></option>
+                  </select>
+                </td>
+                <td class="px-4">
+                  <button name="query" id="query" type="button" class="btn btn-gfk btn-sm">조회</button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive text-nowrap" id="tableWrapper">
+        <table class="table table-striped tablesorter-blue" id="datatable_1">
+          <thead>
+          <tr class="tableList_h_tr">
+            <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
+            <td class="list_td_1" th:text="${dtoStat.count}" text-center></td>
+            <td class="list_td_1" text-center>
+              <button name="print" id="print" type="button" class="btn btn-gfk btn-ssm" th:data-empNo="${dto.empNo}">인쇄
+              </button>&nbsp;
+            </td>
+            <td class="list_td_1" th:text="${dto.empNo}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.empNm}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.empDt}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.post}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.phone}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.mobile}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.email}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.deptCd}" text-center>내용</td>
+            <td class="list_td_1" th:text="${dto.workCd}" text-center>내용</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div th:replace="paging.html :: paging"></div>
+    </div>
+  </form>
+</main>
+</html>
+
+<script src="/js/scripts_sub.js"></script>
+<script th:inline="javascript">
+  $('button[name="print"]').click(function (e) {
+    e.preventDefault();
+    var url = window.location.href + "";
+    gf_popup("850","950","020302_inputbox",url.split('?')[0] + "/popup/" + $(this).data("empno"));
+  });
+</script>

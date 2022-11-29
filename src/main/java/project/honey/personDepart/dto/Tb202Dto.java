@@ -17,25 +17,12 @@ public class Tb202Dto {
     private Boolean useYn;
     private String createDate;
     private String createId;
-    private String modifyDate;
+    private String updateDate;
     private String updateId;
 
-    public static Tb202 toTb202(Tb202Dto dto) {
-        String useYn;
-        if(dto.useYn) useYn = "Y";
-        else useYn = "N";
-
-        return Tb202.builder()
-                .deptCd(dto.deptCd)
-                .deptNm(dto.deptNm)
-                .useYn(useYn)
-                .build();
-    }
-
     public static Tb202Dto of(Tb202 entity) {
-        Boolean useYn;
-        if(entity.getUseYn() == "Y") useYn = true;
-        else useYn = false;
+        Boolean useYn = false;
+        if(entity.getUseYn().equals("Y")) useYn = true;
 
         return Tb202Dto.builder()
                 .seq(entity.getSeq())
@@ -44,7 +31,7 @@ public class Tb202Dto {
                 .useYn(useYn)
                 .createDate(entity.getCreateDate())
                 .createId(entity.getCreateId())
-                .modifyDate(entity.getUpdateDate())
+                .updateDate(entity.getUpdateDate())
                 .updateId(entity.getUpdateId())
                 .build();
     }

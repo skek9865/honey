@@ -38,14 +38,14 @@ public class AuthController {
         log.info("loginUser : " + loginUser.toString());
 
         // 진짜
-//        if(!userRepository.existsByUserIdAndPasswd(loginUser.getUserId(), loginUser.getPasswd())){
-//            return "redirect:/auth/login";
-//        }
-
-        // 테스트용
-        if (!loginUser.getUserId().equals("hello") || !loginUser.getPasswd().equals("hello")) {
+        if(!tb901Repository.existsByUserIdAndPasswd(loginUser.getUserId(), loginUser.getPasswd())){
             return "redirect:/auth/login";
         }
+
+        // 테스트용
+//        if (!loginUser.getUserId().equals("hello") || !loginUser.getPasswd().equals("hello")) {
+//            return "redirect:/auth/login";
+//        }
 
         // 세션에 ID 저장 후 main 이동
         session.setAttribute("user", loginUser.getUserId());

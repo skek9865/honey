@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.honey.personDepart.dto.Form020101;
+import project.honey.personDepart.form.Tb201Form;
 import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.personDepart.entity.Tb201;
 import project.honey.personDepart.repository.Tb201Repository;
@@ -23,7 +23,7 @@ public class Service020101Impl implements Service020101 {
     private final Tb201Repository repository;
 
     @Override
-    public Boolean insert(Form020101 form) throws IOException {
+    public Boolean insert(Tb201Form form) throws IOException {
         String dbFileName = "";
         String dbImgName = "";
 //        if(!form.getFile().isEmpty()) {
@@ -34,7 +34,7 @@ public class Service020101Impl implements Service020101 {
 //            FileName imgName = fileConverter.uploadFile(form.getImg(), "C:\\JAVA\\honey\\src\\main\\resources\\static\\images\\emp\\");
 //            dbImgName = imgName.getDbFileName();
 //        }
-        Tb201 entity = Form020101.toTb201(form, dbFileName, dbImgName);
+        Tb201 entity = Tb201Form.toTb201(form, dbFileName, dbImgName);
         repository.save(entity);
         return true;
     }
@@ -59,7 +59,7 @@ public class Service020101Impl implements Service020101 {
 
     @Transactional
     @Override
-    public Boolean update(Form020101 form) {
+    public Boolean update(Tb201Form form) {
         Tb201 entity = repository.findById(form.getSeq()).orElseThrow(RuntimeException::new);
         entity.updateData(form);
         return true;
@@ -69,5 +69,11 @@ public class Service020101Impl implements Service020101 {
     public Boolean delete(Integer id) {
         repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public Tb201Dto findByEmpNo(String empNo) {
+        Tb201 entity = repository.findByEmpNo(empNo).orElseThrow(RuntimeException::new);
+        return Tb201Dto.of(entity);
     }
 }

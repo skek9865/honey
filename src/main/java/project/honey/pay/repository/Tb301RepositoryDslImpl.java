@@ -53,6 +53,25 @@ public class Tb301RepositoryDslImpl implements Tb301RepositoryDsl{
         return new PageImpl<>(result, pageable, total);
     }
 
+    @Override
+    public List<String> findAllByUseItemNm() {
+        return queryFactory.select(tb301.itemNm)
+                .from(tb301)
+                .where(tb301.useYn.eq("Y"))
+                .orderBy(tb301.itemCd.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<String> findAllByUseItemCd() {
+        return queryFactory.select(tb301.itemCd)
+                .from(tb301)
+                .where(tb301.useYn.eq("Y"))
+                .orderBy(tb301.itemCd.asc())
+                .fetch();
+    }
+
+
     private BooleanExpression fstIdEq(String fstId) {
         return StringUtils.hasText(fstId) ? tb906.fstId.eq(fstId) : null;
     }

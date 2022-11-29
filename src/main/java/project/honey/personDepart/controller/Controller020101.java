@@ -14,9 +14,8 @@ import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.personDepart.dto.Form020101;
+import project.honey.personDepart.form.Tb201Form;
 import project.honey.personDepart.dto.Tb201Dto;
-import project.honey.personDepart.entity.Tb201;
 import project.honey.personDepart.service.Service020101;
 import project.honey.personDepart.service.Service020102;
 import project.honey.system.service.Service990301;
@@ -45,6 +44,7 @@ public class Controller020101 {
     @GetMapping("")
     public String findAll(@RequestParam Map<String, String> map,
                           @ModelAttribute("menuId")MenuIdDto menuIdDto, Model model, Pageable pageable){
+        log.info("사원관리 메인");
         log.info("empNm = {}, postCd = {}, deptCd = {}" ,map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"));
         log.info("menuId = {}", menuIdDto);
         List<String> titles = GlobalMethod.makeTitle(
@@ -73,7 +73,7 @@ public class Controller020101 {
 
     @GetMapping("/input")
     public String findById(@RequestParam Map<String, String> map, Model model){
-        log.info("input");
+        log.info("사원관리 input");
         log.info("fstId = {}", map.get("fstId"));
         log.info("scdId = {}", map.get("scdId"));
         log.info("thdId = {}", map.get("thdId"));
@@ -95,9 +95,9 @@ public class Controller020101 {
         return "personDepart/020101_input";
     }
 
-    @PostMapping("/input")
-    public String insert(@ModelAttribute Form020101 form, Model model, HttpServletRequest request) throws IOException {
-        log.info("input");
+    @PostMapping("/insert")
+    public String insert(@ModelAttribute Tb201Form form, Model model, HttpServletRequest request) throws IOException {
+        log.info("사원관리 insert");
         log.info("form = {}", form);
         if (service020101.insert(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
         else model.addAttribute("msg","문제가 발생 하였습니다.");
@@ -106,8 +106,8 @@ public class Controller020101 {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Form020101 form, Model model, HttpServletRequest request){
-        log.info("update");
+    public String update(@ModelAttribute Tb201Form form, Model model, HttpServletRequest request){
+        log.info("사원관리 update");
         log.info("form = {}", form);
         if(service020101.update(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
         else model.addAttribute("msg","문제가 발생 하였습니다.");
@@ -117,6 +117,7 @@ public class Controller020101 {
 
     @PostMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id, Model model, HttpServletRequest request){
+        log.info("사원관리 delete");
         if(service020101.delete(id)) model.addAttribute("msg", "정상적으로 삭제 되었습니다.");
         else model.addAttribute("msg", "문제가 발생하였습니다");
         model.addAttribute("url", request.getHeader("referer"));
@@ -125,7 +126,7 @@ public class Controller020101 {
 
     @GetMapping("/excel")
     public void excel(@RequestParam Map<String, String> map, HttpServletResponse response, HttpServletRequest request) throws IOException {
-
+        log.info("사원관리 excel");
         log.info("url = {}", request.getHeader("referer"));
 
         List<String> titles = GlobalMethod.makeTitle(

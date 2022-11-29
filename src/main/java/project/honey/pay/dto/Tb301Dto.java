@@ -20,7 +20,7 @@ public class Tb301Dto {
 
     private String taxDiv;
 
-    private Integer itemCd;
+    private String itemCd;
 
     private String itemNm;
 
@@ -29,7 +29,7 @@ public class Tb301Dto {
     private String useYn;
 
     @QueryProjection
-    public Tb301Dto(Integer seq, String itemDiv, String taxDiv, Integer itemCd, String itemNm, Double taxRate, String useYn) {
+    public Tb301Dto(Integer seq, String itemDiv, String taxDiv, String itemCd, String itemNm, Double taxRate, String useYn) {
         this.seq = seq;
         this.itemDiv = itemDiv;
         this.taxDiv = taxDiv;

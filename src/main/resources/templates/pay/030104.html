@@ -1,0 +1,176 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::form})}"
+      xmlns:th="http://www.thymeleaf.org">
+<form name="fm_home" method="post" >
+    <main >
+        <script th:inline="javascript">
+            function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+                switch (as_action) {
+                    case "pitemedel" :  //급여항목삭제
+                        if (confirm("자료를 삭제 하시겠습니까?")) {
+                            fm_home.action = "/030103/pitemedel"
+                            fm_home.submit();
+                            break;
+                        } else {
+                            break;
+                        }
+                    case "pitemesave" : //급여항목추가
+                        fm_home.action = "/030103/pitemesave"
+                        fm_home.submit();
+                        break;
+
+                    case "pitemedel_one" :  //급여항목삭제
+                        if (confirm("자료를 삭제 하시겠습니까?")) {
+                            fm_home.action = "/030103/pitemedel/" + as_val1;
+                            fm_home.submit();
+                            break;
+                        } else {
+                            break;
+                        }
+                    case "pitemesave_one" : //급여항목추가
+                        fm_home.action = "/030103/pitemesave/" + as_val1;
+                        fm_home.submit();
+                        break;
+                    case "payload_one" :    //이전달급여
+                        fm_home.action = "/030103/payload/" + as_val1;
+                        fm_home.submit();
+                        break;
+
+                    case "payload" :    //이전달급여
+                        fm_home.action = "/030103/payload";
+                        fm_home.submit();
+                        break;
+                    case "paymnt":
+                        var payDt = $('#sPayDt').val();
+                        var rPayDt = $('#sRPayDt').val();
+                        gf_popup("550","800","030103_inputbox","/030103/popup/" + as_val1 + "?payDt=" + payDt +
+                            "&rPayDt=" + rPayDt + "&fstId=" + [[${menuId.fstId}]]
+                            + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]);
+                }
+            }
+        </script>
+        <div class="container-fluid p-2">
+            <div class="titleBar" id="titleBar">
+                <div class="row">
+                    <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+                    <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+                </div>
+            </div>
+            <div class="searchBar" id="searchBar">
+                <div class="row">
+                    <div class="col-12 fixed-right p-2 px-4">
+                        <table>
+                            <tr>
+                                <td class="p-1">
+                                    <div class="input-group input-daterangeYM">
+                                        <div class="input-group-addon px-2">
+                                            <label for="sPayDt" class="">급여년월</label>
+                                        </div>
+                                        <input type="text" name="sPayDt" id="sPayDt" th:value="${sPayDt}" size="6" class="input_date" autocomplete="off">
+                                    </div>
+                                </td>
+                                <td class="p-1">
+                                    <label for="sEmpNm" class="search_labal">사원명</label>
+                                    <input id="sEmpNm" name="sEmpNm" th:value="${sEmpNm}" type="text" size="15" class="form-control">
+                                </td>
+                                <td class="p-1">
+                                    <label for='sPost' class="search_labal_lg">직위/직급</label>
+                                    <SELECT class='form-select' id='sPost' name='sPost' th:value="${sPost}"  size=1 >
+                                        <OPTION value=''>선택</OPTION>
+                                        <OPTION th:each="post : ${posts}" th:value="${post.value}" th:text="${post.text}"
+                                        th:attr="selected=${post.value == sPost ? 'true' : 'false'}"></OPTION>
+                                    </SELECT>
+                                </td>
+                                <td class="p-1">
+                                    <label for='sDeptCd' class="search_labal">부서명</label>
+                                    <SELECT class='form-select' id='sDeptCd' name='sDeptCd' th:value="${sDeptCd}"  size=1 >
+                                        <OPTION value=''>선택</OPTION>
+                                        <OPTION th:each="dept : ${depts}" th:value="${dept.value}" th:text="${dept.text}"
+                                                th:attr="selected=${sDeptCd == dept.value ? 'true':'false'}">대표이사</OPTION>
+                                    </SELECT>
+                                </td>
+
+                                <td class="px-4">
+                                    <button name="query" id="query" type="submit" class="btn btn-gfk btn-sm">조회</button>&nbsp;
+                                    <button name="print" id="print" type="button" class="btn btn-gfk btn-sm" th:onclick="lf_confirm(this.name,[[${sPayDt}]],'','','')">인쇄</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_1" >
+                    <thead>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="list_tr_1" th:each="dto, dtoStat : ${list}"><!-- td 렌더링 -->
+                        <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
+                        <td th:text="${dto.empDt}"></td>
+                        <td th:text="${dto.empNm}"></td>
+                        <td th:text="${dto.post}"></td>
+                        <td th:each="pay : ${dto.pays}" th:text="${#numbers.formatInteger(pay,0, 'COMMA')}"></td>
+                        <td class="payout" th:text="${#numbers.formatInteger(dto.payout,0, 'COMMA')}"></td>
+                        <td class="deduction" th:text="${#numbers.formatInteger(dto.deduction,0, 'COMMA')}"></td>
+                        <td class="actualPayment" th:text="${#numbers.formatInteger(dto.actualPayment,0, 'COMMA')}"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="tableList_f_tr">
+                        <th class="tableList_f_td" data-column="0"></th>
+                        <th class="tableList_f_td" data-column="1"></th>
+                        <th class="tableList_f_td" data-column="2"></th>
+                        <th class="tableList_f_td" data-column="3"></th>
+                        <th th:each="pay, payStat : ${totals.TotalPays}" class="tableList_f_td" th:data-column="${payStat.index+4}" th:text="${#numbers.formatInteger(pay,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td" th:data-column="${totals.count-2}" th:text="${#numbers.formatInteger(totals.TotalPayout,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td" th:data-column="${totals.count-1}" th:text="${#numbers.formatInteger(totals.TotalDeduction,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td tablesorter-headerDesc" th:data-column="${totals.count}" th:text="${#numbers.formatInteger(totals.TotalActualPayment,0, 'COMMA')}"></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- 페이징 부분 -->
+            <div th:replace="paging.html :: paging">
+        </div>
+
+        </div>
+    </main>
+    <script th:src="@{|/js/scripts_sub.js|}"></script>
+    <script th:inline="javascript">
+
+
+        $(document).ready(function () {
+            gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
+            $("#datatable_1").width([[${global.mainWidth}]]);
+
+
+
+            // 삭제
+            $('button[name="delete"]').click(function (e) {
+                e.preventDefault();
+                if(confirm("자료를 삭제하시겠습니까?")){
+                    var url = window.location.href + "";
+                    $.ajax({
+                        url: url.split('?')[0] + "/delete/" + $(this).data('id'),
+                        type : 'post',
+                        success : function (){
+                            alert("자료가 삭제되었습니다.");
+                            location.reload();
+                        }
+                    })
+                }
+            });
+
+            // $('button[name="paymnt"]').click(function (e) {
+            //     e.preventDefault();
+            //     var url = window.location.href + "";
+            //     gf_popup("550","800","030103_inputbox",url.split('?')[0] + "/popup/" + $(this).data("empno") + "?fstId=" + [[${menuId.fstId}]]
+            //         + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]) ;
+            // });
+
+        });
+    </script>
+
+</form>

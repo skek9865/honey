@@ -1,4 +1,4 @@
-package project.honey.personDepart.dto;
+package project.honey.personDepart.form;
 
 import lombok.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,7 +8,7 @@ import project.honey.personDepart.entity.Tb201;
 @Getter
 @Builder
 @ToString
-public class Form020101 {
+public class Tb201Form {
     private Integer seq;
     private String empNo;
     private String empNm;
@@ -44,10 +44,9 @@ public class Form020101 {
     private String scdId;
     private String thdId;
 
-    public static Tb201 toTb201(Form020101 form, String fileName, String imgName) {
-        String headYn;
+    public static Tb201 toTb201(Tb201Form form, String fileName, String imgName) {
+        String headYn = "N";
         if(form.headYn) headYn = "Y";
-        else headYn = "N";
         return Tb201.builder()
                 .seq(form.getSeq())
                 .empNo(form.getEmpNo())
