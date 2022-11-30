@@ -15,4 +15,6 @@ public interface Tb301RepositoryDsl {
     List<String> findAllByUseItemNm();
 
     List<String> findAllByUseItemCd();
+
+    List<Tb301Dto> findAllByExcel();
 }

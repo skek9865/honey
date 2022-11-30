@@ -52,7 +52,7 @@ public class Controller030104 {
                           Pageable pageable) {
         //날짜 기본값 세팅
         String sPayDt = map.get("sPayDt");
-        if(sPayDt == null){
+        if (sPayDt == null) {
             sPayDt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
         }
 
@@ -60,7 +60,7 @@ public class Controller030104 {
         log.info("menuIdDto : {}", menuIdDto);
 
         // 급여대장 타이틀 구하기
-        List<String> titles = GlobalMethod.makeTitle("순번", "입사일","사원","부서");
+        List<String> titles = GlobalMethod.makeTitle("순번", "입사일", "사원", "부서");
         List<String> useTitles = service030101.findAllByUseItemNm();
         titles.addAll(useTitles);
         titles.addAll(List.of(new String[]{"지급총액", "공제총액", "실지급액"}));
@@ -77,12 +77,12 @@ public class Controller030104 {
 
 
         // 급여대장
-        Page<PayrollDto> pagingList = service030104.findAll(pageable,sPayDt.replaceAll("-", ""),
+        Page<PayrollDto> pagingList = service030104.findAll(pageable, sPayDt.replaceAll("-", ""),
                 map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"));
         List<PayrollDto> list = pagingList.getContent()
                 .stream().peek(m -> {
                     m.setPost(deptMap.get(m.getPost()));
-                    m.setEmpDt(m.getEmpDt().substring(0,4) + "-" + m.getEmpDt().substring(4,6) + "-" + m.getEmpDt().substring(6));
+                    m.setEmpDt(m.getEmpDt().substring(0, 4) + "-" + m.getEmpDt().substring(4, 6) + "-" + m.getEmpDt().substring(6));
                 })
                 .collect(Collectors.toList());
 
@@ -104,5 +104,63 @@ public class Controller030104 {
         model.addAttribute("list", list);
 
         return "pay/030104";
+    }
+
+    @GetMapping("/print")
+    public String print(@RequestParam Map<String, String> map, Model model,
+                        Pageable pageable) {
+        //날짜 기본값 세팅
+        String sPayDt = map.get("sPayDt");
+        if (sPayDt == null) {
+            sPayDt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
+        }
+
+        log.info("pageable : " + pageable);
+
+        // 급여대장 타이틀 구하기
+        List<String> titles = GlobalMethod.makeTitle("순번", "입사일", "사원", "부서");
+        List<String> useTitles = service030101.findAllByUseItemNm();
+        titles.addAll(useTitles);
+        titles.addAll(List.of(new String[]{"지급총액", "공제총액", "실지급액"}));
+
+        model.addAttribute("titles", titles);
+        model.addAttribute("global", new GlobalConst());
+
+
+        // 급여대장 부서 -> 직급 변환
+        List<CodeDto> depts = service020102.findAllDept();
+        Map<String, String> deptMap = codeToName.dept();
+
+
+        // 급여대장
+        Page<PayrollDto> pagingList = service030104.findAll(pageable, sPayDt.replaceAll("-", ""),
+                map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"));
+        List<PayrollDto> list = pagingList.getContent()
+                .stream().peek(m -> {
+                    m.setPost(deptMap.get(m.getPost()));
+                    m.setEmpDt(m.getEmpDt().substring(0, 4) + "-" + m.getEmpDt().substring(4, 6) + "-" + m.getEmpDt().substring(6));
+                })
+                .collect(Collectors.toList());
+
+        model.addAttribute("posts", service990301.findByFstId("01"));
+        model.addAttribute("depts", depts);
+
+        // 총합 구하기
+        TotalPayrollDto totalPayrollDto = TotalPayrollDto.of(list, useTitles);
+        log.info("totalPayroll = {}", totalPayrollDto);
+        model.addAttribute("totals", totalPayrollDto);
+
+        //검색조건 유지
+        model.addAttribute("sPayDt", sPayDt);
+        model.addAttribute("year", sPayDt.split("-")[0]);
+        model.addAttribute("month", sPayDt.split("-")[1]);
+        model.addAttribute("sEmpNm", map.get("sEmpNm"));
+        model.addAttribute("sPost", map.get("sPost"));
+        model.addAttribute("sDeptCd", map.get("sDeptCd"));
+
+        model.addAttribute("pageMaker", new PageMaker(pageable, pagingList.getTotalElements()));
+        model.addAttribute("list", list);
+
+        return "pay/030104_prt";
     }
 }
