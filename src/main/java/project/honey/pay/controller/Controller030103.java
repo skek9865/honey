@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import project.honey.comm.CodeToName;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
@@ -17,6 +18,7 @@ import project.honey.pay.dto.*;
 import project.honey.pay.service.Service030101;
 import project.honey.pay.service.Service030102;
 import project.honey.pay.service.Service030103;
+import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.personDepart.service.Service020101;
 import project.honey.personDepart.service.Service020102;
 import project.honey.system.service.Service990301;
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -39,6 +42,7 @@ public class Controller030103 {
     private final Service030103 service030103;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
+    private final CodeToName codeToName;
 
     @GetMapping
     public String findAll(@RequestParam Map<String, String> map,
@@ -63,9 +67,18 @@ public class Controller030103 {
         model.addAttribute("titles", titles);
         model.addAttribute("global", new GlobalConst());
 
+        // 변환 데이터
+        Map<String, String> deptMap = codeToName.dept();
+        Map<String, String> postMap = codeToName.commonCode("01");
+
         Page<Tb303HomeDto> list = service030103.findAllByLeave(pageable,sPayDt.replaceAll("-", ""),
                 map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"));
-        List<Tb303HomeDto> content = list.getContent();
+
+        // 데이터 변환
+        List<Tb303HomeDto> content = list.getContent().stream().peek(dto -> {
+            dto.setPost(postMap.get(dto.getPost()));
+            dto.setDeptNm(deptMap.get(dto.getDeptNm()));
+        }).collect(Collectors.toList());
 
         model.addAttribute("posts", service990301.findByFstId("01"));
         model.addAttribute("depts", service020102.findAllDept());
@@ -169,11 +182,25 @@ public class Controller030103 {
                 "순번", "관리", "공제/지급", "과세여부", "급여항목", "금액"
         );
 
-        List<Tb303PopupDto> list = service030103.findAll(empNo, payDt);
+        // 변환 데이터
+        Map<String, String> itemMap = codeToName.item();
+        Map<String, String> itemDivMap = codeToName.commonCode("05");
+        Map<String, String> postMap = codeToName.commonCode("01");
+
+        List<Tb303PopupDto> list = service030103.findAll(empNo, payDt).stream().peek(dto -> {
+            dto.setItemCd(itemMap.get(dto.getItemCd()));
+            dto.setItemDiv(itemDivMap.get(dto.getItemDiv()));
+        }).collect(Collectors.toList());;
+
+        Tb201Dto empDto = service020101.findByEmpNo(empNo);
+        Tb201Dto emp = Tb201Dto.builder()
+                .empNm(empDto.getEmpNm())
+                .post(postMap.get(empDto.getPost()))
+                .build();
         model.addAttribute("dtos", list);
 
         // 상단에 출력할 데이터
-        model.addAttribute("emp", service020101.findByEmpNo(empNo));
+        model.addAttribute("emp", emp);
         model.addAttribute("payDt", payDt);
         model.addAttribute("rPayDt", rPayDt);
 

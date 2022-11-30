@@ -16,13 +16,13 @@ import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.pay.dto.Tb303HomeDto;
+import project.honey.pay.dto.Dto030105;
+import project.honey.pay.dto.DtoTotal030105;
 import project.honey.pay.dto.PayrollDto;
 import project.honey.pay.dto.TotalPayrollDto;
 import project.honey.pay.service.Service030101;
-import project.honey.pay.service.Service030103;
 import project.honey.pay.service.Service030104;
-import project.honey.personDepart.service.Service020101;
+import project.honey.pay.service.Service030105;
 import project.honey.personDepart.service.Service020102;
 import project.honey.system.dto.CodeDto;
 import project.honey.system.service.Service990301;
@@ -37,11 +37,11 @@ import java.util.stream.Collectors;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/030104")
-public class Controller030104 {
+@RequestMapping("/030105")
+public class Controller030105 {
+
     private final Service020102 service020102;
-    private final Service030101 service030101;
-    private final Service030104 service030104;
+    private final Service030105 service030105;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
     private final CodeToName codeToName;
@@ -59,11 +59,8 @@ public class Controller030104 {
         log.info("pageable : " + pageable);
         log.info("menuIdDto : {}", menuIdDto);
 
-        // 급여대장 타이틀 구하기
-        List<String> titles = GlobalMethod.makeTitle("순번", "입사일","사원","부서");
-        List<String> useTitles = service030101.findAllByUseItemNm();
-        titles.addAll(useTitles);
-        titles.addAll(List.of(new String[]{"지급총액", "공제총액", "실지급액"}));
+        // 타이틀 구하기
+        List<String> titles = GlobalMethod.makeTitle("순번", "입사일","관리", "사원","부서","지급총액","공제총액","실지급액");
 
         model.addAttribute("menus", menuMaker.getMenuId(1, "", "", ""));
         model.addAttribute("menuNm", menuMaker.getMenuNm(menuIdDto));
@@ -71,15 +68,12 @@ public class Controller030104 {
         model.addAttribute("global", new GlobalConst());
 
 
-        // 급여대장 부서 -> 직급 변환
         List<CodeDto> depts = service020102.findAllDept();
         Map<String, String> deptMap = codeToName.dept();
 
-
-        // 급여대장
-        Page<PayrollDto> pagingList = service030104.findAll(pageable,sPayDt.replaceAll("-", ""),
+        Page<Dto030105> pagingList = service030105.findAll(pageable,sPayDt.replaceAll("-", ""),
                 map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"));
-        List<PayrollDto> list = pagingList.getContent()
+        List<Dto030105> list = pagingList.getContent()
                 .stream().peek(m -> {
                     m.setPost(deptMap.get(m.getPost()));
                     m.setEmpDt(m.getEmpDt().substring(0,4) + "-" + m.getEmpDt().substring(4,6) + "-" + m.getEmpDt().substring(6));
@@ -90,9 +84,8 @@ public class Controller030104 {
         model.addAttribute("depts", depts);
 
         // 총합 구하기
-        TotalPayrollDto totalPayrollDto = TotalPayrollDto.of(list, useTitles);
-        log.info("totalPayroll = {}", totalPayrollDto);
-        model.addAttribute("totals", totalPayrollDto);
+        DtoTotal030105 dtoTotal030105 = DtoTotal030105.of(list);
+        model.addAttribute("totals", dtoTotal030105);
 
         //검색조건 유지
         model.addAttribute("sPayDt", sPayDt);
@@ -103,6 +96,6 @@ public class Controller030104 {
         model.addAttribute("pageMaker", new PageMaker(pageable, pagingList.getTotalElements()));
         model.addAttribute("list", list);
 
-        return "pay/030104";
+        return "pay/030105";
     }
 }

@@ -7,15 +7,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.honey.pay.dto.Dto030105;
 import project.honey.pay.dto.PayrollDto;
 import project.honey.pay.entity.Tb301;
 import project.honey.pay.entity.Tb303;
 import project.honey.pay.repository.Tb301Repository;
-import project.honey.pay.repository.Tb302Repository;
 import project.honey.pay.repository.Tb303Repository;
 import project.honey.personDepart.entity.Tb201;
 import project.honey.personDepart.repository.Tb201Repository;
-import project.honey.personDepart.repository.Tb202Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,22 +24,20 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class Service030104Impl implements Service030104{
+public class Service030105Impl implements Service030105 {
 
     private final Tb201Repository tb201Repository;
     private final Tb301Repository tb301Repository;
     private final Tb303Repository tb303Repository;
 
     @Override
-    public Page<PayrollDto> findAll(Pageable pageable, String payDt, String empNm, String postCd, String deptCd) {
+    public Page<Dto030105> findAll(Pageable pageable, String payDt, String empNm, String postCd, String deptCd) {
         payDt = payDt.replaceAll("-", "");
-//        // 사용 가능한 항목들 조회
-//        List<String> items = tb301Repository.findAllByUseItemCd();
 
         // 퇴사하지 않은 사원 조회
         Page<Tb201> tb201s = tb201Repository.findAllByLeave(empNm, postCd, deptCd, pageable);
 
-        List<PayrollDto> dtos = new ArrayList<>();
+        List<Dto030105> dtos = new ArrayList<>();
         for (Tb201 tb201 : tb201s) {
             // 사원 급여내역에서 해당 월의 사용중인 급여만 조회
             List<Tb303> tb303s = tb303Repository.findAllByUsePay(tb201.getEmpNo(), payDt);
@@ -50,7 +47,6 @@ public class Service030104Impl implements Service030104{
             int deduction = 0;  //공제액
             int actualPayment = 0;  //실지급액
 
-            List<Integer> pays = tb303s.stream().mapToInt(tb303 -> tb303.getPayAmt().intValue()).boxed().collect(Collectors.toList());
             for (Tb303 tb303 : tb303s) {
                 try {
                     Tb301 tb301 = tb301Repository.findByItemCd(tb303.getItemCd()).orElseThrow(RuntimeException::new);
@@ -76,7 +72,7 @@ public class Service030104Impl implements Service030104{
             deduction += (int) (Math.ceil((payout - (payout - taxAmt)) * deductionSub) / 100);
             actualPayment = payout - deduction;
 
-            dtos.add(PayrollDto.of(tb201, pays, payout, deduction, actualPayment));
+            dtos.add(Dto030105.of(tb201, payout, deduction, actualPayment));
         }
 
         return new PageImpl<>(dtos.stream().filter(f -> f.getPayout() > 0).collect(Collectors.toList()), pageable, tb201s.getTotalElements());

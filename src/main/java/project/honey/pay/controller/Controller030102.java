@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.honey.comm.CodeToName;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
@@ -17,6 +18,7 @@ import project.honey.pay.dto.Tb302HomeDto;
 import project.honey.pay.dto.Tb302PopupDto;
 import project.honey.pay.service.Service030101;
 import project.honey.pay.service.Service030102;
+import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.personDepart.service.Service020101;
 import project.honey.personDepart.service.Service020102;
 import project.honey.personDepart.service.Service020201;
@@ -25,6 +27,7 @@ import project.honey.system.service.Service990301;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @Slf4j
@@ -38,6 +41,7 @@ public class Controller030102 {
     private final Service990301 service990301;
     private final Service020102 service020102;
     private final MenuMaker menuMaker;
+    private final CodeToName codeToName;
 
     @GetMapping
     public String findAll(@RequestParam Map<String, String> map,
@@ -55,9 +59,19 @@ public class Controller030102 {
         model.addAttribute("titles", titles);
         model.addAttribute("global", new GlobalConst());
 
+        // 변환 데이터 가져오기
+        Map<String, String> postMap = codeToName.commonCode("01");
+        Map<String, String> deptMap = codeToName.dept();
+
 
         Page<Tb302HomeDto> list = service030102.findAllByLeave(pageable, map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"));
-        List<Tb302HomeDto> content = list.getContent();
+
+        // 값 변환
+        List<Tb302HomeDto> content = list.getContent().stream()
+                .peek(dto -> {
+                    dto.setPost(postMap.get(dto.getPost()));
+                    dto.setDeptNm(deptMap.get(dto.getDeptNm()));
+                }).collect(Collectors.toList());
 
         model.addAttribute("posts", service990301.findByFstId("01"));
         model.addAttribute("depts", service020102.findAllDept());
@@ -111,9 +125,25 @@ public class Controller030102 {
                 "순번", "관리", "공제/지급", "과세여부", "급여항목", "금액"
         );
 
-        List<Tb302PopupDto> list = service030102.findAll(empNo);
+        // 변환 데이터
+        Map<String, String> itemMap = codeToName.item();
+        Map<String, String> itemDivMap = codeToName.commonCode("05");
+        Map<String, String> postMap = codeToName.commonCode("01");
+
+        List<Tb302PopupDto> list = service030102.findAll(empNo).stream().peek(dto -> {
+            dto.setItemCd(itemMap.get(dto.getItemCd()));
+            dto.setItemDiv(itemDivMap.get(dto.getItemDiv()));
+        }).collect(Collectors.toList());
+
+        Tb201Dto empDto = service020101.findByEmpNo(empNo);
+        Tb201Dto emp = Tb201Dto.builder()
+                .empNm(empDto.getEmpNm())
+                .post(postMap.get(empDto.getPost()))
+                .build();
+
         model.addAttribute("dtos", list);
-        model.addAttribute("emp", service020101.findByEmpNo(empNo));
+        model.addAttribute("emp", emp);
+
 
         model.addAttribute("titles", titles);
         model.addAttribute("totalPayAmt", list.stream().mapToDouble(Tb302PopupDto::getPayAmt).sum());
@@ -154,7 +184,7 @@ public class Controller030102 {
     }
 
     @GetMapping("/input")
-    public String input(Model model,String empNo, String action, Integer id){
+    public String input(Model model, String empNo, String action, Integer id) {
         log.info("input");
         log.info("action = {}", action);
         log.info("id = {}", id);
