@@ -34,16 +34,6 @@
         <script>
             // 페이징
             $(document).ready(function () {
-                // 조회
-                $('#query').click(function (e){
-                    e.preventDefault();
-                    console.log("hello")
-                    var form = $('form[name="fm_home"]');
-                    $('#size').val($('#num_per_page').val());
-                    $('#page').val(1);
-                    form.attr("method", "get");
-                    form.submit();
-                })
                 // 페이징 번호
                 $('.page-link').on('click', function (e) {
                     e.preventDefault();

@@ -5,6 +5,15 @@
         <script th:inline="javascript">
             function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
                 switch (as_action) {
+                    case "query" :
+                        var form = $('form[name="fm_home"]');
+                        form.action = "/030104"
+                        $('#size').val($('#num_per_page').val());
+                        $('#page').val(1);
+                        form.attr("method", "get");
+                        form.submit();
+                        break;
+
                     case "pitemedel" :  //급여항목삭제
                         if (confirm("자료를 삭제 하시겠습니까?")) {
                             fm_home.action = "/030103/pitemedel"
@@ -45,6 +54,12 @@
                         gf_popup("550","800","030103_inputbox","/030103/popup/" + as_val1 + "?payDt=" + payDt +
                             "&rPayDt=" + rPayDt + "&fstId=" + [[${menuId.fstId}]]
                             + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]);
+                        break;
+
+                    case "print":
+                        var url = window.location.href + "";
+                        gf_popup("1250","700","030104_inputbox","/030104/print?" + url.split('?')[1]);
+                        break;
                 }
             }
         </script>
@@ -90,7 +105,7 @@
                                 </td>
 
                                 <td class="px-4">
-                                    <button name="query" id="query" type="submit" class="btn btn-gfk btn-sm">조회</button>&nbsp;
+                                    <button name="query" id="query" type="submit" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
                                     <button name="print" id="print" type="button" class="btn btn-gfk btn-sm" th:onclick="lf_confirm(this.name,[[${sPayDt}]],'','','')">인쇄</button>
                                 </td>
                             </tr>
@@ -164,13 +179,6 @@
                     })
                 }
             });
-
-            // $('button[name="paymnt"]').click(function (e) {
-            //     e.preventDefault();
-            //     var url = window.location.href + "";
-            //     gf_popup("550","800","030103_inputbox",url.split('?')[0] + "/popup/" + $(this).data("empno") + "?fstId=" + [[${menuId.fstId}]]
-            //         + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]) ;
-            // });
 
         });
     </script>

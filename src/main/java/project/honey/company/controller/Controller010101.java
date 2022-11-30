@@ -45,27 +45,27 @@ public class Controller010101 {
 
         return "company/010101";
     }
-    @PostMapping()
-    public RedirectView companySave(@ModelAttribute("form") CompanyForm form) {
-        log.info("form = "+form);
-
-        Map<String, String> imagenm = new HashMap<>();
-
-        if(!form.getLogonm().isEmpty()) {
-            MultipartFile logoFile = form.getLogonm();
-            String path = UploadService.uploadFile(logoFile, fileDir);
-            imagenm.put("logonm",path);
-        }
-
-        if(!form.getStampnm().isEmpty()) {
-            MultipartFile stampFile = form.getStampnm();
-            String path = UploadService.uploadFile(stampFile, fileDir);
-            imagenm.put("stampnm",path);
-        }
-
-        service010101.save(form, imagenm);
-
-        return new RedirectView("/010101");
-    }
+//    @PostMapping()
+//    public RedirectView companySave(@ModelAttribute("form") CompanyForm form) {
+//        log.info("form = "+form);
+//
+//        Map<String, String> imagenm = new HashMap<>();
+//
+//        if(!form.getLogonm().isEmpty()) {
+//            MultipartFile logoFile = form.getLogonm();
+//            String path = UploadService.uploadFile(logoFile, fileDir);
+//            imagenm.put("logonm",path);
+//        }
+//
+//        if(!form.getStampnm().isEmpty()) {
+//            MultipartFile stampFile = form.getStampnm();
+//            String path = UploadService.uploadFile(stampFile, fileDir);
+//            imagenm.put("stampnm",path);
+//        }
+//
+//        service010101.save(form, imagenm);
+//
+//        return new RedirectView("/010101");
+//    }
 
 }

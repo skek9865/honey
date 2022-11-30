@@ -6,10 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import project.honey.comm.CodeToName;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
@@ -23,6 +20,8 @@ import project.honey.pay.dto.TotalPayrollDto;
 import project.honey.pay.service.Service030101;
 import project.honey.pay.service.Service030104;
 import project.honey.pay.service.Service030105;
+import project.honey.personDepart.dto.Tb201Dto;
+import project.honey.personDepart.service.Service020101;
 import project.honey.personDepart.service.Service020102;
 import project.honey.system.dto.CodeDto;
 import project.honey.system.service.Service990301;
@@ -40,6 +39,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/030105")
 public class Controller030105 {
 
+    private final Service020101 service020101;
     private final Service020102 service020102;
     private final Service030105 service030105;
     private final Service990301 service990301;
@@ -52,7 +52,7 @@ public class Controller030105 {
                           Pageable pageable) {
         //날짜 기본값 세팅
         String sPayDt = map.get("sPayDt");
-        if(sPayDt == null){
+        if (sPayDt == null) {
             sPayDt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM"));
         }
 
@@ -60,7 +60,7 @@ public class Controller030105 {
         log.info("menuIdDto : {}", menuIdDto);
 
         // 타이틀 구하기
-        List<String> titles = GlobalMethod.makeTitle("순번", "입사일","관리", "사원","부서","지급총액","공제총액","실지급액");
+        List<String> titles = GlobalMethod.makeTitle("순번", "입사일", "관리", "사원", "부서", "지급총액", "공제총액", "실지급액");
 
         model.addAttribute("menus", menuMaker.getMenuId(1, "", "", ""));
         model.addAttribute("menuNm", menuMaker.getMenuNm(menuIdDto));
@@ -71,12 +71,12 @@ public class Controller030105 {
         List<CodeDto> depts = service020102.findAllDept();
         Map<String, String> deptMap = codeToName.dept();
 
-        Page<Dto030105> pagingList = service030105.findAll(pageable,sPayDt.replaceAll("-", ""),
+        Page<Dto030105> pagingList = service030105.findAll(pageable, sPayDt.replaceAll("-", ""),
                 map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"));
         List<Dto030105> list = pagingList.getContent()
                 .stream().peek(m -> {
                     m.setPost(deptMap.get(m.getPost()));
-                    m.setEmpDt(m.getEmpDt().substring(0,4) + "-" + m.getEmpDt().substring(4,6) + "-" + m.getEmpDt().substring(6));
+                    m.setEmpDt(m.getEmpDt().substring(0, 4) + "-" + m.getEmpDt().substring(4, 6) + "-" + m.getEmpDt().substring(6));
                 })
                 .collect(Collectors.toList());
 
@@ -97,5 +97,13 @@ public class Controller030105 {
         model.addAttribute("list", list);
 
         return "pay/030105";
+    }
+
+    @GetMapping("/print/{empNo}")
+    public String print(@PathVariable String empNo, String payDt, Model model) {
+        model.addAttribute("global", new GlobalConst());
+        model.addAttribute("dto", service030105.print(empNo, payDt));
+
+        return "pay/030105_prt";
     }
 }

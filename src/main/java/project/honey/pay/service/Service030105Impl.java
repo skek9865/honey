@@ -7,8 +7,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.honey.comm.CodeToName;
 import project.honey.pay.dto.Dto030105;
 import project.honey.pay.dto.PayrollDto;
+import project.honey.pay.dto.PrintData030105;
 import project.honey.pay.entity.Tb301;
 import project.honey.pay.entity.Tb303;
 import project.honey.pay.repository.Tb301Repository;
@@ -18,6 +20,7 @@ import project.honey.personDepart.repository.Tb201Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +32,7 @@ public class Service030105Impl implements Service030105 {
     private final Tb201Repository tb201Repository;
     private final Tb301Repository tb301Repository;
     private final Tb303Repository tb303Repository;
+    private final CodeToName codeToName;
 
     @Override
     public Page<Dto030105> findAll(Pageable pageable, String payDt, String empNm, String postCd, String deptCd) {
@@ -76,5 +80,15 @@ public class Service030105Impl implements Service030105 {
         }
 
         return new PageImpl<>(dtos.stream().filter(f -> f.getPayout() > 0).collect(Collectors.toList()), pageable, tb201s.getTotalElements());
+    }
+
+    @Override
+    public PrintData030105 print(String empNo, String payDt) {
+        Tb201 tb201 = tb201Repository.findByEmpNo(empNo).orElseThrow(RuntimeException::new);
+        List<Tb303> tb303s = tb303Repository.findAllByEmpNoAndPayDt(empNo, payDt.replaceAll("-",""));
+        Map<String, String> postMap = codeToName.commonCode("01");
+        Map<String, String> deptMap = codeToName.dept();
+        Map<String, String> itemMap = codeToName.item();
+        return PrintData030105.of(tb201, tb303s, postMap, deptMap, itemMap, tb301Repository);
     }
 }

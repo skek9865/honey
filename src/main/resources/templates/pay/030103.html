@@ -5,6 +5,15 @@
         <script th:inline="javascript">
             function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
                 switch (as_action) {
+                    case "query" :
+                            var form = $('form[name="fm_home"]');
+                            form.action = "/030103"
+                            $('#size').val($('#num_per_page').val());
+                            $('#page').val(1);
+                            form.attr("method", "get");
+                            form.submit();
+                        break;
+
                     case "pitemedel" :  //급여항목삭제
                         if (confirm("자료를 삭제 하시겠습니까?")) {
                             fm_home.action = "/030103/pitemedel"
@@ -98,7 +107,7 @@
                                 </td>
 
                                 <td class="px-4">
-                                    <button name="query" id="query" type="submit" class="btn btn-gfk btn-sm">조회</button>&nbsp;
+                                    <button name="query" id="query" type="submit" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
                                     <button name="pitemesave" id="pitemesave" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">급여계산</button>&nbsp;
                                     <button name="pitemedel" id="pitemedel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">급여삭제</button>&nbsp;
                                     <button name="payload" id="payload" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">이전달급여</button>
