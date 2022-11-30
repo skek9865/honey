@@ -25,14 +25,17 @@ public class Tb204Dto {
         this.compNo = compNo;
     }
 
-    public static Tb204Dto of(Tb204 entity){
+    public static Tb204Dto of(Tb204 entity, String partNm){
+
+        if(partNm == null) partNm = entity.getPart();
+
         return Tb204Dto.builder()
                 .seq(entity.getSeq())
                 .compNo(entity.getCompNo())
                 .saveFNm(entity.getSaveFNm())
                 .outFNm(entity.getOutFNm())
                 .note(entity.getNote())
-                .part(entity.getPart())
+                .part(partNm)
                 .createDate(entity.getCreateDate())
                 .createId(entity.getCreateId())
                 .updateDate(entity.getUpdateDate())

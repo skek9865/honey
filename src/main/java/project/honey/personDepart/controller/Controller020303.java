@@ -92,6 +92,6 @@ public class Controller020303 {
         model.addAttribute("leaveDate", leaveDate);
         model.addAttribute("nowDate", nowDate);
 
-        return "personDepart/020303_1";
+        return "personDepart/020303_prt";
     }
 }

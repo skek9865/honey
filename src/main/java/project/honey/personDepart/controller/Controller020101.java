@@ -203,6 +203,7 @@ public class Controller020101 {
         widthMap.put(5,5000);
         widthMap.put(6,5000);
         widthMap.put(7,5000);
+        widthMap.put(8,5000);
         return widthMap;
     }
 
