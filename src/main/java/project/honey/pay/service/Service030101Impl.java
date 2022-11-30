@@ -41,8 +41,6 @@ public class Service030101Impl implements Service030101{
 
     @Override
     public Page<Tb301Dto> findAll(Pageable pageable) {
-//        List<CodeDto> codes = tb906Repository.findByFstIdByDsl("05");
-//        return tb301Repository.findAllByDsl(pageable).map(Tb301Dto::of);
         return tb301Repository.findAllByDsl(pageable);
     }
 

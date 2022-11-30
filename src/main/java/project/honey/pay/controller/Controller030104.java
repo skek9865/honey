@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import project.honey.comm.CodeToName;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
@@ -43,6 +44,7 @@ public class Controller030104 {
     private final Service030104 service030104;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
+    private final CodeToName codeToName;
 
     @GetMapping
     public String findAll(@RequestParam Map<String, String> map,
@@ -71,10 +73,7 @@ public class Controller030104 {
 
         // 급여대장 부서 -> 직급 변환
         List<CodeDto> depts = service020102.findAllDept();
-        Map<String, String> deptMap = new HashMap<>();
-        for (CodeDto dept : depts) {
-            deptMap.put(dept.getValue(), dept.getText());
-        }
+        Map<String, String> deptMap = codeToName.dept();
 
 
         // 급여대장
