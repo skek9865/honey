@@ -2,6 +2,18 @@
       xmlns:th="http://www.thymeleaf.org">
 <form name="fm_home" method="post" >
     <main >
+        <script th:inline="javascript">
+            function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+                switch (as_action) {
+                    case "excel" :  //급여항목삭제
+                        fm_home.action = "/030101/excel"
+                        fm_home.method = "get"
+                        fm_home.submit();
+                        break;
+
+                }
+            }
+        </script>
         <div class="container-fluid p-2">
             <div class="titleBar" id="titleBar">
                 <div class="row">
@@ -42,7 +54,7 @@
                         <td th:text="${pay.taxDiv}"></td>
                         <td th:text="${pay.itemCd}"></td>
                         <td th:text="${pay.itemNm}"></td>
-                        <td th:text="${#numbers.formatDecimal(pay.taxRate,1,2)}"></td>
+                        <td class="text-end" th:text="${#numbers.formatDecimal(pay.taxRate,1,2)}"></td>
                         <td th:text="${pay.useYn}"></td>
                     </tr>
                     </tbody>

@@ -54,6 +54,24 @@ public class Tb301RepositoryDslImpl implements Tb301RepositoryDsl{
     }
 
     @Override
+    public List<Tb301Dto> findAllByExcel() {
+        return queryFactory
+                .select(new QTb301Dto(
+                        tb301.seq,
+                        tb906.codeNm,
+                        tb301.taxDiv,
+                        tb301.itemCd,
+                        tb301.itemNm,
+                        tb301.taxRate,
+                        tb301.useYn))
+                .from(tb301)
+                .leftJoin(tb906).on(tb301.itemDiv.eq(tb906.scdId))
+                .where(fstIdEq("05"))
+                .orderBy(tb301.seq.asc())
+                .fetch();
+    }
+
+    @Override
     public List<String> findAllByUseItemNm() {
         return queryFactory.select(tb301.itemNm)
                 .from(tb301)

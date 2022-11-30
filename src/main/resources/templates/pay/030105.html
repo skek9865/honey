@@ -113,9 +113,9 @@
                         <td th:text="${dto.empDt}"></td>
                         <td th:text="${dto.empNm}"></td>
                         <td th:text="${dto.post}"></td>
-                        <td class="payout" th:text="${#numbers.formatInteger(dto.payout,0, 'COMMA')}"></td>
-                        <td class="deduction" th:text="${#numbers.formatInteger(dto.deduction,0, 'COMMA')}"></td>
-                        <td class="actualPayment" th:text="${#numbers.formatInteger(dto.actualPayment,0, 'COMMA')}"></td>
+                        <td class="payout text-end" th:text="${#numbers.formatInteger(dto.payout,0, 'COMMA')}"></td>
+                        <td class="deduction text-end" th:text="${#numbers.formatInteger(dto.deduction,0, 'COMMA')}"></td>
+                        <td class="actualPayment text-end" th:text="${#numbers.formatInteger(dto.actualPayment,0, 'COMMA')}"></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -125,9 +125,9 @@
                         <th class="tableList_f_td" data-column="2"></th>
                         <th class="tableList_f_td" data-column="3"></th>
                         <th class="tableList_f_td" data-column="4"></th>
-                        <th class="tableList_f_td" data-column="5" th:text="${#numbers.formatInteger(totals.TotalPayout,0, 'COMMA')}"></th>
-                        <th class="tableList_f_td" data-column="6" th:text="${#numbers.formatInteger(totals.TotalDeduction,0, 'COMMA')}"></th>
-                        <th class="tableList_f_td tablesorter-headerDesc" data-column="7" th:text="${#numbers.formatInteger(totals.TotalActualPayment,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td text-end" data-column="5" th:text="${#numbers.formatInteger(totals.TotalPayout,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td text-end" data-column="6" th:text="${#numbers.formatInteger(totals.TotalDeduction,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td text-end tablesorter-headerDesc" data-column="7" th:text="${#numbers.formatInteger(totals.TotalActualPayment,0, 'COMMA')}"></th>
                     </tr>
                     </tfoot>
                 </table>

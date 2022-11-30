@@ -98,10 +98,10 @@
                         <td th:text="${dto.empDt}"></td>
                         <td th:text="${dto.post}"></td>
                         <td th:text="${dto.deptNm}"></td>
-                        <td class="payout" th:text="${#numbers.formatInteger(dto.payout,0, 'COMMA')}"></td>
-                        <td class="taxAmt" th:text="${#numbers.formatInteger(dto.taxAmt,0, 'COMMA')}"></td>
-                        <td class="deduction" th:text="${#numbers.formatInteger(dto.deduction,0, 'COMMA')}"></td>
-                        <td class="actualPayment" th:text="${#numbers.formatInteger(dto.actualPayment,0, 'COMMA')}"></td>
+                        <td class="payout text-end" th:text="${#numbers.formatInteger(dto.payout,0, 'COMMA')}"></td>
+                        <td class="taxAmt text-end" th:text="${#numbers.formatInteger(dto.taxAmt,0, 'COMMA')}"></td>
+                        <td class="deduction text-end" th:text="${#numbers.formatInteger(dto.deduction,0, 'COMMA')}"></td>
+                        <td class="actualPayment text-end" th:text="${#numbers.formatInteger(dto.actualPayment,0, 'COMMA')}"></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -113,9 +113,9 @@
                         <th class="tableList_f_td" data-column="4"></th>
                         <th class="tableList_f_td" data-column="5"></th>
                         <th class="tableList_f_td" data-column="6"></th>
-                        <th class="tableList_f_td" data-column="7" th:text="${#numbers.formatInteger(totalPayout,0, 'COMMA')}"></th>
-                        <th class="tableList_f_td" data-column="8" th:text="${#numbers.formatInteger(totalTaxAmt,0, 'COMMA')}"></th>
-                        <th class="tableList_f_td" data-column="9" th:text="${#numbers.formatInteger(totalDeduction,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td text-end" data-column="7" th:text="${#numbers.formatInteger(totalPayout,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td text-end" data-column="8" th:text="${#numbers.formatInteger(totalTaxAmt,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td text-end" data-column="9" th:text="${#numbers.formatInteger(totalDeduction,0, 'COMMA')}"></th>
                         <th class="tableList_f_td tablesorter-headerDesc" data-column="10" th:text="${#numbers.formatInteger(totalActualPayment,0, 'COMMA')}"></th>
                     </tr>
                     </tfoot>

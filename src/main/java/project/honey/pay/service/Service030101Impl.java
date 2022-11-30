@@ -70,5 +70,11 @@ public class Service030101Impl implements Service030101{
         return tb301Repository.findAllByUseItemNm();
     }
 
+    // 엑셀용 데이터
+    @Override
+    public List<Tb301Dto> findAllByExcel() {
+        return tb301Repository.findAllByExcel();
+    }
+
 
 }
