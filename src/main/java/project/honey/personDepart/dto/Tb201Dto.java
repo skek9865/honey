@@ -43,9 +43,13 @@ public class Tb201Dto {
     private String updateDate;
     private String updateId;
 
-    public static Tb201Dto of(Tb201 entity){
+    public static Tb201Dto of(Tb201 entity, String postNm, String deptNm){
         Boolean headYn = false;
         if(entity.getHeadYn().equals("Y")) headYn = true;
+
+        if(postNm == null) postNm = entity.getPost();
+        if(deptNm == null) deptNm = entity.getDeptCd();
+
         return Tb201Dto.builder()
                 .seq(entity.getSeq())
                 .empNo(entity.getEmpNo())
@@ -56,7 +60,7 @@ public class Tb201Dto {
                 .headYn(headYn)
                 .empDt(entity.getEmpDt())
                 .empClass(entity.getEmpClass())
-                .post(entity.getPost())
+                .post(postNm)
                 .post1(entity.getPost1())
                 .leaveDt(entity.getLeaveDt())
                 .leaveRs(entity.getLeaveRs())
@@ -64,7 +68,7 @@ public class Tb201Dto {
                 .mobile(entity.getMobile())
                 .psNo(entity.getPsNo())
                 .email(entity.getEmail())
-                .deptCd(entity.getDeptCd())
+                .deptCd(deptNm)
                 .workCd(entity.getWorkCd())
                 .bankNm(entity.getBankNm())
                 .aCutNo(entity.getACutNo())

@@ -5,6 +5,13 @@
   <script th:inline="javascript">
     function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
       switch (as_action) {
+        case "query" :
+          $('#size').val($('#num_per_page').val());
+          $('#page').val(1);
+          fm_home.action = "/020101";
+          fm_home.method = "/get";
+          fm_home.submit();
+          break;
         case "insert" : //저장
         case "update" : //저장
           fm_input.action = "/020101/" + as_action;
@@ -15,7 +22,9 @@
           fm_home.submit();
           break;
         case "excel" :
-          location.href = "/020101/excel?sEmpNm=" + as_val1 + "&sPost=" + as_val2 + "&sDeptCd=" + as_val3;
+          fm_home.action = "/020101/excel";
+          fm_home.method = "get";
+          fm_home.submit();
           break;
       }
     }
@@ -54,13 +63,13 @@
                   </select>
                 </td>
                 <td class="px-4">
-                  <button name="query" id="query" type="button" class="btn btn-gfk btn-sm">조회</button>
+                  <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>
                   <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal"
                           data-target="#inputpopup"
                           th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">
                     등록
                   </button>
-                  <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" th:onclick="lf_confirm(this.name,[[${sEmpNm}]],[[${sPost}]],[[${sDeptCd}]])">엑셀</button>
+                  <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
                 </td>
               </tr>
             </table>
@@ -110,5 +119,6 @@
 <script th:inline="javascript">
   $(document).ready(function () {
     $("#modal_main").addClass("modal-xl");
+    $("#datatable_1").width([[${global.mainWidth}]]);
   });
 </script>
