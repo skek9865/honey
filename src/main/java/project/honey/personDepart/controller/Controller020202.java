@@ -48,6 +48,8 @@ public class Controller020202 {
                           Model model, Pageable pageable){
         log.info("회사파일관리 메인");
         log.info("menuId = {}", menuIdDto);
+        log.info("sOutFNm = {}, sPart = {}", map.get("sOutFNm"), map.get("sPart"));
+
         List<String> titles = GlobalMethod.makeTitle(
                 "순번", "관리", "구분", "파일", "비고"
         );
@@ -179,7 +181,8 @@ public class Controller020202 {
     private Map<Integer, Integer> makeExcelWidth(){
         Map<Integer, Integer> widthMap = new HashMap<>();
         widthMap.put(0,1000);
-        widthMap.put(3,7000);
+        widthMap.put(2,10000);
+        widthMap.put(3,10000);
         return widthMap;
     }
     

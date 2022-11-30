@@ -14,8 +14,10 @@ import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
+import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.personDepart.dto.Tb203Dto;
 import project.honey.personDepart.form.Tb203Form;
+import project.honey.personDepart.service.Service020101;
 import project.honey.personDepart.service.Service020201;
 import project.honey.system.dto.Tb901Dto;
 import project.honey.system.service.Service990101;
@@ -38,6 +40,7 @@ import java.util.Map;
 public class Controller020201 {
 
     private final Service020201 service020201;
+    private final Service020101 service020101;
     private final Service990101 service990101;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
@@ -77,9 +80,11 @@ public class Controller020201 {
         log.info("scdId = {}", map.get("scdId"));
         log.info("thdId = {}", map.get("thdId"));
 
-//        String user = session.getAttribute("user").toString();
-//        Tb901Dto entity901 = service990101.findById(user);
-//        String empNo = entity901.getEmpNo();
+        String user = session.getAttribute("user").toString();
+        Tb901Dto entity901 = service990101.findById(user);
+        String empNo = entity901.getEmpNo();
+
+        Tb201Dto tb201Dto = service020101.findByEmpNo(empNo);
 
         model.addAttribute("fstId", map.get("fstId"));
         model.addAttribute("scdId", map.get("scdId"));
@@ -88,7 +93,7 @@ public class Controller020201 {
         model.addAttribute("global", new GlobalConst());
         model.addAttribute("partCodes",service990301.findByFstId("25"));
         if(map.get("vseq").isEmpty()){
-            model.addAttribute("dto",new Tb203Dto("hello"));
+            model.addAttribute("dto",new Tb203Dto(empNo, tb201Dto.getEmpNm()));
             return "personDepart/020201_input";
         }
         model.addAttribute("dto", service020201.findById(Integer.parseInt(map.get("vseq"))));
@@ -161,7 +166,7 @@ public class Controller020201 {
         List<List<String>> excelData = new ArrayList<>();
         for(Tb203Dto dto : findAllByExcel){
             List<String> list = new ArrayList<>();
-            list.add(dto.getEmpNo());
+            list.add(dto.getEmpNm());
             list.add(dto.getPart());
             list.add(dto.getOutFNm());
             excelData.add(list);
@@ -180,7 +185,7 @@ public class Controller020201 {
     private Map<Integer, Integer> makeExcelWidth(){
         Map<Integer, Integer> widthMap = new HashMap<>();
         widthMap.put(0,1000);
-        widthMap.put(3,5000);
+        widthMap.put(3,10000);
         return widthMap;
     }
 }

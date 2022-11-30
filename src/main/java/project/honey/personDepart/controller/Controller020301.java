@@ -86,6 +86,6 @@ public class Controller020301 {
         model.addAttribute("wordDate", workDate);
         model.addAttribute("nowDate", nowDate);
 
-        return "personDepart/020301_1";
+        return "personDepart/020301_prt";
     }
 }
