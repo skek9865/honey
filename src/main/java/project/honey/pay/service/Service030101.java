@@ -23,5 +23,5 @@ public interface Service030101 {
 
     List<String> findAllByUseItemNm();
 
-    List<Tb301Dto> findAllByExcel();
+    List<List<String>> findAllByExcel();
 }

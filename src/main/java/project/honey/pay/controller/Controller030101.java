@@ -111,76 +111,19 @@ public class Controller030101 {
     }
 
     @GetMapping("/excel")
-    public void excel(Pageable pageable, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        log.info("사원관리 excel");
+    public void excel(HttpServletResponse response, HttpServletRequest request) throws IOException {
         log.info("url = {}", request.getHeader("referer"));
 
         List<String> titles = GlobalMethod.makeTitle(
                 "순번", "공제/지급구분", "과세여부", "항목코드", "항목명", "세제율", "사용여부"
         );
-        List<Tb301Dto> findAllByExcel = service030101.findAllByExcel();
 
-        List<List<String>> excelData = makeExcelData(findAllByExcel);
-        List<String> excelType = makeExcelType();
-        Map<Integer, Integer> excelWidth = makeExcelWidth();
-        Workbook wb = excelMaker.makeExcel("aaa", titles, excelData, excelType, excelWidth);
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String", "String", "String", "String", "String"
+        );
 
-        // 컨텐츠 타입과 파일명 지정
-        String fileName = "급여항목관리(030101).xlsx";
-        String outputFileName = new String(fileName.getBytes("KSC5601"), "8859_1");
-        response.setContentType("application/xlsx");
-        response.setHeader("Content-Disposition", "Attachment; filename=" + outputFileName);
-
-        OutputStream fileOut = response.getOutputStream();
-
-        // Excel File Output
-        wb.write(fileOut);
-        fileOut.close();
-
-        response.getOutputStream().flush();
-        response.getOutputStream().close();
-
-        wb.close();
-    }
-
-    private List<List<String>> makeExcelData(List<Tb301Dto> findAllByExcel) {
-        List<List<String>> excelData = new ArrayList<>();
-        for(Tb301Dto dto : findAllByExcel){
-            List<String> list = new ArrayList<>();
-            list.add(dto.getItemDiv());
-            list.add(dto.getTaxDiv());
-            list.add(dto.getItemCd());
-            list.add(dto.getItemNm());
-            list.add(String.valueOf(dto.getTaxRate()));
-            list.add(dto.getUseYn());
-
-            excelData.add(list);
-        }
-        return excelData;
-    }
-
-    private List<String> makeExcelType(){
-        List<String> excelType = new ArrayList<>();
-        excelType.add("String");
-        excelType.add("String");
-        excelType.add("String");
-        excelType.add("String");
-        excelType.add("String");
-        excelType.add("String");
-        excelType.add("String");
-        return excelType;
-    }
-
-    private Map<Integer, Integer> makeExcelWidth(){
-        Map<Integer, Integer> widthMap = new HashMap<>();
-        widthMap.put(0,1000);
-        widthMap.put(1,5000);
-        return widthMap;
-    }
-
-    private String makeFileName(String originalFilename, Integer id){
-        int pos = originalFilename.lastIndexOf(".");
-        String ext = originalFilename.substring(pos + 1);
-        return String.valueOf(id) + "." + ext;
+        List<List<String>> excelData = service030101.findAllByExcel();
+        String fileName = "급여항목관리(030101).xls";
+        excelMaker.makeExcel("급여항목관리 (030101)", titles, excelData, excelType,fileName, response);
     }
 }
