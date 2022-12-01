@@ -13,7 +13,7 @@ public interface Service040101 {
 
     Page<Tb401Dto> findAll(Pageable pageable);
 
-    List<Tb401Dto> findAllByExcel();
+    List<List<String>> findAllByExcel();
 
     Tb401Dto findById(Integer id);
 

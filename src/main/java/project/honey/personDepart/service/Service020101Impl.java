@@ -69,8 +69,8 @@ public class Service020101Impl implements Service020101 {
     }
 
     @Override
-    public List<Tb201Dto> findAllByExcel(String empNm, String postCd, String deptCd) {
-        List<Tb201Dto> dtoList = new ArrayList<>();
+    public List<List<String>> findAllByExcel(String empNm, String postCd, String deptCd) {
+        List<List<String>> dtoList = new ArrayList<>();
 
         List<Tb202> tb202 = tb202Repository.findAll();
         List<CodeDto> tb906 = tb906Repository.findByFstIdByDsl("01");
@@ -78,8 +78,18 @@ public class Service020101Impl implements Service020101 {
         List<Tb201> result = tb201Repository.findAllByExcel(empNm, postCd, deptCd);
 
         for(Tb201 entity : result){
-            Tb201Dto tb201Dto = makeDto(entity, tb202, tb906);
-            dtoList.add(tb201Dto);
+            List<String> list = new ArrayList<>();
+            Tb201Dto dto = makeDto(entity, tb202, tb906);
+            list.add(dto.getEmpNo());
+            list.add(dto.getEmpNm());
+            list.add(dto.getEmpDt());
+            list.add(dto.getPost());
+            list.add(dto.getPhone());
+            list.add(dto.getMobile());
+            list.add(dto.getEmail());
+            list.add(dto.getDeptCd());
+            list.add(dto.getWorkCd());
+            dtoList.add(list);
         }
 
         return dtoList;
@@ -128,8 +138,8 @@ public class Service020101Impl implements Service020101 {
     }
 
     private Tb201Dto makeDto(Tb201 entity, List<Tb202> tb202, List<CodeDto> tb906){
-        String deptNm = "";
-        String postNm = "";
+        String deptNm;
+        String postNm;
 
         Optional<Tb202> find202 = tb202.stream().filter(e -> e.getDeptCd().equals(entity.getDeptCd())).findAny();
         if(find202.isPresent()) deptNm = find202.get().getDeptNm();

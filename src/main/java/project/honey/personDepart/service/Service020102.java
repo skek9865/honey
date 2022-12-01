@@ -22,7 +22,7 @@ public interface Service020102 {
 
     List<CodeDto> findAllDept();
 
-    List<Tb202Dto> findAllByExcel();
+    List<List<String>> findAllByExcel();
 
     String findDeptNmByDeptCd(String deptCd);
 }
