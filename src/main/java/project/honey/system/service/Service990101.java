@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.honey.system.dto.Tb901Dto;
 
+import java.util.List;
 import java.util.Map;
 
 public interface Service990101 {
@@ -25,4 +26,6 @@ public interface Service990101 {
 
     // 사용자리스트
     Map<String, String> userList();
+
+    List<List<String>> findAllByExcel();
 }

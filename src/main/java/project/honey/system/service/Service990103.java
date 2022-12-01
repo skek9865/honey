@@ -19,4 +19,6 @@ public interface Service990103 {
     Tb903Dto findById(Integer seq);
 
     Integer delete(Integer seq);
+
+    List<List<String>> findAllByExcel();
 }

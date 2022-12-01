@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.comm.CodeToName;
+import project.honey.system.dto.Tb901Dto;
 import project.honey.system.dto.Tb903Dto;
 import project.honey.system.entity.Tb901;
 import project.honey.system.entity.Tb903;
@@ -14,6 +15,8 @@ import project.honey.system.entity.Tb904;
 import project.honey.system.repository.Tb903Repository;
 import project.honey.system.repository.Tb904Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -62,5 +65,26 @@ public class Service990103Impl implements Service990103{
     public Integer delete(Integer seq) {
         tb903Repository.deleteById(seq);
         return seq;
+    }
+
+    @Override
+    public List<List<String>> findAllByExcel() {
+        List<Tb903> tb903s = tb903Repository.findAllByExcel();
+        List<List<String>> excelData = new ArrayList<>();
+        Map<String, String> screenMap = codeToName.screen();
+
+        for(Tb903 entity : tb903s){
+            List<String> list = new ArrayList<>();
+            list.add(entity.getUserId());
+            list.add(screenMap.get(entity.getTpId()));
+            list.add(entity.getMenuYn());
+            list.add(entity.getListYn());
+            list.add(entity.getViewYn());
+            list.add(entity.getSaveYn());
+            list.add(entity.getModifyYn());
+            list.add(entity.getDelYn());
+            excelData.add(list);
+        }
+        return excelData;
     }
 }

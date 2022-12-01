@@ -6,10 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.honey.pay.dto.Tb301Dto;
 import project.honey.system.dto.Tb901Dto;
 import project.honey.system.entity.Tb901;
 import project.honey.system.repository.Tb901Repository;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -61,5 +64,27 @@ public class Service990101Impl implements Service990101 {
     public Map<String, String> userList() {
         return tb901Repository.findAll().stream()
                 .collect(Collectors.toMap(Tb901::getUserId, Tb901::getUserNm));
+    }
+
+    @Override
+    public List<List<String>> findAllByExcel() {
+        List<Tb901Dto> tb901s = tb901Repository.findAllByExcel();
+        List<List<String>> excelData = new ArrayList<>();
+        for(Tb901Dto dto : tb901s){
+            List<String> list = new ArrayList<>();
+            list.add(dto.getUserId());
+            list.add(dto.getPasswd());
+            list.add(dto.getUserNm());
+            list.add(dto.getPhone());
+            list.add(dto.getMobile());
+            list.add(dto.getEmail());
+            list.add(dto.getUserGr());
+            list.add(dto.getUseYn());
+            list.add(dto.getEmpYn());
+            list.add(dto.getEmpNo());
+            list.add(dto.getRegDt());
+            excelData.add(list);
+        }
+        return excelData;
     }
 }

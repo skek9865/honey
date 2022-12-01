@@ -3,6 +3,7 @@ package project.honey.system.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.honey.system.dto.CodeDto;
+import project.honey.system.entity.Tb903;
 import project.honey.system.entity.Tb906;
 
 import java.util.List;
@@ -16,4 +17,6 @@ public interface Tb906RepositoryDsl {
 
     // 대그룹, 코드명 검색
     List<CodeDto> findFstIdAllByDsl();
+
+    List<Tb906> findAllByExcel(String fstId);
 }

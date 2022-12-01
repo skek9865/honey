@@ -9,10 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import project.honey.comm.CodeToName;
-import project.honey.comm.GlobalConst;
-import project.honey.comm.GlobalMethod;
-import project.honey.comm.PageMaker;
+import project.honey.comm.*;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
 import project.honey.system.dto.Tb901Dto;
@@ -23,6 +20,8 @@ import project.honey.system.service.Service990201;
 import project.honey.system.service.Service990301;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -35,6 +34,7 @@ public class Controller990103 {
     private final Service990103 service990103;
     private final Service990201 service990201;
     private final MenuMaker menuMaker;
+    private final ExcelMaker excelMaker;
     private final CodeToName codeToName;
 
     // 사용자 저장
@@ -98,6 +98,25 @@ public class Controller990103 {
         model.addAttribute("screens", service990201.findThdMenuAll());
         model.addAttribute("global", new GlobalConst());
         return "system/990103_input";
+    }
+
+    @GetMapping("/excel")
+    public void excel(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        log.info("url = {}", request.getHeader("referer"));
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "순번", "사용자ID", "회원명", "접근여부", "목록사용여부",
+                "건별조회사용여부", "저장사용여부","수정사용여부", "삭제사용여부"
+        );
+
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String", "String", "String", "String",
+                "String", "String"
+        );
+
+        List<List<String>> excelData = service990103.findAllByExcel();
+        String fileName = "시스템사용이력현황(990103)";
+        excelMaker.makeExcel("시스템사용이력현황 (990103)", titles, excelData, excelType, fileName, response);
     }
 
 }

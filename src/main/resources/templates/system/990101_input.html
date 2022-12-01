@@ -78,22 +78,7 @@
                             <label for="empNo" class="input_labal">사원명</label>
                             <select class="form-select" id="empNo" th:field="*{empNo}" th:value="*{empNo}" size="1">
                                 <option value="">선택</option>
-                                <option value="12345">홍길동4</option>
-                                <option value="0002">홍길동1</option>
-                                <option value="0001">홍길동2</option>
-                                <option value="0003">홍길동3</option>
-                                <option value="0007">홍길동5</option>
-                                <option value="0008">홍길동6</option>
-                                <option value="0009">홍길동7</option>
-                                <option value="0010">홍길동8</option>
-                                <option value="0012">홍길동9</option>
-                                <option value="0016">홍길동10</option>
-                                <option value="0025">홍길동15</option>
-                                <option value="0026">홍길동11</option>
-                                <option value="0030">홍길동12</option>
-                                <option value="0031">홍길동13</option>
-                                <option value="0017">홍길동14</option>
-                                <option value="aa">11</option>
+                                <option th:each="emp : ${emps}" th:value="${emp.key}" th:text="${emp.value}">선택</option>
                             </select>
                         </td>
                     </tr>
