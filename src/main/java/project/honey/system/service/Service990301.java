@@ -22,4 +22,6 @@ public interface Service990301 {
     List<CodeDto> findByFstId(String fstId);
 
     List<CodeDto> findFstIdAll();
+
+    List<List<String>> findAllByExcel(String fstId);
 }

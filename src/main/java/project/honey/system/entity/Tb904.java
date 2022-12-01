@@ -11,6 +11,7 @@ import javax.persistence.*;
 @Getter
 @Builder
 @Table(name = "tb_904")
+@ToString
 public class Tb904 extends BaseAtt {
 
     @Id

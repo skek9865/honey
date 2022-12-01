@@ -58,6 +58,31 @@ public class Tb901RepositoryDslImpl implements Tb901RepositoryDsl{
         return new PageImpl<>(result, pageable, total);
     }
 
+    @Override
+    public List<Tb901Dto> findAllByExcel() {
+        return queryFactory
+                .select(
+                        new QTb901Dto(
+                                tb901.userId,
+                                tb901.passwd,
+                                tb901.userNm,
+                                tb901.phone,
+                                tb901.mobile,
+                                tb901.email,
+                                tb906.codeNm,
+                                tb901.useYn,
+                                tb901.empYn,
+                                tb201.empNm,
+                                tb901.regDt
+                        ))
+                .from(tb901)
+                .leftJoin(tb906).on(tb901.userGr.eq(tb906.scdId))
+                .leftJoin(tb201).on(tb901.empNo.eq(tb201.empNo))
+                .where(fstIdEq("99"))
+                .orderBy(tb906.createDate.asc())
+                .fetch();
+    }
+
     private BooleanExpression fstIdEq(String fstId) {
         return StringUtils.hasText(fstId) ? tb906.fstId.eq(fstId) : null;
     }

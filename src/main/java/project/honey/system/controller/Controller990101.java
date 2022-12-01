@@ -10,16 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import project.honey.comm.GlobalConst;
-import project.honey.comm.GlobalMethod;
+import project.honey.comm.*;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.comm.PageMaker;
 import project.honey.system.service.Service990101;
 import project.honey.system.dto.Tb901Dto;
 import project.honey.system.service.Service990301;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -32,6 +32,8 @@ public class Controller990101 {
     private final Service990101 service990101;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
+    private final ExcelMaker excelMaker;
+    private final CodeToName codeToName;
 
     // 사용자 전체 조회
     @GetMapping
@@ -107,7 +109,27 @@ public class Controller990101 {
                         ? service990101.findById(id)
                         : new Tb901Dto());
         model.addAttribute("codes", service990301.findByFstId("99"));
+        model.addAttribute("emps", codeToName.emp());
         model.addAttribute("global", new GlobalConst());
         return "system/990101_input";
+    }
+
+    @GetMapping("/excel")
+    public void excel(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        log.info("url = {}", request.getHeader("referer"));
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "순번", "아이디", "비밀번호", "사용자이름", "전화번호",
+                "모바일", "Email","사용자그룹", "사용여부", "사원여부", "사원명", "등록일자"
+        );
+
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String", "String", "String", "String",
+                "String", "String", "String", "String", "String"
+        );
+
+        List<List<String>> excelData = service990101.findAllByExcel();
+        String fileName = "사용자관리(990101)";
+        excelMaker.makeExcel("사용자관리 (990101)", titles, excelData, excelType,fileName, response);
     }
 }

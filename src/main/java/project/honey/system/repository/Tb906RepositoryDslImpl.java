@@ -73,6 +73,16 @@ public class Tb906RepositoryDslImpl implements Tb906RepositoryDsl{
                 .fetch();
     }
 
+    @Override
+    public List<Tb906> findAllByExcel(String fstId) {
+        return queryFactory.selectFrom(tb906)
+                .where(
+                        fstIdEq(fstId)
+                )
+                .orderBy(tb906.fstId.asc(), tb906.scdId.asc(), tb906.alien.asc())
+                .fetch();
+    }
+
     private BooleanExpression fstIdEq(String fstId) {
         return StringUtils.hasText(fstId) ? tb906.fstId.eq(fstId) : null;
     }
