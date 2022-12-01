@@ -14,7 +14,7 @@ public interface Service020101 {
 
     Page<Tb201Dto> findAll(String empNm, String postCd, String deptCd, Pageable pageable);
 
-    List<Tb201Dto> findAllByExcel(String empNm, String postCd, String deptCd);
+    List<List<String>> findAllByExcel(String empNm, String postCd, String deptCd);
 
     Tb201Dto findById(Integer id);
 

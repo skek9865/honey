@@ -11,6 +11,7 @@ import project.honey.personDepart.entity.Tb202;
 import project.honey.personDepart.repository.Tb202Repository;
 import project.honey.system.dto.CodeDto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,9 +56,18 @@ public class Service020102Impl implements Service020102{
     }
 
     @Override
-    public List<Tb202Dto> findAllByExcel() {
+    public List<List<String>> findAllByExcel() {
+        List<List<String>> dtoList = new ArrayList<>();
         List<Tb202> result = tb202Repository.findAll();
-        return result.stream().map(Tb202Dto::of).collect(Collectors.toList());
+        for(Tb202 entity : result){
+            List<String> list = new ArrayList<>();
+            list.add(entity.getDeptCd());
+            list.add(entity.getDeptNm());
+            list.add(entity.getUseYn());
+
+            dtoList.add(list);
+        }
+        return dtoList;
     }
 
     @Override

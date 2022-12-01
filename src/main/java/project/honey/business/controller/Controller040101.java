@@ -116,60 +116,11 @@ public class Controller040101 {
                 "순번", "거래처구분", "거래처구분코드", "거래처정렬순서",
                 "거래처구분명"
         );
-        List<Tb401Dto> findAllByExcel = service040101.findAllByExcel();
+        List<String> excelType = GlobalMethod.makeExcelType("String", "String", "int", "String");
 
-        List<List<String>> excelData = makeExcelData(findAllByExcel);
-        List<String> excelType = makeExcelType();
-        Map<Integer, Integer> excelWidth = makeExcelWidth();
-        Workbook wb = excelMaker.makeExcel("aaa", titles, excelData, excelType, excelWidth);
-
-        // 컨텐츠 타입과 파일명 지정
+        List<List<String>> excelData = service040101.findAllByExcel();
         String fileName = "거래처그룹관리(040101).xlsx";
-        String outputFileName = new String(fileName.getBytes("KSC5601"), "8859_1");
-        response.setContentType("application/xlsx");
-        response.setHeader("Content-Disposition", "Attachment; filename=" + outputFileName);
 
-        OutputStream fileOut = response.getOutputStream();
-
-        // Excel File Output
-        wb.write(fileOut);
-        fileOut.close();
-
-        response.getOutputStream().flush();
-        response.getOutputStream().close();
-
-        wb.close();
-    }
-
-    private List<List<String>> makeExcelData(List<Tb401Dto> findAllByExcel) {
-        List<List<String>> excelData = new ArrayList<>();
-        for(Tb401Dto dto : findAllByExcel){
-            List<String> list = new ArrayList<>();
-            list.add(dto.getClassSeq());
-            list.add(dto.getClassCd());
-            list.add(String.valueOf(dto.getClassAl()));
-            list.add(dto.getClassNm());
-            excelData.add(list);
-        }
-        return excelData;
-    }
-
-    private List<String> makeExcelType(){
-        List<String> excelType = new ArrayList<>();
-        excelType.add("String");
-        excelType.add("String");
-        excelType.add("int");
-        excelType.add("String");
-        return excelType;
-    }
-
-    private Map<Integer, Integer> makeExcelWidth(){
-        Map<Integer, Integer> widthMap = new HashMap<>();
-        widthMap.put(0,1000);
-        widthMap.put(1,7000);
-        widthMap.put(2,5000);
-        widthMap.put(3,5000);
-        widthMap.put(4,7000);
-        return widthMap;
+        excelMaker.makeExcel("거래처그룹관리 (040101)", titles, excelData, excelType, fileName, response);
     }
 }

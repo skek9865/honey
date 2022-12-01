@@ -65,17 +65,32 @@ public class Service020201Impl implements Service020201{
     }
 
     @Override
-    public List<Tb203Dto> findAllByExcel(String outFNm, String part) {
-        List<Tb203Dto> dtoList = new ArrayList<>();
+    public List<List<String>> findAllByExcel(String outFNm, String part) {
+        List<List<String>> dtoList = new ArrayList<>();
 
         List<Tb201> tb201 = tb201Repository.findAll();
         List<CodeDto> tb906 = tb906Repository.findByFstIdByDsl("25");
 
         List<Tb203> result = tb203Repository.findAllByExcel(outFNm, part);
 
+        String empNm;
+        String partNm;
         for(Tb203 entity : result){
-            Tb203Dto tb203Dto = makeDto(entity, tb201, tb906);
-            dtoList.add(tb203Dto);
+            List<String> list = new ArrayList<>();
+
+            Optional<Tb201> find201 = tb201.stream().filter(e -> e.getEmpNo().equals(entity.getEmpNo())).findAny();
+            if(find201.isPresent()) empNm = find201.get().getEmpNm();
+            else empNm = "";
+
+            Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getPart())).findAny();
+            if(find906.isPresent()) partNm = find906.get().getText();
+            else partNm = "";
+
+            list.add(empNm);
+            list.add(partNm);
+            list.add(entity.getOutFNm());
+
+            dtoList.add(list);
         }
 
         return dtoList;
@@ -122,12 +137,13 @@ public class Service020201Impl implements Service020201{
     }
 
     private Tb203Dto makeDto(Tb203 entity, List<Tb201> tb201, List<CodeDto> tb906){
-        String empNm = "";
-        String partNm = "";
+        String empNm;
+        String partNm;
 
         Optional<Tb201> find201 = tb201.stream().filter(e -> e.getEmpNo().equals(entity.getEmpNo())).findAny();
         if(find201.isPresent()) empNm = find201.get().getEmpNm();
         else empNm = "";
+
         Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getPart())).findAny();
         if(find906.isPresent()) partNm = find906.get().getText();
         else partNm = "";

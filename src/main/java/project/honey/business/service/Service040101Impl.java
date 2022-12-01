@@ -50,16 +50,27 @@ public class Service040101Impl implements Service040101{
     }
 
     @Override
-    public List<Tb401Dto> findAllByExcel() {
-        List<Tb401Dto> dtoList = new ArrayList<>();
+    public List<List<String>> findAllByExcel() {
+        List<List<String>> dtoList = new ArrayList<>();
 
         List<CodeDto> tb906 = tb906Repository.findByFstIdByDsl("08");
 
         List<Tb401> result = tb401Repository.findAll();
 
+        String classSeqNm;
         for(Tb401 entity : result){
-            Tb401Dto tb401Dto = makeDto(entity, tb906);
-            dtoList.add(tb401Dto);
+            List<String> list = new ArrayList<>();
+
+            Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getClassSeq())).findAny();
+            if(find906.isPresent()) classSeqNm = find906.get().getText();
+            else classSeqNm = "";
+
+            list.add(classSeqNm);
+            list.add(entity.getClassCd());
+            list.add(String.valueOf(entity.getClassAl()));
+            list.add(entity.getClassNm());
+
+            dtoList.add(list);
         }
         return dtoList;
     }
@@ -85,7 +96,7 @@ public class Service040101Impl implements Service040101{
     }
 
     private Tb401Dto makeDto(Tb401 entity, List<CodeDto> tb906){
-        String classSeqNm = "";
+        String classSeqNm;
 
         Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getClassSeq())).findAny();
         if(find906.isPresent()) classSeqNm = find906.get().getText();

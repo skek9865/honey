@@ -6,16 +6,21 @@ import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 
 @Component
 public class ExcelMaker {
 
-    public Workbook makeExcel(String sheetName, List<String> titles,
+    public void makeExcel(String sheetName, List<String> titles,
                               List<List<String>> excelData, List<String> excelType,
-                              Map<Integer, Integer> excelWidth){
+                              String fileName, HttpServletResponse response) throws IOException {
 
         //엑셀 생성
         Workbook wb = new SXSSFWorkbook();
@@ -31,7 +36,7 @@ public class ExcelMaker {
         ((XSSFCellStyle)headStyle).setFillForegroundColor(new XSSFColor(new java.awt.Color(244, 244, 244),null));
         headStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
-        excelWidth.keySet().forEach(key -> sheet.setColumnWidth(key, excelWidth.get(key)));
+        sheet.setColumnWidth(0, 1000);
 
         //초기값 설정
         Row row = null;
@@ -62,6 +67,21 @@ public class ExcelMaker {
                 }
             }
         }
-        return wb;
+
+        // 컨텐츠 타입과 파일명 지정
+        response.setContentType("ms-vnd/excel");
+        String name = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+        response.setHeader("Content-Disposition", "attachment;filename=" + name + ".xlsx");
+
+        OutputStream fileOut = response.getOutputStream();
+
+        // Excel File Output
+        wb.write(fileOut);
+        fileOut.close();
+
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
+
+        wb.close();
     }
 }
