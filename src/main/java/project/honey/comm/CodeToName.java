@@ -8,7 +8,9 @@ import project.honey.pay.repository.Tb301Repository;
 import project.honey.personDepart.entity.Tb202;
 import project.honey.personDepart.repository.Tb202Repository;
 import project.honey.system.dto.CodeDto;
+import project.honey.system.entity.Tb904;
 import project.honey.system.entity.Tb906;
+import project.honey.system.repository.Tb904Repository;
 import project.honey.system.repository.Tb906Repository;
 
 import java.util.HashMap;
@@ -22,6 +24,7 @@ public class CodeToName {
 
     private final Tb202Repository tb202Repository;
     private final Tb301Repository tb301Repository;
+    private final Tb904Repository tb904Repository;
     private final Tb906Repository tb906Repository;
 
     // 급여항목 변환
@@ -40,5 +43,12 @@ public class CodeToName {
     public Map<String, String> commonCode(String fstId) {
         return tb906Repository.findByFstIdByDsl(fstId).stream()
                 .collect(Collectors.toMap(CodeDto::getValue, CodeDto::getText));
+    }
+
+
+    // 화면아이디 -> 화면명 변환 tb903
+    public Map<String, String> screen() {
+        return tb904Repository.findAll().stream()
+                .collect(Collectors.toMap(tb904 -> tb904.getFstId() + tb904.getScdId() + tb904.getThdId(), Tb904::getMenuNm));
     }
 }

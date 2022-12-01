@@ -4,6 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.honey.system.dto.Tb901Dto;
 
+import java.util.Map;
+
 public interface Service990101 {
 
     // 사용자 등록
@@ -20,4 +22,7 @@ public interface Service990101 {
 
     // 사용자 삭제
     String delete(String userId);
+
+    // 사용자리스트
+    Map<String, String> userList();
 }

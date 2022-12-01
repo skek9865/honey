@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
+import project.honey.system.dto.Tb903Dto;
 
 import javax.persistence.*;
 
@@ -58,4 +59,14 @@ public class Tb903  extends BaseAtt {
     @Column(name = "delyn", columnDefinition = "char")
     private String delYn;
 
+    public void changeInfo(Tb903Dto dto, Tb904 tb904) {
+        this.userId=dto.getUserId();
+        this.tpId = tb904.getFstId() + tb904.getScdId() + tb904.getThdId();
+        this.menuYn = dto.getMenuYn();
+        this.listYn = dto.getListYn();
+        this.viewYn = dto.getViewYn();
+        this.saveYn = dto.getSaveYn();
+        this.modifyYn = dto.getModifyYn();
+        this.delYn = dto.getDelYn();
+    }
 }

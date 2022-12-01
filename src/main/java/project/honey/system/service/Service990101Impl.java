@@ -10,6 +10,9 @@ import project.honey.system.dto.Tb901Dto;
 import project.honey.system.entity.Tb901;
 import project.honey.system.repository.Tb901Repository;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -52,5 +55,11 @@ public class Service990101Impl implements Service990101 {
     public String delete(String userId) {
         tb901Repository.deleteById(userId);
         return userId;
+    }
+
+    @Override
+    public Map<String, String> userList() {
+        return tb901Repository.findAll().stream()
+                .collect(Collectors.toMap(Tb901::getUserId, Tb901::getUserNm));
     }
 }
