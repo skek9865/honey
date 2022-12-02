@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
+import project.honey.system.dto.Tb902Dto;
 
 import javax.persistence.*;
 
@@ -50,4 +51,12 @@ public class Tb902  extends BaseAtt {
     @Column(name = "useragent")
     private String userAgent;
 
+    public void changeInfo(Tb902Dto dto) {
+        this.userId = dto.getUserId();
+        this.timeStamp = dto.getTimeStamp();
+        this.ipAddr = dto.getIpAddr();
+        this.remotePort = dto.getRemotePort();
+        this.sessId = dto.getSessId();
+        this.userAgent = dto.getUserAgent();
+    }
 }
