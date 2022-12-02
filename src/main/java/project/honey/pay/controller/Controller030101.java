@@ -119,7 +119,7 @@ public class Controller030101 {
         );
 
         List<String> excelType = GlobalMethod.makeExcelType(
-                "String", "String", "String", "String", "String", "String", "String"
+                "String", "String", "String", "String", "String", "String"
         );
 
         List<List<String>> excelData = service030101.findAllByExcel();
