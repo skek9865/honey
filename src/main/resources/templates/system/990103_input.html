@@ -7,7 +7,8 @@
         <div class="container-fluid p-2">
             <div class="input_div">
                 <table class="input_table">
-                    <tbody><tr>
+                    <tbody>
+                    <tr>
                         <td>
                             <label for="vuserid" class="input_labal">사용자</label>
                             <select class="form-select" id="vuserid" name="userId" size="1">
@@ -110,7 +111,7 @@
         $('#isize').val($('#size').val());
 
 
-        var method = [[${dto.userId}]]==null?'/insert':'/update'
+        var method = [[${dto.seq}]]==null?'/insert':'/update'
         //저장, 수정
         $('#save').on('click', function (e){
 

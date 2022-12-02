@@ -2,6 +2,7 @@ package project.honey.system.entity;
 
 import lombok.*;
 import project.honey.comm.BaseAtt;
+import project.honey.system.dto.Tb904Dto;
 
 import javax.persistence.*;
 
@@ -38,4 +39,13 @@ public class Tb904 extends BaseAtt {
     @Column(name = "useyn", columnDefinition = "char")
     private String useYn;
 
+    public void changeInfo(Tb904Dto dto) {
+        this.fstId = dto.getFstId();
+        this.scdId = dto.getScdId();
+        this.thdId = dto.getThdId();
+        this.alien = dto.getAlien();
+        this.menuNm = dto.getMenuNm();
+        this.menuUrl = dto.getMenuUrl();
+        this.useYn = dto.getUseYn();
+    }
 }
