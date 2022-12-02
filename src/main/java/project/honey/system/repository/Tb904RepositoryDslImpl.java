@@ -2,6 +2,9 @@ package project.honey.system.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 import project.honey.system.entity.QTb904;
 import project.honey.system.entity.Tb904;
@@ -32,6 +35,28 @@ public class Tb904RepositoryDslImpl implements Tb904RepositoryDsl {
                 .fetch();
 
         return result;
+    }
+
+    @Override
+    public Page<Tb904> findAllByDsl(Pageable pageable) {
+
+        List<Tb904> result = queryFactory.selectFrom(tb904)
+                .orderBy(tb904.fstId.asc(), tb904.scdId.asc(), tb904.thdId.asc(), tb904.alien.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        int total = queryFactory.selectFrom(tb904)
+                .fetch().size();
+
+        return new PageImpl<>(result, pageable, total);
+    }
+
+    @Override
+    public List<Tb904> findAllByExcel() {
+        return queryFactory.selectFrom(tb904)
+                .orderBy(tb904.fstId.asc(), tb904.scdId.asc(), tb904.thdId.asc(), tb904.alien.asc())
+                .fetch();
     }
 
     private BooleanExpression makeMenu(Integer type, String fcd, String scd, String userId){
