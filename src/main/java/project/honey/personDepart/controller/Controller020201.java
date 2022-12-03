@@ -66,7 +66,7 @@ public class Controller020201 {
 
         model.addAttribute("partCodes",service990301.findByFstId("25"));
 
-        Page<Tb203Dto> resultList = service020201.findAll(map.get("sOutFNm"), map.get("sPart"), pageable);
+        Page<Tb203Dto> resultList = service020201.findAllByDsl(map.get("sOutFNm"), map.get("sPart"), pageable);
         model.addAttribute("dtos",resultList);
         model.addAttribute("pageMaker", new PageMaker(pageable, resultList.getTotalElements()));
 

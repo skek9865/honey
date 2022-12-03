@@ -7,11 +7,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 import project.honey.personDepart.entity.Tb201;
+import project.honey.system.dto.CodeDto;
+import project.honey.system.dto.QCodeDto;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static project.honey.personDepart.entity.QTb201.tb201;
+import static project.honey.system.entity.QTb906.tb906;
 
 public class Tb201RepositoryDslImpl implements Tb201RepositoryDsl {
 
@@ -82,6 +85,25 @@ public class Tb201RepositoryDslImpl implements Tb201RepositoryDsl {
                         empNmContains(empNm),
                         postCdEq(postCd),
                         deptCdEq(deptCd)
+                )
+                .fetch();
+
+        return result;
+    }
+
+    @Override
+    public List<CodeDto> findAllBySelect() {
+
+        List<CodeDto> result = queryFactory
+                .select(
+                        new QCodeDto(
+                                tb201.empNm,
+                                tb201.empNo
+                        ))
+                .from(tb201)
+                .where(
+                        tb201.leaveDt.eq(""),
+                        tb201.leaveRs.eq("")
                 )
                 .fetch();
 

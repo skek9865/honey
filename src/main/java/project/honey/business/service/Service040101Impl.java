@@ -33,6 +33,7 @@ public class Service040101Impl implements Service040101{
 
     @Override
     public Page<Tb401Dto> findAll(Pageable pageable) {
+        String classSeqNm;
         List<Tb401Dto> dtoList = new ArrayList<>();
 
         List<CodeDto> tb906 = tb906Repository.findByFstIdByDsl("08");
@@ -40,7 +41,8 @@ public class Service040101Impl implements Service040101{
         Page<Tb401> result = tb401Repository.findAll(pageable);
 
         for(Tb401 entity : result.getContent()){
-            Tb401Dto tb401Dto = makeDto(entity, tb906);
+            classSeqNm = makeClassSeqNm(entity, tb906);
+            Tb401Dto tb401Dto = Tb401Dto.of(entity,classSeqNm);
             dtoList.add(tb401Dto);
         }
 
@@ -51,19 +53,17 @@ public class Service040101Impl implements Service040101{
 
     @Override
     public List<List<String>> findAllByExcel() {
+        String classSeqNm;
         List<List<String>> dtoList = new ArrayList<>();
 
         List<CodeDto> tb906 = tb906Repository.findByFstIdByDsl("08");
 
         List<Tb401> result = tb401Repository.findAll();
 
-        String classSeqNm;
         for(Tb401 entity : result){
             List<String> list = new ArrayList<>();
 
-            Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getClassSeq())).findAny();
-            if(find906.isPresent()) classSeqNm = find906.get().getText();
-            else classSeqNm = "";
+            classSeqNm = makeClassSeqNm(entity, tb906);
 
             list.add(classSeqNm);
             list.add(entity.getClassCd());
@@ -95,13 +95,19 @@ public class Service040101Impl implements Service040101{
         return true;
     }
 
-    private Tb401Dto makeDto(Tb401 entity, List<CodeDto> tb906){
+    @Override
+    public List<CodeDto> findAllBySelect(Integer type) {
+        List<CodeDto> result = tb401Repository.findAllBySelect(type);
+        return result;
+    }
+
+    private String makeClassSeqNm(Tb401 entity, List<CodeDto> tb906){
         String classSeqNm;
 
         Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getClassSeq())).findAny();
         if(find906.isPresent()) classSeqNm = find906.get().getText();
         else classSeqNm = "";
 
-        return Tb401Dto.of(entity, classSeqNm);
+        return classSeqNm;
     }
 }

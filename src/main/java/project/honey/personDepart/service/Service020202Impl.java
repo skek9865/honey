@@ -43,14 +43,16 @@ public class Service020202Impl implements Service020202{
     }
 
     @Override
-    public Page<Tb204Dto> findAll(String outFNm, String part, Pageable pageable) {
+    public Page<Tb204Dto> findAllByDsl(String outFNm, String part, Pageable pageable) {
+        String partNm;
         List<Tb204Dto> dtoList = new ArrayList<>();
 
         List<CodeDto> tb906 = tb906Repository.findByFstIdByDsl("25");
 
         Page<Tb204> result = tb204Repository.findAllByDsl(outFNm, part, pageable);
         for(Tb204 entity : result.getContent()){
-            Tb204Dto tb204Dto = makeDto(entity, tb906);
+            partNm = makePartNm(entity, tb906);
+            Tb204Dto tb204Dto = Tb204Dto.of(entity, partNm);
             dtoList.add(tb204Dto);
         }
 
@@ -61,19 +63,17 @@ public class Service020202Impl implements Service020202{
 
     @Override
     public List<List<String>> findAllByExcel(String outFNm, String part) {
+        String partNm;
         List<List<String>> dtoList = new ArrayList<>();
 
         List<CodeDto> tb906 = tb906Repository.findByFstIdByDsl("25");
 
         List<Tb204> result = tb204Repository.findAllByExcel(outFNm, part);
 
-        String partNm;
         for(Tb204 entity : result){
             List<String> list = new ArrayList<>();
 
-            Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getPart())).findAny();
-            if(find906.isPresent()) partNm = find906.get().getText();
-            else partNm = "";
+            partNm = makePartNm(entity, tb906);
 
             list.add(partNm);
             list.add(entity.getOutFNm());
@@ -117,13 +117,13 @@ public class Service020202Impl implements Service020202{
         return true;
     }
 
-    private Tb204Dto makeDto(Tb204 entity, List<CodeDto> tb906){
+    private String makePartNm(Tb204 entity, List<CodeDto> tb906){
         String partNm;
 
         Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getPart())).findAny();
         if(find906.isPresent()) partNm = find906.get().getText();
         else partNm = "";
 
-        return Tb204Dto.of(entity, partNm);
+        return partNm;
     }
 }
