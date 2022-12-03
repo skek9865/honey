@@ -47,7 +47,8 @@ public class Service020201Impl implements Service020201{
     }
 
     @Override
-    public Page<Tb203Dto> findAll(String outFNm, String part, Pageable pageable) {
+    public Page<Tb203Dto> findAllByDsl(String outFNm, String part, Pageable pageable) {
+        String empNm, partNm;
         List<Tb203Dto> dtoList = new ArrayList<>();
 
         List<Tb201> tb201 = tb201Repository.findAll();
@@ -55,7 +56,9 @@ public class Service020201Impl implements Service020201{
 
         Page<Tb203> result = tb203Repository.findAllByDsl(outFNm, part, pageable);
         for(Tb203 entity : result.getContent()){
-            Tb203Dto tb203Dto = makeDto(entity, tb201, tb906);
+            empNm = makeEmpNm(entity, tb201);
+            partNm = makePartNm(entity, tb906);
+            Tb203Dto tb203Dto = Tb203Dto.of(entity, empNm, partNm);
             dtoList.add(tb203Dto);
         }
 
@@ -66,6 +69,7 @@ public class Service020201Impl implements Service020201{
 
     @Override
     public List<List<String>> findAllByExcel(String outFNm, String part) {
+        String empNm, partNm;
         List<List<String>> dtoList = new ArrayList<>();
 
         List<Tb201> tb201 = tb201Repository.findAll();
@@ -73,18 +77,11 @@ public class Service020201Impl implements Service020201{
 
         List<Tb203> result = tb203Repository.findAllByExcel(outFNm, part);
 
-        String empNm;
-        String partNm;
         for(Tb203 entity : result){
             List<String> list = new ArrayList<>();
 
-            Optional<Tb201> find201 = tb201.stream().filter(e -> e.getEmpNo().equals(entity.getEmpNo())).findAny();
-            if(find201.isPresent()) empNm = find201.get().getEmpNm();
-            else empNm = "";
-
-            Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getPart())).findAny();
-            if(find906.isPresent()) partNm = find906.get().getText();
-            else partNm = "";
+            empNm = makeEmpNm(entity, tb201);
+            partNm = makePartNm(entity, tb906);
 
             list.add(empNm);
             list.add(partNm);
@@ -136,18 +133,23 @@ public class Service020201Impl implements Service020201{
         return true;
     }
 
-    private Tb203Dto makeDto(Tb203 entity, List<Tb201> tb201, List<CodeDto> tb906){
+    private String makeEmpNm(Tb203 entity, List<Tb201> tb201){
         String empNm;
-        String partNm;
 
         Optional<Tb201> find201 = tb201.stream().filter(e -> e.getEmpNo().equals(entity.getEmpNo())).findAny();
         if(find201.isPresent()) empNm = find201.get().getEmpNm();
         else empNm = "";
 
+        return empNm;
+    }
+
+    private String makePartNm(Tb203 entity, List<CodeDto> tb906){
+        String partNm;
+
         Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getPart())).findAny();
         if(find906.isPresent()) partNm = find906.get().getText();
         else partNm = "";
 
-        return Tb203Dto.of(entity, empNm, partNm);
+        return partNm;
     }
 }

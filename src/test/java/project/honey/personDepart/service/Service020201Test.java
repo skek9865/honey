@@ -39,7 +39,7 @@ public class Service020201Test {
     public void findAll(){
         session.setAttribute("user", "hello");
 
-        Page<Tb203Dto> result = service020201.findAll(null, null, PageRequest.of(0, 50));
+        Page<Tb203Dto> result = service020201.findAllByDsl(null, null, PageRequest.of(0, 50));
         result.forEach(System.out::println);
     }
 

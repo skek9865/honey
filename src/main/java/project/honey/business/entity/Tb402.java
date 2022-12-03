@@ -2,6 +2,7 @@ package project.honey.business.entity;
 
 import lombok.*;
 import org.hibernate.annotations.Comment;
+import project.honey.business.form.Tb402Form;
 import project.honey.comm.BaseAtt;
 
 import javax.persistence.*;
@@ -166,4 +167,43 @@ public class Tb402 extends BaseAtt {
     @Comment("비고")
     @Column(length = 255)
     private String note;
+
+    public void updateData(Tb402Form form){
+        this.seq = form.getSeq();
+        this.custCd = form.getCustCd();
+        this.custNm = form.getCustNm();
+        this.custGb = form.getCustGb();
+        this.taxGb = form.getTaxGb();
+        this.taxCd = form.getTaxCd();
+        this.forYn = form.getForYn();
+        this.forNm = form.getForNm();
+        this.ceoNm = form.getCeoNm();
+        this.bsnS = form.getBsnS();
+        this.item = form.getItem();
+        this.phone = form.getPhone();
+        this.mobile = form.getMobile();
+        this.custFax = form.getCustFax();
+        this.email = form.getEmail();
+        this.zipCd1 = form.getZipCd1();
+        this.address1 = form.getAddress1();
+        this.address11 = form.getAddress11();
+        this.zipCd2 = form.getZipCd2();
+        this.address2 = form.getAddress2();
+        this.address21 = form.getAddress21();
+        this.rAddress = form.getRAddress();
+        this.bankBo = form.getBankBo();
+        this.sbDay = form.getSbDay();
+        this.empCd = form.getEmpCd();
+        this.saleCd = form.getSaleCd();
+        this.class1 = form.getClass1();
+        this.class2 = form.getClass2();
+        this.saleGr = form.getSaleGr();
+        this.buyGr = form.getBuyGr();
+        this.regDt = form.getRegDt();
+        this.homePage = form.getHomePage();
+        this.shipYn = form.getShipYn();
+        this.saleType = form.getSaleType();
+        this.buyType = form.getBuyType();
+        this.note = form.getNote();
+    }
 }

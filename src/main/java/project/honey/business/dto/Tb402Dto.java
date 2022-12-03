@@ -51,7 +51,11 @@ public class Tb402Dto {
     private String updateDate;
     private String updateId;
 
-    public static Tb402Dto of(Tb402 entity){
+    public static Tb402Dto of(Tb402 entity, String empNm, String class1Nm, String class2Nm){
+
+        if(empNm == null) empNm = entity.getEmpCd();
+        if(class1Nm == null) class1Nm = entity.getClass1();
+        if(class2Nm == null) class2Nm = entity.getClass2();
 
         return Tb402Dto.builder()
                 .seq(entity.getSeq())
@@ -78,10 +82,10 @@ public class Tb402Dto {
                 .rAddress(entity.getRAddress())
                 .bankBo(entity.getBankBo())
                 .sbDay(entity.getSbDay())
-                .empCd(entity.getEmpCd())
+                .empCd(empNm)
                 .saleCd(entity.getSaleCd())
-                .class1(entity.getClass1())
-                .class2(entity.getClass2())
+                .class1(class1Nm)
+                .class2(class2Nm)
                 .saleGr(entity.getSaleGr())
                 .buyGr(entity.getBuyGr())
                 .regDt(entity.getRegDt())

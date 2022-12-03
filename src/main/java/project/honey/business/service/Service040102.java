@@ -11,9 +11,9 @@ public interface Service040102 {
 
     Boolean insert(Tb402Form form);
 
-    Page<Tb402Dto> findAll(Pageable pageable);
+    Page<Tb402Dto> findAllByDsl(String custNm, String ceoNm, String empCd, String class1, Pageable pageable);
 
-    List<Tb402Dto> findAllByExcel();
+    List<List<String>> findAllByExcel(String custNm, String ceoNm, String empCd, String class1);
 
     Tb402Dto findById(Integer id);
 

@@ -6,8 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import project.honey.personDepart.form.Tb201Form;
 import project.honey.personDepart.dto.Tb201Dto;
+import project.honey.system.dto.CodeDto;
 
 import java.io.IOException;
+import java.util.List;
 
 @SpringBootTest
 public class Tb201ServiceTest {
@@ -29,7 +31,7 @@ public class Tb201ServiceTest {
 
     @Test
     public void findAll(){
-        service.findAll("6", "00003", "00008", PageRequest.of(0,10))
+        service.findAllByDsl("6", "00003", "00008", PageRequest.of(0,10))
                 .forEach(dto -> {
                     System.out.println("dto = " + dto);
                 });
@@ -82,6 +84,18 @@ public class Tb201ServiceTest {
 //                .build();
 //        service.update(dto);
 //    }
+
+    @Test
+    public void findAllByWorking(){
+        List<Tb201Dto> resultList = service.findAllByWorking();
+        resultList.forEach(System.out::println);
+    }
+
+    @Test
+    public void findAllBySelect(){
+        List<CodeDto> resultList = service.findAllBySelect();
+        resultList.forEach(System.out::println);
+    }
 
     @Test
     public void delete(){

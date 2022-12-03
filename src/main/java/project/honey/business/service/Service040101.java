@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.honey.business.dto.Tb401Dto;
 import project.honey.business.form.Tb401Form;
+import project.honey.system.dto.CodeDto;
 
 import java.util.List;
 
@@ -20,4 +21,6 @@ public interface Service040101 {
     Boolean update(Tb401Form form);
 
     Boolean delete(Integer id);
+
+    List<CodeDto> findAllBySelect(Integer type);
 }

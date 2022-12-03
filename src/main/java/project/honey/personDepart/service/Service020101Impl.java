@@ -15,12 +15,14 @@ import project.honey.personDepart.entity.Tb201;
 import project.honey.personDepart.repository.Tb201Repository;
 import project.honey.personDepart.repository.Tb202Repository;
 import project.honey.system.dto.CodeDto;
+import project.honey.system.entity.Tb906;
 import project.honey.system.repository.Tb906Repository;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,7 +53,7 @@ public class Service020101Impl implements Service020101 {
     }
 
     @Override
-    public Page<Tb201Dto> findAll(String empNm, String postCd, String deptCd, Pageable pageable) {
+    public Page<Tb201Dto> findAllByDsl(String empNm, String postCd, String deptCd, Pageable pageable) {
         List<Tb201Dto> dtoList = new ArrayList<>();
 
         List<Tb202> tb202 = tb202Repository.findAll();
@@ -59,7 +61,9 @@ public class Service020101Impl implements Service020101 {
 
         Page<Tb201> result = tb201Repository.findAllByDsl(empNm, postCd, deptCd, pageable);
         for(Tb201 entity : result.getContent()){
-            Tb201Dto tb201Dto = makeDto(entity, tb202, tb906);
+            String deptNm = makeDeptNm(entity, tb202);
+            String postNm = makePostNm(entity, tb906);
+            Tb201Dto tb201Dto = Tb201Dto.of(entity,postNm,deptNm);
             dtoList.add(tb201Dto);
         }
 
@@ -79,16 +83,19 @@ public class Service020101Impl implements Service020101 {
 
         for(Tb201 entity : result){
             List<String> list = new ArrayList<>();
-            Tb201Dto dto = makeDto(entity, tb202, tb906);
-            list.add(dto.getEmpNo());
-            list.add(dto.getEmpNm());
-            list.add(dto.getEmpDt());
-            list.add(dto.getPost());
-            list.add(dto.getPhone());
-            list.add(dto.getMobile());
-            list.add(dto.getEmail());
-            list.add(dto.getDeptCd());
-            list.add(dto.getWorkCd());
+
+            String deptNm = makeDeptNm(entity, tb202);
+            String postNm = makePostNm(entity, tb906);
+
+            list.add(entity.getEmpNo());
+            list.add(entity.getEmpNm());
+            list.add(entity.getEmpDt());
+            list.add(postNm);
+            list.add(entity.getPhone());
+            list.add(entity.getMobile());
+            list.add(entity.getEmail());
+            list.add(deptNm);
+            list.add(entity.getWorkCd());
             dtoList.add(list);
         }
 
@@ -99,6 +106,13 @@ public class Service020101Impl implements Service020101 {
     public Tb201Dto findById(Integer id) {
         Tb201 entity = tb201Repository.findById(id).orElseThrow(RuntimeException::new);
         return Tb201Dto.of(entity,null,null);
+    }
+
+    @Override
+    public List<Tb201Dto> findAllByWorking() {
+        List<Tb201> result = tb201Repository.findAllByWorking();
+        List<Tb201Dto> resultList = result.stream().map(entity -> (Tb201Dto.of(entity, null, null))).collect(Collectors.toList());
+        return resultList;
     }
 
     @Transactional
@@ -137,17 +151,29 @@ public class Service020101Impl implements Service020101 {
         return Tb201Dto.of(entity,null,null);
     }
 
-    private Tb201Dto makeDto(Tb201 entity, List<Tb202> tb202, List<CodeDto> tb906){
+    @Override
+    public List<CodeDto> findAllBySelect() {
+        List<CodeDto> result = tb201Repository.findAllBySelect();
+        return result;
+    }
+
+    private String makeDeptNm(Tb201 entity, List<Tb202> tb202){
         String deptNm;
-        String postNm;
 
         Optional<Tb202> find202 = tb202.stream().filter(e -> e.getDeptCd().equals(entity.getDeptCd())).findAny();
         if(find202.isPresent()) deptNm = find202.get().getDeptNm();
         else deptNm = "";
+
+        return deptNm;
+    }
+
+    private String makePostNm(Tb201 entity, List<CodeDto> tb906){
+        String postNm;
+
         Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getPost())).findAny();
         if(find906.isPresent()) postNm = find906.get().getText();
         else postNm = "";
 
-        return Tb201Dto.of(entity, postNm, deptNm);
+        return postNm;
     }
 }

@@ -57,7 +57,7 @@ public class Controller020302 {
         model.addAttribute("sPost",   map.get("sPost"));
         model.addAttribute("sDeptCd", map.get("sDeptCd"));
 
-        Page<Tb201Dto> resultList = service020101.findAll(map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"), pageable);
+        Page<Tb201Dto> resultList = service020101.findAllByDsl(map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"), pageable);
         model.addAttribute("dtos",resultList);
         model.addAttribute("pageMaker", new PageMaker(pageable, resultList.getTotalElements()));
 
