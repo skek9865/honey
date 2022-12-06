@@ -6,6 +6,7 @@ import project.honey.produce.dto.Tb501Dto;
 import project.honey.system.dto.Tb903Dto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Service050101 {
 
@@ -20,4 +21,6 @@ public interface Service050101 {
     Integer delete(Integer seq);
 
     List<List<String>> findAllByExcel();
+
+    Map<String, String> findAllBySelect();
 }

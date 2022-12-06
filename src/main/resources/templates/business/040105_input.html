@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form name="fm_input" th:action="@{/040105/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+  <div class="container-fluid p-2">
+    <div class="input_div">
+      <table class="input_table">
+        <tbody><tr>
+          <td>
+            <label for="vgoodscd" class="input_labal">품목코드</label>
+            <input type="text" th:field="*{goodsCd}" id="vgoodscd" size="15" class="form-control ">
+          </td>
+          <td>
+            <label for="vgoodsnm" class="input_labal">품목명</label>
+            <input type="text" th:field="*{goodsNm}" id="vgoodsnm" size="15" class="form-control ">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vunit" class="input_labal">단위</label>
+            <input type="text" th:field="*{unit}" id="vunit" size="15" class="form-control ">
+          </td>
+          <td>
+            <label for="vstandard" class="input_labal">규격</label>
+            <input type="text" th:field="*{standard}" id="vstandard" size="15" class="form-control ">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vclass" class="input_labal">품목구분</label>
+            <select class="form-select" id="vclass" name="classSeq" size="1">
+              <option value="">선택</option>
+              <option th:each="classSeqCode : ${classSeqCodes}"
+                      th:value="${classSeqCode.value}"
+                      th:text="${classSeqCode.text}"
+                      th:attr="selected=${classSeqCode.text == dto.classSeq ? 'true' : 'false'}">
+            </select>
+          </td>
+          <td>
+            <label for="vsetyn" class="input_labal">세트여부</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" th:field="*{setYn}" th:attr="checked=${dto.setYn == 'Y'?'true' : 'false'}"
+                     id="vsetyn" type="checkbox" value="Y">
+              <label class="form-check-label" for="vsetyn"></label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vproduct" class="input_labal">생산공정</label>
+            <select class="form-select" id="vproduct" name="product" th:value="*{product}" size="1">
+              <option value="">선택</option>
+              <option th:each="productCode : ${productCodes}" th:value="${productCode.key}" th:text="${productCode.value}"
+                      th:attr="selected=${productCode.value == dto.product?'true' : 'false'}"></option>
+          </select>
+          </td>
+          <td>
+            <label for="vstockyn" class="input_labal">재고수량관리</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" th:field="*{stockYn}" th:attr="checked=${dto.stockYn == 'Y'?'true' : 'false'}"
+                     id="vstockyn" type="checkbox" value="Y">
+              <label class="form-check-label" for="vstockyn"></label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vitemgb1" class="input_labal">품목그룹1</label>
+            <select class="form-select" id="vitemgb1" name="itemGb1" th:value="*{itemGb1}" size="1">
+              <option value="">선택</option>
+              <option th:each="itemGbCode : ${itemGbCodes}" th:value="${itemGbCode.key}" th:text="${itemGbCode.value}"
+                      th:attr="selected=${itemGbCode.value == dto.itemGb1?'true' : 'false'}">aaa</option>
+          </select>
+          </td>
+          <td>
+            <label for="vitemgb2" class="input_labal">품목그룹2</label>
+            <select class="form-select" id="vitemgb2" name="itemGb2" th:value="*{itemGb2}" size="1">
+              <option value="">선택</option>
+              <option th:each="itemGbCode : ${itemGbCodes}" th:value="${itemGbCode.key}" th:text="${itemGbCode.value}"
+                      th:attr="selected=${itemGbCode.value == dto.itemGb2?'true' : 'false'}">aaa</option>
+          </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vstockqty" class="input_labal">재고수량</label>
+            <input type="text" name="stockQty" th:value="${dto.stockQty != null ? dto.stockQty : 0}"
+                   id="vstockqty" value="0" size="11" class="form-control input_number ">
+          </td>
+          <td>
+            <label for="vaqty" class="input_labal">안전재고</label>
+            <input type="text" name="aQty" th:value="${dto.aQty != null ? dto.aQty : 0}"
+                   id="vaqty" value="0" size="11" class="form-control input_number ">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vwprice" class="input_labal">입고단가</label>
+            <input type="text" name="wPrice" th:value="${dto.wPrice != null ? dto.wPrice : 0}"
+                   id="vwprice" value="0" size="11" class="form-control input_number ">
+          </td>
+          <td>
+            <label for="vwpricevat" class="input_labal">입고VAT</label
+            > <div class="form-check form-check-inline">
+            <input class="form-check-input" th:field="*{wPriceVat}" th:attr="checked=${dto.wPriceVat == 'Y'?'true' : 'false'}"
+                   id="vwpricevat" type="checkbox" value="Y">
+            <label class="form-check-label" for="vwpricevat"></label>
+          </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vfprice" class="input_labal">출고단가</label>
+            <input type="text" name="fPrice" th:value="${dto.fPrice != null ? dto.fPrice : 0}"
+                   id="vfprice" value="0" size="11" class="form-control input_number ">
+          </td>
+          <td>
+            <label for="vfpricevat" class="input_labal">출고VAT</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" th:field="*{fPriceVat}" th:attr="checked=${dto.fPriceVat == 'Y'?'true' : 'false'}"
+                     id="vfpricevat" type="checkbox" value="Y">
+              <label class="form-check-label" for="vfpricevat"></label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="img" class="input_labal">파일선택</label>
+            <input id="img" name="img" type="file" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vimgnmsave" class="input_labal">상품이미지저장명</label>
+            <input type="text" th:field="*{imgNmSave}" id="vimgnmsave" size="30" class="form-control " readonly="">
+          </td>
+          <td>
+            <label for="vimgnmout" class="input_labal">상품이미지출력명</label>
+            <input type="text" th:field="*{imgNmOut}" id="vimgnmout" size="30" class="form-control " readonly="">
+          </td>
+        </tr>
+        <tr th:if="*{imgNmSave}">
+          <td>
+            <label class="input_labal">사진상세</label>
+            <img class="main-style" th:src="@{${imgName}}" title="사진" style="" width="100">
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="input_div button_table">
+      <table class="input_table">
+        <tr>
+          <td class="float-end">
+            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+            </button>
+            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+  <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+  <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>

@@ -16,4 +16,10 @@ public abstract class GlobalMethod {
         for(String type : types) result.add(type);
         return result;
     }
+
+    public static List<String> makeFooter(String ... types){
+        List<String> result  = new ArrayList<>();
+        for(String type : types) result.add(type);
+        return result;
+    }
 }
