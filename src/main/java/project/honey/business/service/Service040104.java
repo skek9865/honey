@@ -9,6 +9,7 @@ import project.honey.business.form.Tb404Form;
 import project.honey.system.dto.CodeDto;
 
 import java.util.List;
+import java.util.Map;
 
 public interface Service040104 {
 
@@ -23,4 +24,6 @@ public interface Service040104 {
     Boolean update(Tb404Form form);
 
     Boolean delete(Integer id);
+
+    Map<String, String> findAllBySelect();
 }

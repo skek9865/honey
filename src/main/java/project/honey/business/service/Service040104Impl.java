@@ -16,12 +16,11 @@ import project.honey.business.repository.Tb401Repository;
 import project.honey.business.repository.Tb404Repository;
 import project.honey.comm.CodeToName;
 import project.honey.system.dto.CodeDto;
+import project.honey.system.entity.Tb904;
 import project.honey.system.repository.Tb906Repository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -83,5 +82,15 @@ public class Service040104Impl implements Service040104{
     public Boolean delete(Integer id) {
         tb404Repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public Map<String, String> findAllBySelect() {
+        return tb404Repository.findAll()
+                .stream()
+                .collect(Collectors.toMap(
+                        Tb404::getClassCd,Tb404::getClassNm,
+                        (key1, key2) -> key1,
+                        LinkedHashMap::new));
     }
 }
