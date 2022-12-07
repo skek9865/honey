@@ -6,20 +6,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import project.honey.business.dto.Search040105;
+import project.honey.business.dto.search.Search405;
+import project.honey.business.dto.search.SearchPopUp405;
 import project.honey.business.dto.Tb405Dto;
 import project.honey.business.entity.Tb405;
 import project.honey.business.form.Tb405Form;
 import project.honey.business.repository.Tb405Repository;
 import project.honey.comm.CodeToName;
 import project.honey.comm.UploadService;
-import project.honey.personDepart.entity.Tb201;
-import project.honey.personDepart.form.Tb201Form;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -51,7 +51,7 @@ public class Service040105Impl implements Service040105{
     }
 
     @Override
-    public Page<Tb405Dto> findAll(Search040105 search,Pageable pageable) {
+    public Page<Tb405Dto> findAll(Search405 search, Pageable pageable) {
         Map<String, String> classMap = codeToName.commonCode("07");
         Map<String, String> productMap = codeToName.product();
         Map<String, String> itemGbMap = codeToName.itemGb();
@@ -104,7 +104,7 @@ public class Service040105Impl implements Service040105{
     }
 
     @Override
-    public List<List<String>> findAllByExcel(Search040105 search) {
+    public List<List<String>> findAllByExcel(Search405 search) {
         Map<String, String> classMap = codeToName.commonCode("07");
         Map<String, String> productMap = codeToName.product();
         Map<String, String> itemGbMap = codeToName.itemGb();
@@ -166,6 +166,17 @@ public class Service040105Impl implements Service040105{
         list.add("");
         dtoList.add(list);
         return dtoList;
+    }
+
+    @Override
+    public List<Tb405Dto> findAllByPopUp(SearchPopUp405 search) {
+        Map<String, String> classMap = codeToName.commonCode("07");
+        Map<String, String> productMap = codeToName.product();
+        Map<String, String> itemGbMap = codeToName.itemGb();
+
+        return tb405Repository.findAllByPopUp(search).stream()
+                .map(m -> Tb405Dto.of(m, classMap, productMap, itemGbMap))
+                .collect(Collectors.toList());
     }
 
 }

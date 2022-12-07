@@ -120,7 +120,7 @@ public class Controller030103 {
     }
 
     @PostMapping("/delete/{seq}")
-    public String update(@PathVariable Integer seq, HttpServletRequest request, Model model) {
+    public String delete(@PathVariable Integer seq, HttpServletRequest request, Model model) {
         model.addAttribute("msg", service030103.delete(seq) != null ? "정상적으로 삭제 되었습니다." : "문제가 발생 하였습니다.");
         model.addAttribute("url", request.getHeader("referer"));
         return "redirect";

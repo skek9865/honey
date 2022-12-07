@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" method="post" enctype="multipart/form-data">
+    <main>
+        <script th:inline="javascript">
+            function gf_rowdel(num) {
+                $('#goodscd_' + num).val("")
+                $('#goodsnm_' + num).val("")
+                $('#standard_' + num).val("")
+                $('#unit_' + num).val("")
+                $('#qty_' + num).val(0)
+                $('#productnm_' + num).val("")
+                $('#location_' + num).val("")
+                $('#note_' + num).val("")
+                return false;
+            }
+        </script>
+        <div class="container-fluid p-2">
+            <div class="input_div button_table">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td class="float-end">
+                            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm" th:onclick="lf_confirm([[${action}]],'','','')">저장</button>&nbsp;
+                            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>&nbsp;
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="input_div">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label for="vgoodscd" class="input_labal_sm">생산품목</label>
+                            <input type="text" th:field="${dto.goodsCd}" id="vgoodscd" size="11" class="form-control " readonly="">
+                            <input type="text" th:field="${dto.goodsNm}" id="vgoodsnm" size="30" class="form-control " readonly="">
+                        </td>
+                        <td>
+                            <label for="vproductcd" class="input_labal_sm">생산공정</label>
+                            <input type="text" th:field="${dto.productCd}" id="vproductcd" size="11" class="form-control " readonly="">
+                            <input type="text" th:field="${dto.productNm}" id="vproductnm" size="20" class="form-control " readonly="">
+                        </td>
+                        <td>
+                            <label for="vqty" class="input_labal_sm">생산수량</label>
+                            <input type="text" name="qty" id="vqty" th:value="${dto.qty != null ? dto.qty : 0}" size="11" class="form-control input_number ">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="table-responsive text-nowrap" id="tableWrapper">
+            <table class="table table-striped tablesorter-blue" id="datatable_2">
+                <tbody>
+                <tr class="tableList_h_tr">
+                    <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                </tr>
+                <tr th:each="num : ${#numbers.sequence(0,4)}" style="height: 30px;">
+                    <td>
+                        <input th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].seq : ''}"
+                               th:name="${'tb503_1Dtos['+ num + '].seq'}"
+                               th:id="${'fk_tb_503_' + num}" type="hidden">
+                        <button name="row_del" id="row_del" type="button" class="btn btn-gfk btn-sm"
+                                th:onclick="gf_rowdel([[${num}]]); gf_qtysum('qty','qty_tot','5');">삭제</button>&nbsp;
+                    </td>
+                    <td>
+                        <input type="text" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].goodsCd : ''}"
+                               th:name="${'tb503_1Dtos['+ num + '].goodsCd'}" th:id="${'goodscd_' + num}" value="" size="5" class="form-control ">
+                    </td>
+                    <td>
+                        <input type="text" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].goodsNm : ''}"
+                               th:name="${'tb503_1Dtos['+ num + '].goodsNm'}"
+                               th:id="${'goodsnm_' + num}" size="40" class="form-control ">
+                        <button name="row_find" id="row_find" type="button" class="btn btn-gfk btn-sm"
+                                th:onclick='gf_popup("700","500","_search_goods","/050103/popup?type="+ [[${num+2}]] +"&product=true&stock=true")'>검색</button>&nbsp;
+                    </td>
+                    <td>
+                        <input type="text" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].standard : ''}"
+                               th:name="${'tb503_1Dtos['+ num + '].standard'}"
+                               th:id="${'standard_' + num}" size="5" class="form-control " readonly="">
+                    </td>
+                    <td>
+                        <input type="text" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].unit : ''}"
+                               th:name="${'tb503_1Dtos['+ num + '].unit'}"
+                               th:id="${'unit_' + num}" size="5" class="form-control " readonly="">
+                    </td>
+                    <td>
+                        <input type="text" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].qty : '0'}"
+                               th:name="${'tb503_1Dtos['+ num + '].qty'}"
+                               th:id="${'qty_' + num}" size="5" class="form-control input_number"
+                               onchange="gf_qtysum('qty','qty_tot','5');">
+                    </td>
+                    <td>
+                        <input type="hidden" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].productCd : ''}"
+                               th:name="${'tb503_1Dtos['+ num + '].productCd'}"
+                               th:id="${'productcd_' + num}" size="5" class="form-control"
+                               readonly="">
+                        <input type="text" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].productNm : ''}"
+                               th:name="${'tb503_1Dtos['+ num + '].productNm'}"
+                               th:id="${'productnm_' + num}" size="5" class="form-control"
+                               readonly="">
+                    </td>
+                    <td>
+                        <input type="text" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].location : ''}"
+                               th:name="${'tb503_1Dtos['+ num + '].location'}"
+                               th:id="${'location_' + num}" size="10" class="form-control">
+                    </td>
+                    <td>
+                        <input type="text" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].note : ''}"
+                               th:name="${'tb503_1Dtos['+ num + '].note'}"
+                               th:id="${'note_' + num}" size="10" class="form-control ">
+                    </td>
+                </tr>
+                <tr style="height: 30px;">
+                    <td colspan="4" class="CaptionTD">
+                        합계
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <input type="text" name="qty_tot" id="qty_tot" value="0" size="5" class="form-control input_number " readonly="">           </td>
+                    <td colspan="3">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </main>
+    <input type="hidden" name="seq" th:value="${dto.seq}" id="vseq" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>
