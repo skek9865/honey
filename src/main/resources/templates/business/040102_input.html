@@ -1,38 +1,240 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<form name="fm_input" th:action="@{/040101/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+<form name="fm_input" th:action="@{/040102/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
   <div class="container-fluid p-2">
     <div class="input_div">
       <table class="input_table">
         <tr>
           <td>
             <label for='classSeq' class='input_labal'>거래처구분</label>
-            <select class='form-select' id='classSeq' th:field="*{classSeq}" size=1>
+            <select class='form-select' id='classSeq' th:field="*{custGb}" size=1>
               <option value=''>선택</option>
-              <option th:each="classSeqCode : ${classSeqCodes}"
-                      th:attr="selected=${classSeqCode.value == post ?'true' : 'false'}"
-                      th:value="${classSeqCode.value}"
-                      th:text="${classSeqCode.text}">
+              <option th:each="custGbCode : ${custGbCodes}"
+                      th:attr="selected=${custGbCode.value == custGb ?'true' : 'false'}"
+                      th:value="${custGbCode.value}"
+                      th:text="${custGbCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for="classCd" class="input_labal">거래처코드</label>
+            <input id="classCd" th:field="*{custCd}" type="text" size="10" class="form-control">
+          </td>
+          <td>
+            <label for="custNm" class="input_labal">상호(이름)</label>
+            <input id="custNm" th:field="*{custNm}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='taxGb' class='input_labal'>세무신고구분</label>
+            <select class='form-select' id='taxGb' th:field="*{taxGb}" size=1>
+              <option value=''>선택</option>
+              <option th:each="taxGbCode : ${taxGbCodes}"
+                      th:attr="selected=${taxGbCode.value == taxGb ?'true' : 'false'}"
+                      th:value="${taxGbCode.value}"
+                      th:text="${taxGbCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for="taxCd" class="input_labal">세무신고코드</label>
+            <input id="taxCd" th:field="*{taxCd}" type="text" size="10" class="form-control">
+          </td>
+          <td colspan="2">
+            <label for='forNm' class='input_labal'>외화</label>
+            <select class='form-select' id='forNm' th:field="*{forNm}" size=1>
+              <option value=''>선택</option>
+              <option th:each="excgCode : ${excgCodes}"
+                      th:attr="selected=${excgCode.value == forNm ?'true' : 'false'}"
+                      th:value="${excgCode.value}"
+                      th:text="${excgCode.text}">
+            </select>
+            <label class='input_labal' for="forYn">외화거래</label>
+            <div class='form-check form-check-inline'>
+              <input class='form-check-input' type="checkbox" style="margin-top: 10px" id="forYn" th:field="*{forYn}">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="ceoNm" class="input_labal">대표자명</label>
+            <input id="ceoNm" th:field="*{ceoNm}" type="text" size="10" class="form-control">
+          </td>
+          <td>
+            <label for="bsnS" class="input_labal">업태</label>
+            <input id="bsnS" th:field="*{bsnS}" type="text" size="20" class="form-control">
+          </td>
+          <td>
+            <label for="item" class="input_labal">종목</label>
+            <input id="item" th:field="*{item}" type="text" size="10" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="phone" class="input_labal">전화번호</label>
+            <input id="phone" th:field="*{phone}" type="text" size="15" class="form-control">
+          </td>
+          <td>
+            <label for="mobile" class="input_labal">모바일</label>
+            <input id="mobile" th:field="*{mobile}" type="text" size="18" class="form-control">
+          </td>
+          <td>
+            <label for="custFax" class="input_labal">거래처Fax</label>
+            <input id="custFax" th:field="*{custFax}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="email" class="input_labal">Email</label>
+            <input id="email" th:field="*{email}" type="text" size="30" class="form-control">
+          </td>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="sbDay" class="input_labal">수금/지급일</label>
+              </div>
+              <input type="text" id="sbDay" th:field="*{sbDay}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="regDt" class="input_labal">거래 개설일</label>
+              </div>
+              <input type="text" id="regDt" th:field="*{regDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+         </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <label for="zipCd1" class="input_labal">주소1</label>
+            <input id="zipCd1" th:field="*{zipCd1}" type="text" size="5" class="form-control">
+            <button name="search1" id="search1" type="button" class="btn btn-gfk btn-sm"
+                    onclick="openZipSearch('zipCd1','address1','address11')">검색
+            </button>
+            <input id="address1" th:field="*{address1}" type="text" size="30" class="form-control">
+            <input id="address11" th:field="*{address11}" type="text" size="50" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <label for="zipCd2" class="input_labal">주소2</label>
+            <input id="zipCd2" th:field="*{zipCd2}" type="text" size="5" class="form-control">
+            <button name="search2" id="search2" type="button" class="btn btn-gfk btn-sm"
+                    onclick="openZipSearch('zipCd2','address2','address21')">검색
+            </button>
+            <input id="address2" th:field="*{address2}" type="text" size="30" class="form-control">
+            <input id="address21" th:field="*{address21}" type="text" size="50" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <label for="rAddress" class="input_labal">실제주소</label>
+            <input id="rAddress" th:field="*{rAddress}" type="text" size="100" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='empCd' class='input_labal'>담당자</label>
+            <select class='form-select' id='empCd' th:field="*{empCd}" size=1>
+              <option value=''>선택</option>
+              <option th:each="empCode : ${empCodes}"
+                      th:attr="selected=${empCode.value == empCd ?'true' : 'false'}"
+                      th:value="${empCode.value}"
+                      th:text="${empCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for="bankBo" class="input_labal">통장번호</label>
+            <input id="bankBo" th:field="*{bankBo}" type="text" size="20" class="form-control">
+          </td>
+          <td>
+            <label for="saleCd" class="input_labal">영업사원</label>
+            <input id="saleCd" th:field="*{saleCd}" type="text" size="10" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='class1' class='input_labal'>거래처그룹1</label>
+            <select class='form-select' id='class1' th:field="*{class1}" size=1>
+              <option value=''>선택</option>
+              <option th:each="class1Code : ${class1Codes}"
+                      th:attr="selected=${class1Code.value == class1 ?'true' : 'false'}"
+                      th:value="${class1Code.value}"
+                      th:text="${class1Code.text}">
+            </select>
+          </td>
+          <td>
+            <label for='class2' class='input_labal'>거래처그룹2</label>
+            <select class='form-select' id='class2' th:field="*{class2}" size=1>
+              <option value=''>선택</option>
+              <option th:each="class2Code : ${class2Codes}"
+                      th:attr="selected=${class2Code.value == class2 ?'true' : 'false'}"
+                      th:value="${class2Code.value}"
+                      th:text="${class2Code.text}">
             </select>
           </td>
         </tr>
         <tr>
           <td>
-            <label for="classCd" class="input_labal">거래구분코드</label>
-            <input id="classCd" th:field="*{classCd}" type="text" size="5" class="form-control">
+            <label for='saleGr' class='input_labal'>영업단가그룹</label>
+            <select class='form-select' id='saleGr' th:field="*{saleGr}" size=1>
+              <option value=''>선택</option>
+              <option th:each="specialCode : ${specialCodes}"
+                      th:attr="selected=${specialCode.value == saleGr ?'true' : 'false'}"
+                      th:value="${specialCode.value}"
+                      th:text="${specialCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for='buyGr' class='input_labal'>구매단가그룹</label>
+            <select class='form-select' id='buyGr' th:field="*{buyGr}" size=1>
+              <option value=''>선택</option>
+              <option th:each="specialCode : ${specialCodes}"
+                      th:attr="selected=${specialCode.value == buyGr ?'true' : 'false'}"
+                      th:value="${specialCode.value}"
+                      th:text="${specialCode.text}">
+            </select>
           </td>
         </tr>
         <tr>
           <td>
-            <label for="classAl" class="input_labal">거래처정렬순서</label>
-            <input id="classAl" th:field="*{classAl}" type="number" size="11" class="form-control">
+            <label class='input_labal' for="shipYn">출하대상거래처</label>
+            <div class='form-check form-check-inline'>
+              <input class='form-check-input' type="checkbox" style="margin-top: 10px" id="shipYn" th:field="*{shipYn}">
+            </div>
+          </td>
+          <td>
+            <label for='saleType' class='input_labal'>영업유형</label>
+            <select class='form-select' id='saleType' th:field="*{saleType}" size=1>
+              <option value=''>선택</option>
+              <option th:each="typeCode : ${typeCodes}"
+                      th:attr="selected=${typeCode.value == saleType ?'true' : 'false'}"
+                      th:value="${typeCode.value}"
+                      th:text="${typeCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for='buyType' class='input_labal'>구매유형</label>
+            <select class='form-select' id='buyType' th:field="*{buyType}" size=1>
+              <option value=''>선택</option>
+              <option th:each="typeCode : ${typeCodes}"
+                      th:attr="selected=${typeCode.value == buyType ?'true' : 'false'}"
+                      th:value="${typeCode.value}"
+                      th:text="${typeCode.text}">
+            </select>
           </td>
         </tr>
         <tr>
-          <td>
-            <label for="classNm" class="input_labal">거래구분명</label>
-            <input id="classNm" th:field="*{classNm}" type="text" size="30" class="form-control">
+          <td colspan="3">
+            <label for="homePage" class="input_labal">홈페이지</label>
+            <input id="homePage" th:field="*{homePage}" type="text" size="100" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <label for="note" class="input_labal">비고</label>
+            <input id="note" th:field="*{note}" type="text" size="100" class="form-control">
           </td>
         </tr>
       </table>

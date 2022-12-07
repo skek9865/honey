@@ -16,7 +16,7 @@ public class Tb402Dto {
     private String custGb;
     private String taxGb;
     private String taxCd;
-    private String forYn;
+    private Boolean forYn;
     private String forNm;
     private String ceoNm;
     private String bsnS;
@@ -42,7 +42,7 @@ public class Tb402Dto {
     private String buyGr;
     private String regDt;
     private String homePage;
-    private String shipYn;
+    private Boolean shipYn;
     private String saleType;
     private String buyType;
     private String note;
@@ -51,11 +51,17 @@ public class Tb402Dto {
     private String updateDate;
     private String updateId;
 
-    public static Tb402Dto of(Tb402 entity, String empNm, String class1Nm, String class2Nm){
+    public static Tb402Dto of(Tb402 entity, String empNm, String class1Nm, String class2Nm, String saleGrNm, String buyGrNm){
+        Boolean forYn = false;
+        if(entity.getForYn().equals("Y")) forYn = true;
+        Boolean shipYn = false;
+        if(entity.getShipYn().equals("Y")) shipYn = true;
 
         if(empNm == null) empNm = entity.getEmpCd();
         if(class1Nm == null) class1Nm = entity.getClass1();
         if(class2Nm == null) class2Nm = entity.getClass2();
+        if(saleGrNm == null) saleGrNm = entity.getSaleGr();
+        if(buyGrNm == null) buyGrNm = entity.getBuyGr();
 
         return Tb402Dto.builder()
                 .seq(entity.getSeq())
@@ -64,7 +70,7 @@ public class Tb402Dto {
                 .custGb(entity.getCustGb())
                 .taxGb(entity.getTaxGb())
                 .taxCd(entity.getTaxCd())
-                .forYn(entity.getForYn())
+                .forYn(forYn)
                 .forNm(entity.getForNm())
                 .ceoNm(entity.getCeoNm())
                 .bsnS(entity.getBsnS())
@@ -86,11 +92,12 @@ public class Tb402Dto {
                 .saleCd(entity.getSaleCd())
                 .class1(class1Nm)
                 .class2(class2Nm)
-                .saleGr(entity.getSaleGr())
-                .buyGr(entity.getBuyGr())
+                .saleGr(saleGrNm)
+                .buyGr(buyGrNm)
                 .regDt(entity.getRegDt())
                 .homePage(entity.getHomePage())
-                .shipYn(entity.getShipYn())
+                .shipYn(shipYn)
+                .saleType(entity.getSaleType())
                 .buyType(entity.getBuyType())
                 .note(entity.getNote())
                 .createDate(entity.getCreateDate())

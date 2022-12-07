@@ -11,6 +11,8 @@ import project.honey.business.dto.Tb402Dto;
 import project.honey.business.form.Tb402Form;
 import project.honey.business.service.Service040101;
 import project.honey.business.service.Service040102;
+import project.honey.business.service.Service040106;
+import project.honey.business.service.Service040109;
 import project.honey.comm.ExcelMaker;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
@@ -35,6 +37,8 @@ public class Controller040102 {
     private final Service040102 service040102;
     private final Service020101 service020101;
     private final Service040101 service040101;
+    private final Service040106 service040106;
+    private final Service040109 service040109;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
     private final ExcelMaker excelMaker;
@@ -58,6 +62,11 @@ public class Controller040102 {
         model.addAttribute("titles",titles);
         model.addAttribute("global", new GlobalConst());
 
+        model.addAttribute("sCustNm",  map.get("sCustNm"));
+        model.addAttribute("sCeoNm",   map.get("sCeoNm"));
+        model.addAttribute("sEmpCd", map.get("sEmpCd"));
+        model.addAttribute("sClass1", map.get("sClass1"));
+
         Page<Tb402Dto> resultList = service040102.findAllByDsl(map.get("sCustNm"), map.get("sCeoNm"), map.get("sEmpCd"), map.get("sClass1"),pageable);
         model.addAttribute("dtos", resultList);
         model.addAttribute("empCodes",service020101.findAllBySelect());
@@ -80,6 +89,8 @@ public class Controller040102 {
         model.addAttribute("taxGbCodes",service990301.findByFstId("09"));
         model.addAttribute("typeCodes",service990301.findByFstId("11"));
         model.addAttribute("empCodes",service020101.findAllBySelect());
+        model.addAttribute("specialCodes",service040106.findAllBySelect());
+        model.addAttribute("excgCodes",service040109.findAllBySelect());
         model.addAttribute("class1Codes",service040101.findAllBySelect(1));
         model.addAttribute("class2Codes",service040101.findAllBySelect(2));
         if(map.get("vseq").isEmpty()){
@@ -130,9 +141,13 @@ public class Controller040102 {
                 "전화번호", "모바일", "거래처Fax", "담당자", "영업사원",
                 "거래처그룹1", "거래처그룹2", "영업단가그룹", "구매단가그룹"
         );
-        List<String> excelType = GlobalMethod.makeExcelType("String", "String", "int", "String");
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String", "String", "String",
+                "String", "String", "String", "String", "String", "String", "String"
+                );
 
         List<List<String>> excelData = service040102.findAllByExcel(map.get("sCustNm"), map.get("sCeoNm"), map.get("sEmpCd"), map.get("sClass1"));
+
         String fileName = "거래처관리(040102).xlsx";
 
         excelMaker.makeExcel("거래처관리 (040102)", titles, excelData, excelType, fileName, response);

@@ -18,7 +18,7 @@ public class Tb402Form {
     private String custGb;
     private String taxGb;
     private String taxCd;
-    private String forYn;
+    private Boolean forYn;
     private String forNm;
     private String ceoNm;
     private String bsnS;
@@ -44,12 +44,17 @@ public class Tb402Form {
     private String buyGr;
     private String regDt;
     private String homePage;
-    private String shipYn;
+    private Boolean shipYn;
     private String saleType;
     private String buyType;
     private String note;
     
     public static Tb402 toTb402(Tb402Form form){
+        String forYn = "N";
+        if(form.getForYn()) forYn = "Y";
+        String shipYn = "N";
+        if(form.getShipYn()) shipYn = "Y";
+
         return Tb402.builder()
                 .seq(form.getSeq())
                 .custCd(form.getCustCd())
@@ -57,7 +62,7 @@ public class Tb402Form {
                 .custGb(form.getCustGb())
                 .taxGb(form.getTaxGb())
                 .taxCd(form.getTaxCd())
-                .forYn(form.getForYn())
+                .forYn(forYn)
                 .forNm(form.getForNm())
                 .ceoNm(form.getCeoNm())
                 .bsnS(form.getBsnS())
@@ -83,7 +88,8 @@ public class Tb402Form {
                 .buyGr(form.getBuyGr())
                 .regDt(form.getRegDt())
                 .homePage(form.getHomePage())
-                .shipYn(form.getShipYn())
+                .shipYn(shipYn)
+                .saleType(form.getSaleType())
                 .buyType(form.getBuyType())
                 .note(form.getNote())
                 .build();
