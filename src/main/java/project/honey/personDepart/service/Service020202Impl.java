@@ -56,7 +56,7 @@ public class Service020202Impl implements Service020202{
             dtoList.add(tb204Dto);
         }
 
-        Page<Tb204Dto> resultList = new PageImpl<>(dtoList, pageable, dtoList.size());
+        Page<Tb204Dto> resultList = new PageImpl<>(dtoList, pageable, result.getTotalElements());
 
         return resultList;
     }
