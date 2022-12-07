@@ -15,10 +15,12 @@
         case "insert" : //저장
         case "update" : //저장
           fm_input.action = "/040102/" + as_action;
+          fm_input.method = "post";
           fm_input.submit();
           break;
         case "delete" : //저장
           fm_home.action = "/040102/" + as_action + "/" + as_val1;
+          fm_home.method = "post";
           fm_home.submit();
           break;
         case "excel" :

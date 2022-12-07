@@ -46,7 +46,7 @@ public class Service040101Impl implements Service040101{
             dtoList.add(tb401Dto);
         }
 
-        Page<Tb401Dto> resultList = new PageImpl<>(dtoList, pageable, dtoList.size());
+        Page<Tb401Dto> resultList = new PageImpl<>(dtoList, pageable, result.getTotalElements());
 
         return resultList;
     }

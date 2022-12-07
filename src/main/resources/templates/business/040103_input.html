@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form name="fm_input" th:action="@{/040103/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+  <div class="container-fluid p-2">
+    <div class="input_div">
+      <table class="input_table">
+        <tr>
+          <td>
+            <label for='whouseCla' class='input_labal'>창고구분</label>
+            <select class='form-select' id='whouseCla' th:field="*{whouseCla}" size=1>
+              <option value=''>선택</option>
+              <option th:each="whouseCode : ${whouseCodes}"
+                      th:attr="selected=${whouseCode.value == post ?'true' : 'false'}"
+                      th:value="${whouseCode.value}"
+                      th:text="${whouseCode.text}">
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='productCd' class='input_labal'>생산공정명</label>
+            <select class='form-select' id='productCd' th:field="*{productCd}" size=1>
+              <option value=''>선택</option>
+<!--              <option th:each="whouseCode : ${whouseCodes}"-->
+<!--                      th:attr="selected=${whouseCode.value == post ?'true' : 'false'}"-->
+<!--                      th:value="${whouseCode.value}"-->
+<!--                      th:text="${whouseCode.text}">-->
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="whouseCd" class="input_labal">창고코드</label>
+            <input id="whouseCd" th:field="*{whouseCd}" type="text" size="5" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="whouseAl" class="input_labal">창고정렬순서</label>
+            <input id="whouseAl" th:field="*{whouseAl}" type="number" size="11" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="whouseNm" class="input_labal">창고명</label>
+            <input id="whouseNm" th:field="*{whouseNm}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="input_div button_table">
+      <table class="input_table">
+        <tr>
+          <td class="float-end">
+            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+            </button>
+            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+  <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+  <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>
