@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+
+    <title>급여명세서</title>
+</head>
+<style>
+    .zero-side-1 { border-top: 2px solid black}
+    table{border-collapse: collapse; border-top: 1px solid black; border-bottom: 1px solid black; width: 100%}
+    .td-nomal{border: 1px solid black; text-align: center}
+    .td-start{border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid black; text-align: center;}
+    .td-end{border-bottom: 1px solid black; border-top: 1px solid black; border-left: 1px solid black; text-align: center;}
+    .print-f-start {border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid black; text-align: center; background-color: #eee;}
+    .print-f-normal{border: 1px solid black; text-align: center; background-color: #eee;}
+    .print-f-end   {border-bottom: 1px solid black; border-top: 1px solid black; border-left: 1px solid black; text-align: center; background-color: #eee;}
+    .print-s-start {border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid black; text-align: center; background-color:#FEF4E8;}
+    .print-s-normal{border: 1px solid black; text-align: center; background-color:#FEF4E8;}
+    .print-s-end   {border-bottom: 1px solid black; border-top: 1px solid black; border-left: 1px solid black; text-align: center; background-color:#FEF4E8;}
+    .print-t-start {border-bottom: 1px solid black; border-top: 1px solid black; border-right: 1px solid black; text-align: center; background-color:#F8FBFC;}
+    .print-t-normal{border: 1px solid black; text-align: center; background-color:#F8FBFC;}
+    .print-t-end{border-bottom: 1px solid black; border-top: 1px solid black; border-left: 1px solid black; text-align: center; background-color:#F8FBFC;}
+    @page { size: A4; margin:0; }
+    @media print {
+        .print-f-start  {background-color:#eee !important; -webkit-print-color-adjust:exact;}
+        .print-f-normal {background-color:#eee !important; -webkit-print-color-adjust:exact;}
+        .print-f-end    {background-color:#eee !important; -webkit-print-color-adjust:exact;}
+        .print-s-start  {background-color:#FEF4E8 !important; -webkit-print-color-adjust:exact;}
+        .print-s-normal {background-color:#FEF4E8 !important; -webkit-print-color-adjust:exact;}
+        .print-s-end    {background-color:#FEF4E8 !important; -webkit-print-color-adjust:exact;}
+        .print-t-start  {background-color:#F8FBFC !important; -webkit-print-color-adjust:exact;}
+        .print-t-normal {background-color:#F8FBFC !important; -webkit-print-color-adjust:exact;}
+        .print-t-end    {background-color:#F8FBFC !important; -webkit-print-color-adjust:exact;}
+    }
+</style>
+<body>
+<div id="report">
+    <div id="Preview_btn">
+        <button id="btnPrint" onclick="this.style.display='none'; pagePrintPreview(); this.style.display='block'; ">미리보기</button>
+    </div>
+    <div>
+        <h1 style="text-align: center; font-weight: 900; margin-top: 20px">[[${dto.payDt}]] 급여명세서</h1>
+        <div class="zero-side-1"></div>
+        <p style="font-weight: bold; margin-bottom: 1px">기본정보</p>
+        <table style="height: 80px">
+            <tbody>
+            <tr>
+                <th class="print-f-start" style="width: 15%;">귀속연월</th>
+                <th class="td-nomal" style="width: 35%; font-weight: bold;">[[${dto.payDt}]]</th>
+                <th class="print-f-normal" style="width: 15%;">지급일</th>
+                <th class="td-end" style="width: 35%">[[${dto.rPay}]]</th>
+            </tr>
+            <tr>
+                <th class="print-f-start">성명</th>
+                <th class="td-nomal" th:text="${dto.empNm}">홍길동2</th>
+                <th class="print-f-normal">사원번호</th>
+                <th class="td-end" th:text="${dto.empNo}">0001</th>
+            </tr>
+            <tr>
+                <th class="print-f-start">부서명</th>
+                <th class="td-nomal" th:text="${dto.dept}">대표이사</th>
+                <th class="print-f-normal">직위</th>
+                <th class="td-end" th:text="${dto.post}">대표이사</th>
+            </tr>
+            </tbody>
+        </table>
+        <div style="height: 10px"></div>
+        <table style="height: 40px">
+            <tbody>
+            <tr>
+                <th class="print-f-start" style="width: 25%;">연장근로시간</th>
+                <th class="print-f-normal" style="width: 25%;">야간근로시간</th>
+                <th class="print-f-normal" style="width: 25%;">휴일근로시간</th>
+                <th class="print-f-end" style="width: 25%;">통상시급</th>
+            </tr>
+            <tr>
+                <th class="td-start">??</th>
+                <th class="td-nomal">??</th>
+                <th class="td-nomal">??</th>
+                <th class="td-end">??</th>
+            </tr>
+            </tbody></table>
+        <p style="font-weight: bold; margin-bottom: 1px">지급내역</p>
+        <table>
+            <tbody>
+            <tr>
+                <th class="print-s-start" style="width: 200px">지급항목</th>
+                <th class="print-s-normal" style="width: 170px">지급액</th>
+                <th class="print-s-end">산출식 또는 산출방법</th>
+            </tr>
+            <tr th:each="payout : ${dto.payouts}">
+                <td class="td-start" th:text="${payout.itemNm}">기본급</td>
+                <td class="td-nomal" style="text-align: right" th:text="${#numbers.formatInteger(payout.pay,0, 'COMMA')}">200,000</td>
+                <td class="td-end"></td>
+            </tr>
+            <tr>
+                <th class="print-s-start">지급합계</th>
+                <th class="td-nomal" style="text-align: right" th:text="${#numbers.formatInteger(dto.totalPayout,0, 'COMMA')}">400,000</th>
+                <th class="td-end"></th>
+            </tr>
+            </tbody></table>
+        <p style="font-weight: bold; margin-bottom: 1px">공제내역</p>
+        <table>
+            <tbody>
+            <tr>
+                <th class="print-t-start" style="width: 200px">공제항목</th>
+                <th class="print-t-normal" style="width: 170px">공제액</th>
+                <th class="print-t-end">산출식 또는 산출방법</th>
+            </tr>
+            <tr th:each="deduction : ${dto.deductions}">
+                <th:block th:if="${deduction.pay != 0 && deduction.taxRate != 0}">
+                    <td class="td-start" th:text="${deduction.itemNm}">소득세</td>
+                    <td class="td-nomal" style="text-align: right" th:text="${#numbers.formatInteger(deduction.pay,0, 'COMMA')}">12,000</td>
+                    <td class="td-end"
+                        th:text="${#numbers.formatInteger(dto.totalTaxAmt,0, 'COMMA') +' * ' +
+                    #numbers.formatDecimal(deduction.taxRate,1,2)}">400,000 * 3.00</td>
+                </th:block>
+            </tr>
+            <tr>
+                <th class="print-t-start">공제합계</th>
+                <th class="td-nomal" style="text-align: right" th:text="${#numbers.formatInteger(dto.totalDeduction,0, 'COMMA')}">69,520</th>
+                <th class="td-end"></th>
+            </tr>
+            <tr>
+                <td style="font-weight: bold; padding-top: 15px"><p>실 지급액</p></td>
+                <td colspan="2" style="text-align: right; font-weight: bold; padding-top: 15px"
+                    th:text="${#numbers.formatInteger(dto.totalActualPayment,0, 'COMMA') + ' 원'}"><p>330,480 원</p></td>
+            </tr>
+            </tbody></table>
+        <div class="zero-side-1"></div>
+        <p style="text-align: center">귀하의 노고에 감사드립니다.</p>
+        <p style="text-align: center; font-weight: bold" th:text="${dto.rPayDt}"></p>
+        <h2 style="text-align: center">농업회사법인허니엣비 주식회사<br>대표이사 권오길</h2>
+    </div>
+</div>
+</body>
+</html>

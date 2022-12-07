@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>급여대장</title>
+    <link rel="icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
+    <link rel="shortcut icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
+    <link th:href="@{|${global.cssDir}/bootstrap.min.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/bootstrap-datepicker3.min.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/bootstrap-icons.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/bootstrap.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/styles.css|}" rel="stylesheet" />
+    <link th:href="@{|${global.cssDir}/style_old.css|}" rel="stylesheet" />
+    <link th:href="@{|${global.cssDir}/bootstrap4-toggle.min.css|}" rel="stylesheet" >
+    <link th:href="@{|${global.cssDir}/theme.blue.css|}" rel="stylesheet" >
+
+    <script th:src="@{|${global.jsDir}/all.min.js|}" crossorigin="anonymous"></script>
+    <script th:src="@{|${global.jsDir}/jquery-3.4.1.min.js|}"></script>
+    <script th:src="@{|${global.jsDir}/jquery-ui.min.js|}"></script>
+
+    <script th:src="@{|${global.jsDir}/colResizable-1.6.js|}"></script>
+    <script th:src="@{|${global.jsDir}/jquery.tablesorter.min.js|}"></script>
+    <script th:src="@{|${global.jsDir}/bootstrap4-toggle.min.js|}"></script>
+    <script th:src="@{|${global.jsDir}/popper.min.js|}"></script>
+
+    <script th:src="@{|${global.jsDir}/bootstrap.min.js|}"></script>
+    <script th:src="@{|${global.jsDir}/bootstrap-datepicker.min.js|}" type='text/javascript' ></script>
+    <script th:src="@{|${global.jsDir}/bootstrap-datepicker.ko.min.js|}" charset="UTF-8"></script>
+
+    <script th:src="@{|${global.jsDir}/showModalDialog.js|}" type="text/javascript"></script>
+    <script th:src="@{|${global.jsDir}/showModalDialogCallee.js|}" type="text/javascript"></script>
+
+    <script th:src="@{|${global.jsDir}/comfunction.js|}"></script>
+    <script th:src="@{|${global.jsDir}/comfunction_src.js|}"></script>
+    <script th:src="@{|${global.jsDir}/clientValidate.js|}"></script>
+
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+
+    <style>
+        .print-h{background-color: #99BFE6; text-align: center; font-weight: bold; color: black; border-bottom: 2px solid black; border-right: 1px solid #eee;}
+        .print-p{background-color: #99BFE6; text-align: right; font-weight: bold; color: black; border-bottom: 2px solid black; border-right: 0.5px solid #eee;}
+        @page { size: A4 landscape; margin:0; }
+        @media print {
+            .print-h {background-color:#99BFE6 !important; -webkit-print-color-adjust:exact;}
+            .print-p {background-color:#99BFE6 !important; -webkit-print-color-adjust:exact;}
+            .print-td{background-color:#eee !important; -webkit-print-color-adjust:exact;}
+        }
+    </style>
+</head>
+<body style="border: 1px solid white">
+<button id="btnPrint" onclick="this.style.display='none'; pagePrintPreview(); this.style.display='block'; ">미리보기</button>
+<h1 style="text-align: center; margin-top: 20px; margin-bottom: 20px" th:text="${year + '년 '  + month + '월 급여대장'}"></h1>
+<div id="tableWrapper">
+    <table class="table-striped" style="width: 98%; margin: 0 auto;">
+        <thead>
+        <tr class="tableList_h_tr">
+            <th th:each="title : ${titles}" class="tablesorter-header tablesorter-headerAsc print-h">
+                <div class="tablesorter-header-inner" th:text="${title}">타이틀</div>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="list_tr_1" th:each="dto, dtoStat : ${list}"><!-- td 렌더링 -->
+            <td class="list_td_1" th:classappend="${dtoStat.index % 2 == 0? 'print-td':''}" th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
+            <td class="list_td_1" th:classappend="${dtoStat.index % 2 == 0? 'print-td':''}" th:text="${dto.empDt}"></td>
+            <td class="list_td_1" th:classappend="${dtoStat.index % 2 == 0? 'print-td':''}" th:text="${dto.empNm}"></td>
+            <td class="list_td_1" th:classappend="${dtoStat.index % 2 == 0? 'print-td':''}" th:text="${dto.post}"></td>
+            <td class="list_td_1 text-end" th:classappend="${dtoStat.index % 2 == 0? 'print-td':''}" th:each="pay : ${dto.pays}" th:text="${#numbers.formatInteger(pay,0, 'COMMA')}"></td>
+            <td class="list_td_1 payout text-end" th:classappend="${dtoStat.index % 2 == 0? 'print-td':''}" th:text="${#numbers.formatInteger(dto.payout,0, 'COMMA')}"></td>
+            <td class="list_td_1 deduction text-end" th:classappend="${dtoStat.index % 2 == 0? 'print-td':''}" th:text="${#numbers.formatInteger(dto.deduction,0, 'COMMA')}"></td>
+            <td class="list_td_1 actualPayment text-end" th:classappend="${dtoStat.index % 2 == 0? 'print-td':''}" th:text="${#numbers.formatInteger(dto.actualPayment,0, 'COMMA')}"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr class="tableList_f_tr">
+            <th class="tableList_f_td print-p" data-column="0"></th>
+            <th class="tableList_f_td print-p" data-column="1"></th>
+            <th class="tableList_f_td print-p" data-column="2"></th>
+            <th class="tableList_f_td print-p" data-column="3"></th>
+            <th th:each="pay, payStat : ${totals.TotalPays}" class="tableList_f_td print-p" th:data-column="${payStat.index+4}" th:text="${#numbers.formatInteger(pay,0, 'COMMA')}"></th>
+            <th class="tableList_f_td print-p" th:data-column="${totals.count-2}" th:text="${#numbers.formatInteger(totals.TotalPayout,0, 'COMMA')}"></th>
+            <th class="tableList_f_td print-p" th:data-column="${totals.count-1}" th:text="${#numbers.formatInteger(totals.TotalDeduction,0, 'COMMA')}"></th>
+            <th class="tableList_f_td tablesorter-headerDesc print-p" th:data-column="${totals.count}" th:text="${#numbers.formatInteger(totals.TotalActualPayment,0, 'COMMA')}"></th>
+        </tr>
+        </tfoot>
+
+    </table>
+</div>
+<script type="text/javascript">
+    <!--
+    $("#datatable_1").width("1100px");
+    //-->
+</script>
+<script>
+    $(document).ready(function (){
+        $("#modal_main").addClass("modal-xl")
+    })
+</script>
+
+</body>
+</html>

@@ -117,7 +117,9 @@ public class Service030102Impl implements Service030102 {
     // 개인별기준급여 리스트 조회, 퇴사안한 사원들만 조회
     @Override
     public Page<Tb302HomeDto> findAllByLeave(Pageable pageable, String empNm, String postCd, String deptCd) {
+
         Page<Tb201> result = tb201Repository.findAllByLeave(empNm, postCd, deptCd, pageable);
+
         List<Tb201> content = result.getContent();  // 사원 테이블의 내용
 
         List<Tb302HomeDto> dtos = new ArrayList<>();

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" enctype="multipart/form-data" method="post" th:object="${dto}">
+    <main>
+        <div class="container-fluid p-2">
+            <div class="input_div">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label for="vmenugbcd" class="input_labal">메뉴그룹코드</label>
+                            <select class="form-select" id="vmenugbcd" name="menuGbCd" th:value="*{menuGbCd}" size="1">
+                            <option value="">선택</option>
+                            <option th:each="menuGb : ${menuGbs}" th:value="${menuGb.value}" th:text="${menuGb.text}"
+                                    th:attr="selected=${menuGb.text == dto.menuGbCd ? 'true' : 'false'}"></option>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vtpid" class="input_labal">화면</label>
+                            <select class="form-select" id="vtpid" name="tpId" size="1">
+                            <option value="">선택</option>
+                            <option th:each="screen : ${screens}" th:value="${screen.key}" th:text="${screen.value}"
+                            th:attr="selected=${screen.value == dto.tpId ? 'true' : 'false'}">회사기본정보</option>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vmenuyn" class="input_labal">접근여부</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="vmenuyn" th:field="*{menuYn}" th:attr="checked=${dto.menuYn == 'Y'?'true' : 'false'}"  type="checkbox" value="Y">
+                                <label class="form-check-label" for="vmenuyn"></label></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vlistyn" class="input_labal">목록사용여부</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" th:field="*{listYn}" th:attr="checked=${dto.listYn == 'Y'?'true' : 'false'}" id="vlistyn" type="checkbox" value="Y">
+                                <label class="form-check-label" for="vlistyn"></label></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vviewyn" class="input_labal">건별조회사용여부</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" th:field="*{viewYn}" th:attr="checked=${dto.viewYn == 'Y'?'true' : 'false'}" id="vviewyn" type="checkbox" value="Y">
+                                <label class="form-check-label" for="vviewyn"></label></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vsaveyn" class="input_labal">저장사용여부</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" th:field="*{saveYn}" th:attr="checked=${dto.saveYn == 'Y'?'true' : 'false'}" id="vsaveyn" type="checkbox" value="Y">
+                                <label class="form-check-label" for="vsaveyn"></label></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vmodifyyn" class="input_labal">수정사용여부</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" th:field="*{modifyYn}" th:attr="checked=${dto.modifyYn == 'Y'?'true' : 'false'}" id="vmodifyyn" type="checkbox" value="Y">
+                                <label class="form-check-label" for="vmodifyyn"></label></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vdelyn" class="input_labal">삭제사용여부</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input"th:field="*{delYn}" th:attr="checked=${dto.delYn == 'Y'?'true' : 'false'}" id="vdelyn" type="checkbox" value="Y">
+                                <label class="form-check-label" for="vdelyn"></label></div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="input_div button_table">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td class="float-end">
+                            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm">저장</button>&nbsp;
+                            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>&nbsp;
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <input type="hidden" id="iseq" name="seq" th:value="*{seq}">
+    <input type="hidden" id="ifstId" name="fstId">
+    <input type="hidden" id="iscdId" name="scdId">
+    <input type="hidden" id="ithdId" name="thdId">
+    <input type="hidden" id="ipage" name="page">
+    <input type="hidden" id="isize" name="size">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+
+        $('#ifstId').val($('#fstId').val());
+        $('#iscdId').val($('#scdId').val());
+        $('#ithdId').val($('#thdId').val());
+        $('#ipage').val($('#page').val());
+        $('#isize').val($('#size').val());
+
+
+        var method = [[${dto.seq}]]==null?'/insert':'/update'
+        //저장, 수정
+        $('#save').on('click', function (e){
+
+            e.preventDefault();
+            var inputForm = $('form[name="fm_input"]');
+            var url = window.location.href + "";
+            inputForm.attr("action",url.split('?')[0] + method)
+            inputForm.submit();
+
+        })
+    });
+</script>
+</body>
+</html>

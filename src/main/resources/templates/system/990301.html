@@ -2,6 +2,27 @@
       xmlns:th="http://www.thymeleaf.org">
 <form name="fm_home" method="post" >
     <main >
+        <script th:inline="javascript">
+            function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+                switch (as_action) {
+                    case "query" :
+                        var form = $('form[name="fm_home"]');
+                        form.action = "/990301"
+                        $('#size').val($('#num_per_page').val());
+                        $('#page').val(1);
+                        form.attr("method", "get");
+                        form.submit();
+                        break;
+                    case "excel" :
+                        fm_home.action = "/990301/excel"
+                        fm_home.method = "get"
+                        fm_home.submit();
+                        break;
+
+
+                }
+            }
+        </script>
         <div class="container-fluid p-2">
             <div class="titleBar" id="titleBar">
                 <div class="row">
@@ -25,7 +46,7 @@
                                     </select>
                                 </td>
                                 <td><!--조회 등록 엑셀-->
-                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm">조회</button>&nbsp;
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
                                     <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="gf_modal('990301/input','','','','', '');">등록</button>&nbsp;
                                     <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
                                 </td>

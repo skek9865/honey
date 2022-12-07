@@ -8,9 +8,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import project.honey.comm.GlobalConst;
+import project.honey.system.entity.Tb902;
 import project.honey.system.repository.Tb901Repository;
+import project.honey.system.repository.Tb902Repository;
+import project.honey.system.service.Service990102;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +28,7 @@ public class AuthController {
 
     private final HttpSession session;
     private final Tb901Repository tb901Repository;
+    private final Service990102 service990102;
 
     // 로그인 폼 요청
     @GetMapping("/login")
@@ -33,29 +42,25 @@ public class AuthController {
 
     // 로그인
     @PostMapping("/login")
-    public String login(LoginDto loginUser) {
+    public String login(LoginDto loginUser, HttpServletRequest request) {
 
         log.info("loginUser : " + loginUser.toString());
 
-        // 진짜
-        if(!tb901Repository.existsByUserIdAndPasswd(loginUser.getUserId(), loginUser.getPasswd())){
+        if (!tb901Repository.existsByUserIdAndPasswd(loginUser.getUserId(), loginUser.getPasswd())) {
             return "redirect:/auth/login";
         }
 
-        // 테스트용
-//        if (!loginUser.getUserId().equals("hello") || !loginUser.getPasswd().equals("hello")) {
-//            return "redirect:/auth/login";
-//        }
-
-        // 세션에 ID 저장 후 main 이동
         session.setAttribute("user", loginUser.getUserId());
+
+        //로그인 이력 저장
+        service990102.insertHistory(request, loginUser.getUserId());
 
         return "redirect:/";
     }
 
     //로그아웃
     @GetMapping("/logout")
-    public String logout(Model model) {
+    public String logout() {
 
         session.invalidate();
 

@@ -14,6 +14,7 @@ import project.honey.system.dto.CodeDto;
 import project.honey.system.entity.Tb906;
 import project.honey.system.repository.Tb906Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,6 +69,25 @@ public class Service030101Impl implements Service030101{
     @Override
     public List<String> findAllByUseItemNm() {
         return tb301Repository.findAllByUseItemNm();
+    }
+
+    // 엑셀용 데이터
+    @Override
+    public List<List<String>> findAllByExcel() {
+        List<Tb301Dto> tb301s = tb301Repository.findAllByExcel();
+        List<List<String>> excelData = new ArrayList<>();
+        for(Tb301Dto dto : tb301s){
+            List<String> list = new ArrayList<>();
+            list.add(dto.getItemDiv());
+            list.add(dto.getTaxDiv());
+            list.add(dto.getItemCd());
+            list.add(dto.getItemNm());
+            list.add(String.valueOf(dto.getTaxRate()));
+            list.add(dto.getUseYn());
+
+            excelData.add(list);
+        }
+        return excelData;
     }
 
 

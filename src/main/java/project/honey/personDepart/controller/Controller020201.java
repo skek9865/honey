@@ -66,7 +66,7 @@ public class Controller020201 {
 
         model.addAttribute("partCodes",service990301.findByFstId("25"));
 
-        Page<Tb203Dto> resultList = service020201.findAll(map.get("sOutFNm"), map.get("sPart"), pageable);
+        Page<Tb203Dto> resultList = service020201.findAllByDsl(map.get("sOutFNm"), map.get("sPart"), pageable);
         model.addAttribute("dtos",resultList);
         model.addAttribute("pageMaker", new PageMaker(pageable, resultList.getTotalElements()));
 
@@ -137,55 +137,12 @@ public class Controller020201 {
         List<String> titles = GlobalMethod.makeTitle(
                 "순번", "사원명", "구분", "파일"
         );
-        List<Tb203Dto> findAllByExcel = service020201.findAllByExcel(map.get("sOutFNm"), map.get("sPart"));
-
-        List<List<String>> excelData = makeExcelData(findAllByExcel);
-        List<String> excelType = makeExcelType();
-        Map<Integer, Integer> excelWidth = makeExcelWidth();
-        Workbook wb = excelMaker.makeExcel("aaa", titles, excelData, excelType, excelWidth);
-
-        // 컨텐츠 타입과 파일명 지정
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String"
+        );
+        List<List<String>> excelData = service020201.findAllByExcel(map.get("sOutFNm"), map.get("sPart"));
         String fileName = "개인파일관리(020201).xlsx";
-        String outputFileName = new String(fileName.getBytes("KSC5601"), "8859_1");
-        response.setContentType("application/xlsx");
-        response.setHeader("Content-Disposition", "Attachment; filename=" + outputFileName);
 
-        OutputStream fileOut = response.getOutputStream();
-
-        // Excel File Output
-        wb.write(fileOut);
-        fileOut.close();
-
-        response.getOutputStream().flush();
-        response.getOutputStream().close();
-
-        wb.close();
-    }
-
-    private List<List<String>> makeExcelData(List<Tb203Dto> findAllByExcel) {
-        List<List<String>> excelData = new ArrayList<>();
-        for(Tb203Dto dto : findAllByExcel){
-            List<String> list = new ArrayList<>();
-            list.add(dto.getEmpNm());
-            list.add(dto.getPart());
-            list.add(dto.getOutFNm());
-            excelData.add(list);
-        }
-        return excelData;
-    }
-
-    private List<String> makeExcelType(){
-        List<String> excelType = new ArrayList<>();
-        excelType.add("String");
-        excelType.add("String");
-        excelType.add("String");
-        return excelType;
-    }
-
-    private Map<Integer, Integer> makeExcelWidth(){
-        Map<Integer, Integer> widthMap = new HashMap<>();
-        widthMap.put(0,1000);
-        widthMap.put(3,10000);
-        return widthMap;
+        excelMaker.makeExcel("개인파일관리 (020201)", titles, excelData, excelType, fileName, response);
     }
 }

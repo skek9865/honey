@@ -64,7 +64,7 @@ public class Controller020202 {
 
         model.addAttribute("partCodes",service990301.findByFstId("25"));
 
-        Page<Tb204Dto> resultList = service020202.findAll(map.get("sOutFNm"), map.get("sPart"), pageable);
+        Page<Tb204Dto> resultList = service020202.findAllByDsl(map.get("sOutFNm"), map.get("sPart"), pageable);
         model.addAttribute("dtos",resultList);
         model.addAttribute("pageMaker", new PageMaker(pageable, resultList.getTotalElements()));
 
@@ -133,57 +133,12 @@ public class Controller020202 {
         List<String> titles = GlobalMethod.makeTitle(
                 "순번", "구분", "파일", "비고"
         );
-        List<Tb204Dto> findAllByExcel = service020202.findAllByExcel(map.get("sOutFNm"), map.get("sPart"));
-
-        List<List<String>> excelData = makeExcelData(findAllByExcel);
-        List<String> excelType = makeExcelType();
-        Map<Integer, Integer> excelWidth = makeExcelWidth();
-        Workbook wb = excelMaker.makeExcel("aaa", titles, excelData, excelType, excelWidth);
-
-        // 컨텐츠 타입과 파일명 지정
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String"
+        );
         String fileName = "회사파일관리(020202).xlsx";
-        String outputFileName = new String(fileName.getBytes("KSC5601"), "8859_1");
-        response.setContentType("application/xlsx");
-        response.setHeader("Content-Disposition", "Attachment; filename=" + outputFileName);
+        List<List<String>> excelData = service020202.findAllByExcel(map.get("sOutFNm"), map.get("sPart"));
 
-        OutputStream fileOut = response.getOutputStream();
-
-        // Excel File Output
-        wb.write(fileOut);
-        fileOut.close();
-
-        response.getOutputStream().flush();
-        response.getOutputStream().close();
-
-        wb.close();
+        excelMaker.makeExcel("회사파일관리 (020202)", titles, excelData, excelType, fileName, response);
     }
-
-    private List<List<String>> makeExcelData(List<Tb204Dto> findAllByExcel) {
-        List<List<String>> excelData = new ArrayList<>();
-        for(Tb204Dto dto : findAllByExcel){
-            List<String> list = new ArrayList<>();
-            list.add(dto.getPart());
-            list.add(dto.getOutFNm());
-            list.add(dto.getNote());
-            excelData.add(list);
-        }
-        return excelData;
-    }
-
-    private List<String> makeExcelType(){
-        List<String> excelType = new ArrayList<>();
-        excelType.add("String");
-        excelType.add("String");
-        excelType.add("String");
-        return excelType;
-    }
-
-    private Map<Integer, Integer> makeExcelWidth(){
-        Map<Integer, Integer> widthMap = new HashMap<>();
-        widthMap.put(0,1000);
-        widthMap.put(2,10000);
-        widthMap.put(3,10000);
-        return widthMap;
-    }
-    
 }

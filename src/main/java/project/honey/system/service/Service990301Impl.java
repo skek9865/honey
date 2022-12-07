@@ -10,9 +10,11 @@ import project.honey.system.dto.CodeDto;
 import project.honey.system.dto.Tb901Dto;
 import project.honey.system.dto.Tb906Dto;
 import project.honey.system.entity.Tb901;
+import project.honey.system.entity.Tb903;
 import project.honey.system.entity.Tb906;
 import project.honey.system.repository.Tb906Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -68,5 +70,20 @@ public class Service990301Impl implements Service990301{
     @Override
     public List<CodeDto> findFstIdAll() {
         return tb906Repository.findFstIdAllByDsl();
+    }
+
+    @Override
+    public List<List<String>> findAllByExcel(String fstId) {
+        List<Tb906> tb906s = tb906Repository.findAllByExcel(fstId);
+        List<List<String>> excelData = new ArrayList<>();
+        for(Tb906 entity : tb906s){
+            List<String> list = new ArrayList<>();
+            list.add(entity.getFstId());
+            list.add(entity.getScdId());
+            list.add(entity.getAlien().toString());
+            list.add(entity.getCodeNm());
+            excelData.add(list);
+        }
+        return excelData;
     }
 }

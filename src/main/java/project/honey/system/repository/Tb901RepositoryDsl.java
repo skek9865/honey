@@ -5,8 +5,12 @@ import org.springframework.data.domain.Pageable;
 import project.honey.system.dto.Tb901Dto;
 import project.honey.system.entity.Tb906;
 
+import java.util.List;
+
 public interface Tb901RepositoryDsl {
 
     // Dto로 바로 조회
     Page<Tb901Dto> findAllByDsl(Pageable pageable);
+
+    List<Tb901Dto> findAllByExcel();
 }

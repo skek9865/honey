@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import project.honey.comm.ExcelMaker;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
@@ -23,6 +24,8 @@ import project.honey.system.service.Service990301;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -34,6 +37,7 @@ public class Controller990301 {
 
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
+    private final ExcelMaker excelMaker;
 
     @GetMapping
     public String findAll(@ModelAttribute("menuId") MenuIdDto menuIdDto, Model model,
@@ -110,5 +114,22 @@ public class Controller990301 {
                         : new Tb906Dto());
         model.addAttribute("global", new GlobalConst());
         return "system/990301_input";
+    }
+
+    @GetMapping("/excel")
+    public void excel(String sfstid, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        log.info("url = {}", request.getHeader("referer"));
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "순번", "대그룹ID", "중그룹ID", "정렬순번", "코드명"
+        );
+
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String", "String"
+        );
+
+        List<List<String>> excelData = service990301.findAllByExcel(sfstid);
+        String fileName = "공통코드관리(990301)";
+        excelMaker.makeExcel("공통코드관리 (990301)", titles, excelData, excelType, fileName, response);
     }
 }

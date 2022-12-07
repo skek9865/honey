@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" enctype="multipart/form-data" method="post" th:object="${dto}">
+    <main>
+        <div class="container-fluid p-2">
+            <div class="input_div">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label for="vuserid" class="input_labal">사용자</label>
+                            <select class="form-select" id="vuserid" name="userId" size="1">
+                                <option value="">선택</option>
+                                <option th:each="user : ${users}" th:value="${user.key}" th:text="${user.value}"
+                                        th:attr="selected=${user.key == dto.userId ? 'true' : 'false'}">aaa</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vtimestamp" class="input_labal">접속시간</label>
+                            <input type="text" th:field="*{timeStamp}" id="vtimestamp" value="" size="10" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vipaddr" class="input_labal">접속IP</label>
+                            <input type="text" th:field="*{ipAddr}" id="vipaddr" value="" size="15" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vremoteport" class="input_labal">접속port</label>
+                            <input type="text" name="remotePort" id="vremoteport" th:value="${dto.remotePort !=null ? #numbers.formatInteger(dto.remotePort,0,'COMMA'):0}" size="11" class="form-control input_number ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vsessid" class="input_labal">섹션</label>
+                            <input type="text" th:field="*{sessId}" id="vsessid" value="" size="30" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vuseragent" class="input_labal">사용자사양</label>
+                            <input type="text" th:field="*{userAgent}" id="vuseragent" value="" size="30" class="form-control ">
+                        </td>
+                    </tr>
+                    </tbody></table>
+            </div>
+            <div class="input_div button_table">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td class="float-end">
+                            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm">저장</button>&nbsp;
+                            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>&nbsp;
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <input type="hidden" id="iseq" th:field="*{seq}">
+    <input type="hidden" id="ifstId" name="fstId">
+    <input type="hidden" id="iscdId" name="scdId">
+    <input type="hidden" id="ithdId" name="thdId">
+    <input type="hidden" id="ipage" name="page">
+    <input type="hidden" id="isize" name="size">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+
+        $('#ifstId').val($('#fstId').val());
+        $('#iscdId').val($('#scdId').val());
+        $('#ithdId').val($('#thdId').val());
+        $('#ipage').val($('#page').val());
+        $('#isize').val($('#size').val());
+
+        var method = [[${dto.userId}]]==null?'/insert':'/update'
+        //저장, 수정
+        $('#save').on('click', function (e){
+
+            e.preventDefault();
+            var inputForm = $('form[name="fm_input"]');
+            var url = window.location.href + "";
+            inputForm.attr("action",url.split('?')[0] + method)
+            inputForm.submit();
+
+        })
+    });
+</script>
+</body>
+</html>

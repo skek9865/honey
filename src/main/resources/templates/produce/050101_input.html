@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" enctype="multipart/form-data" method="post" th:object="${dto}">
+    <main>
+        <div class="container-fluid p-2">
+            <div class="input_div">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <label for="vproductcd" class="input_labal">생산공정코드</label>
+                            <input type="text" th:field="*{productCd}" id="vproductcd" size="5" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vproductal" class="input_labal">생산공정정렬순서</label>
+                            <input type="text" name="productAl" id="vproductal" th:value="${dto.productAl != null ? dto.productAl:0}" size="11" class="form-control input_number ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vproductnm" class="input_labal">생산공정명</label>
+                            <input type="text" th:field="*{productNm}" id="vproductnm" size="30" class="form-control ">
+                        </td>
+                    </tr>
+                    </tbody></table>
+            </div>
+            <div class="input_div button_table">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td class="float-end">
+                            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+                            </button>&nbsp;
+                            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>&nbsp;
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <input type="hidden" id="iseq" name="seq" th:value="*{seq}">
+    <input type="hidden" id="ifstId" name="fstId">
+    <input type="hidden" id="iscdId" name="scdId">
+    <input type="hidden" id="ithdId" name="thdId">
+    <input type="hidden" id="ipage" name="page">
+    <input type="hidden" id="isize" name="size">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>

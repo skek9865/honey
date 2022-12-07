@@ -12,7 +12,6 @@ import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.personDepart.dto.PrintData020302;
 import project.honey.personDepart.dto.PrintData020303;
 import project.honey.personDepart.dto.Tb201Dto;
 import project.honey.personDepart.service.Service020101;
@@ -58,7 +57,7 @@ public class Controller020303 {
         model.addAttribute("sPost",   map.get("sPost"));
         model.addAttribute("sDeptCd", map.get("sDeptCd"));
 
-        Page<Tb201Dto> resultList = service020101.findAll(map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"), pageable);
+        Page<Tb201Dto> resultList = service020101.findAllByDsl(map.get("sEmpNm"), map.get("sPost"), map.get("sDeptCd"), pageable);
         model.addAttribute("dtos",resultList);
         model.addAttribute("pageMaker", new PageMaker(pageable, resultList.getTotalElements()));
 

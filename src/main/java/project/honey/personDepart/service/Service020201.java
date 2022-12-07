@@ -12,9 +12,9 @@ public interface Service020201 {
 
     Boolean insert(Tb203Form form) throws IOException;
 
-    Page<Tb203Dto> findAll(String outFNm, String part, Pageable pageable);
+    Page<Tb203Dto> findAllByDsl(String outFNm, String part, Pageable pageable);
 
-    List<Tb203Dto> findAllByExcel(String outFNm, String part);
+    List<List<String>> findAllByExcel(String outFNm, String part);
 
     Tb203Dto findById(Integer id);
 

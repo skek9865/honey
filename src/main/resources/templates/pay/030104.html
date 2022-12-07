@@ -5,6 +5,15 @@
         <script th:inline="javascript">
             function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
                 switch (as_action) {
+                    case "query" :
+                        var form = $('form[name="fm_home"]');
+                        form.action = "/030104"
+                        $('#size').val($('#num_per_page').val());
+                        $('#page').val(1);
+                        form.attr("method", "get");
+                        form.submit();
+                        break;
+
                     case "pitemedel" :  //급여항목삭제
                         if (confirm("자료를 삭제 하시겠습니까?")) {
                             fm_home.action = "/030103/pitemedel"
@@ -45,6 +54,12 @@
                         gf_popup("550","800","030103_inputbox","/030103/popup/" + as_val1 + "?payDt=" + payDt +
                             "&rPayDt=" + rPayDt + "&fstId=" + [[${menuId.fstId}]]
                             + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]);
+                        break;
+
+                    case "print":
+                        var url = window.location.href + "";
+                        gf_popup("1250","700","030104_inputbox","/030104/print?" + url.split('?')[1]);
+                        break;
                 }
             }
         </script>
@@ -90,7 +105,7 @@
                                 </td>
 
                                 <td class="px-4">
-                                    <button name="query" id="query" type="submit" class="btn btn-gfk btn-sm">조회</button>&nbsp;
+                                    <button name="query" id="query" type="submit" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
                                     <button name="print" id="print" type="button" class="btn btn-gfk btn-sm" th:onclick="lf_confirm(this.name,[[${sPayDt}]],'','','')">인쇄</button>
                                 </td>
                             </tr>
@@ -102,19 +117,21 @@
                 <table class="table table-striped tablesorter-blue" id="datatable_1" >
                     <thead>
                     <tr class="tableList_h_tr">
-                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                            <th th:each="title : ${titles}" class="tablesorter-header tablesorter-headerAsc" th:text="${title}">
+                                <div class="tablesorter-header-inner">타이틀</div>
+                            </th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr class="list_tr_1" th:each="dto, dtoStat : ${list}"><!-- td 렌더링 -->
-                        <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
-                        <td th:text="${dto.empDt}"></td>
-                        <td th:text="${dto.empNm}"></td>
-                        <td th:text="${dto.post}"></td>
-                        <td th:each="pay : ${dto.pays}" th:text="${#numbers.formatInteger(pay,0, 'COMMA')}"></td>
-                        <td class="payout" th:text="${#numbers.formatInteger(dto.payout,0, 'COMMA')}"></td>
-                        <td class="deduction" th:text="${#numbers.formatInteger(dto.deduction,0, 'COMMA')}"></td>
-                        <td class="actualPayment" th:text="${#numbers.formatInteger(dto.actualPayment,0, 'COMMA')}"></td>
+                        <td class="list_td_1" th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
+                        <td class="list_td_1" th:text="${dto.empDt}"></td>
+                        <td class="list_td_1" th:text="${dto.empNm}"></td>
+                        <td class="list_td_1" th:text="${dto.post}"></td>
+                        <td class="list_td_1 text-end" th:each="pay : ${dto.pays}" th:text="${#numbers.formatInteger(pay,0, 'COMMA')}"></td>
+                        <td class="list_td_1 payout text-end" th:text="${#numbers.formatInteger(dto.payout,0, 'COMMA')}"></td>
+                        <td class="list_td_1 deduction text-end" th:text="${#numbers.formatInteger(dto.deduction,0, 'COMMA')}"></td>
+                        <td class="list_td_1 actualPayment text-end" th:text="${#numbers.formatInteger(dto.actualPayment,0, 'COMMA')}"></td>
                     </tr>
                     </tbody>
                     <tfoot>
@@ -143,7 +160,7 @@
 
         $(document).ready(function () {
             gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
-            $("#datatable_1").width([[${global.mainWidth}]]);
+            $("#datatable_1").width("1501px");
 
 
 
@@ -162,13 +179,6 @@
                     })
                 }
             });
-
-            // $('button[name="paymnt"]').click(function (e) {
-            //     e.preventDefault();
-            //     var url = window.location.href + "";
-            //     gf_popup("550","800","030103_inputbox",url.split('?')[0] + "/popup/" + $(this).data("empno") + "?fstId=" + [[${menuId.fstId}]]
-            //         + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]) ;
-            // });
 
         });
     </script>

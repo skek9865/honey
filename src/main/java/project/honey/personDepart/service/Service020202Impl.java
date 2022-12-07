@@ -1,7 +1,6 @@
 package project.honey.personDepart.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -22,7 +21,6 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
 public class Service020202Impl implements Service020202{
 
     private final Tb204Repository tb204Repository;
@@ -45,39 +43,44 @@ public class Service020202Impl implements Service020202{
     }
 
     @Override
-    public Page<Tb204Dto> findAll(String outFNm, String part, Pageable pageable) {
+    public Page<Tb204Dto> findAllByDsl(String outFNm, String part, Pageable pageable) {
+        String partNm;
         List<Tb204Dto> dtoList = new ArrayList<>();
 
         List<CodeDto> tb906 = tb906Repository.findByFstIdByDsl("25");
 
         Page<Tb204> result = tb204Repository.findAllByDsl(outFNm, part, pageable);
         for(Tb204 entity : result.getContent()){
-            Tb204Dto tb204Dto = makeDto(entity, tb906);
+            partNm = makePartNm(entity, tb906);
+            Tb204Dto tb204Dto = Tb204Dto.of(entity, partNm);
             dtoList.add(tb204Dto);
         }
 
-        Page<Tb204Dto> resultList = new PageImpl<>(dtoList, pageable, dtoList.size());
+        Page<Tb204Dto> resultList = new PageImpl<>(dtoList, pageable, result.getTotalElements());
 
         return resultList;
     }
 
     @Override
-    public List<Tb204Dto> findAllByExcel(String outFNm, String part) {
-        List<Tb204Dto> dtoList = new ArrayList<>();
+    public List<List<String>> findAllByExcel(String outFNm, String part) {
+        String partNm;
+        List<List<String>> dtoList = new ArrayList<>();
 
         List<CodeDto> tb906 = tb906Repository.findByFstIdByDsl("25");
 
         List<Tb204> result = tb204Repository.findAllByExcel(outFNm, part);
 
-        log.info("outFNm = {}", outFNm);
-        log.info("part = {}", part);
-
         for(Tb204 entity : result){
-            Tb204Dto tb204Dto = makeDto(entity, tb906);
-            dtoList.add(tb204Dto);
-        }
+            List<String> list = new ArrayList<>();
 
-        log.info("dtoList = {}",dtoList);
+            partNm = makePartNm(entity, tb906);
+
+            list.add(partNm);
+            list.add(entity.getOutFNm());
+            list.add(entity.getNote());
+
+            dtoList.add(list);
+        }
 
         return dtoList;
     }
@@ -114,13 +117,13 @@ public class Service020202Impl implements Service020202{
         return true;
     }
 
-    private Tb204Dto makeDto(Tb204 entity, List<CodeDto> tb906){
-        String partNm = "";
+    private String makePartNm(Tb204 entity, List<CodeDto> tb906){
+        String partNm;
 
         Optional<CodeDto> find906 = tb906.stream().filter(e -> e.getValue().equals(entity.getPart())).findAny();
         if(find906.isPresent()) partNm = find906.get().getText();
         else partNm = "";
 
-        return Tb204Dto.of(entity, partNm);
+        return partNm;
     }
 }
