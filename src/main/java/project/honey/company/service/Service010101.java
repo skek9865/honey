@@ -32,11 +32,6 @@ public class Service010101 {
 
 
     private Tb101Dto entityToDto(Tb101 entity){
-        String logonm = entity.getLogonm();
-        logonm = logonm.substring(logonm.indexOf("#"));
-
-        String stampnm = entity.getStampnm();
-        stampnm = stampnm.substring(stampnm.indexOf("#"));
         return Tb101Dto.builder()
                 .seq(entity.getSeq())
                 .corpnm(entity.getCorpnm())
@@ -62,8 +57,8 @@ public class Service010101 {
                 .corpregno(entity.getCorpregno())
                 .bsns(entity.getBsns())
                 .item(entity.getItem())
-                .logonm(logonm)
-                .stampnm(stampnm)
+                .logonm(entity.getLogonm())
+                .stampnm(entity.getStampnm())
                 .createId(entity.getCreateId())
                 .createDate(entity.getCreateDate())
                 .updateId(entity.getUpdateId())
