@@ -169,13 +169,18 @@ public class Tb402 extends BaseAtt {
     private String note;
 
     public void updateData(Tb402Form form){
+        String forYn = "N";
+        if(form.getForYn()) forYn = "Y";
+        String shipYn = "N";
+        if(form.getShipYn()) shipYn = "Y";
+
         this.seq = form.getSeq();
         this.custCd = form.getCustCd();
         this.custNm = form.getCustNm();
         this.custGb = form.getCustGb();
         this.taxGb = form.getTaxGb();
         this.taxCd = form.getTaxCd();
-        this.forYn = form.getForYn();
+        this.forYn = forYn;
         this.forNm = form.getForNm();
         this.ceoNm = form.getCeoNm();
         this.bsnS = form.getBsnS();
@@ -201,7 +206,7 @@ public class Tb402 extends BaseAtt {
         this.buyGr = form.getBuyGr();
         this.regDt = form.getRegDt();
         this.homePage = form.getHomePage();
-        this.shipYn = form.getShipYn();
+        this.shipYn = shipYn;
         this.saleType = form.getSaleType();
         this.buyType = form.getBuyType();
         this.note = form.getNote();

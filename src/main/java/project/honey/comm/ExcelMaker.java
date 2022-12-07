@@ -1,5 +1,6 @@
 package project.honey.comm;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
+@Slf4j
 public class ExcelMaker {
 
     public void makeExcel(String sheetName, List<String> titles,
@@ -60,7 +62,11 @@ public class ExcelMaker {
             List<String> data = excelData.get(i);
             for (int j = 0; j < data.size(); j++) {
                 cell = row.createCell(j + 1);
-                if(!data.get(j).equals("") && excelType.get(j) == "int") cell.setCellValue(Integer.parseInt(data.get(j)));
+                log.info("j = {}", j);
+                log.info("data = {}", data.get(j));
+                if(data.get(j) != null && !data.get(j).equals("") && excelType.get(j) == "int") {
+                    cell.setCellValue(Integer.parseInt(data.get(j)));
+                }
                 else {
                     cell.setCellValue(data.get(j));
                     cell.setCellStyle(bodyStyle);
