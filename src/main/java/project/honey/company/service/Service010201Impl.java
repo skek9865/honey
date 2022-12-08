@@ -13,6 +13,8 @@ import project.honey.company.repository.Tb102Repository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -49,8 +51,16 @@ public class Service010201Impl implements Service010201{
     }
 
     @Override
-    public Tb102Dto findById(Integer id) {
+    public List<Tb102Dto> findAll() {
+        List<Tb102> entityList = tb102Repository.findAll();
+        List<Tb102Dto> dtoList = entityList.stream()
+                .map(e -> entityToDto(e))
+                .collect(Collectors.toList());
+        return dtoList;
+    }
 
+    @Override
+    public Tb102Dto findById(Integer id) {
         Tb102 entity = tb102Repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 통장을 찾을 수 없습니다"));
         return entityToDto(entity);

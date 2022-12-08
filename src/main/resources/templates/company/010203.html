@@ -1,0 +1,90 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::main})}"
+      xmlns:th="http://www.thymeleaf.org">
+<main>
+    <script th:inline="javascript">
+        function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+            switch (as_action) {
+                case "insert" : //저장
+                case "update" : //저장
+                    fm_input.action = "/010203/" + as_action;
+                    fm_input.submit();
+                    break;
+                case "delete" : //저장
+                    fm_home.action = "/010203/" + as_action + "/" + as_val1;
+                    fm_home.submit();
+                    break;
+            }
+        }
+    </script>
+    <form name="fm_home" method="post">
+        <div class="container-fluid p-2">
+            <div class="titleBar" id="titleBar">
+                <div class="row">
+                    <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])
+                    </div>
+                    <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+                </div>
+            </div>
+            <div class="searchBar" id="searchBar">
+                <div class="row">
+                    <div class="col-12 fixed-right p-2 px-4">
+                        <table>
+                            <tr>
+                                <td><!--조회 등록 엑셀-->
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm"
+                                            onclick="javascript:history.go(0);">조회</button>&nbsp;
+                                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm"
+                                            data-toggle="modal" data-target="#inputpopup"
+                                            th:onclick="gf_modal('010203/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">등록
+                                    </button>&nbsp;
+                                    <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm"
+                                            onclick="">엑셀
+                                    </button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_1">
+                    <thead>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}"><!-- td 렌더링 -->
+                        <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}" class="list_td_1 text-center"></td>
+                        <td class="list_td_1 text-center">
+                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm"
+                                    data-toggle="modal" data-target="#inputpopup"
+                                    th:onclick="gf_modal('010203/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update',[[${dto.seq}]],'');">수정
+                            </button>&nbsp;
+                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm"
+                                    th:onclick="lf_confirm(this.name, [[${dto.seq}]],'','')">삭제
+                            </button>&nbsp;
+                        </td>
+                        <td th:text="${dto.cardnm}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.cardno}" class="list_td_1 text-center"></td>
+                        <td th:text="${#temporals.createDate(dto.expdt, 'yyyyMMdd')}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.cvcno}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.useyn}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.empno}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.fk_tb_102}" class="list_td_1 text-center"></td>
+                        <td th:text="${#numbers.formatInteger(dto.limitamt, 0, 'COMMA')}" class="list_td_1 text-right"></td>
+                        <td th:text="${#temporals.createDate(dto.issuedt, 'yyyyMMdd')}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.fk_tb_103}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.note}" class="list_td_1 text-center"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 페이징 부분 -->
+        <div th:replace="paging.html :: paging">
+        </div>
+    </form>
+</main>
+
+</html>

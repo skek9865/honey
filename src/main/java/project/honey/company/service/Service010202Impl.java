@@ -12,6 +12,8 @@ import project.honey.company.repository.Tb103Repository;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +37,7 @@ public class Service010202Impl implements Service010202{
         Tb103 tb103 = tb103Repository.findById(dto.getSeq())
                 .orElseThrow(() -> new IllegalArgumentException("해당 인증서를 찾을 수 없습니다."));
         tb103.changInfo(dto);
-        return null;
+        return tb103.getSeq();
     }
 
     @Override
@@ -43,6 +45,15 @@ public class Service010202Impl implements Service010202{
         Page<Tb103> result = tb103Repository.findAll(pageable);
         Page<Tb103Dto> resultList = result.map(this::entityToDto);
         return resultList;
+    }
+
+    @Override
+    public List<Tb103Dto> findAll() {
+        List<Tb103> entityList = tb103Repository.findAll();
+        List<Tb103Dto> dtoList = entityList.stream()
+                .map(this::entityToDto)
+                .collect(Collectors.toList());
+        return dtoList;
     }
 
     @Override
@@ -88,6 +99,7 @@ public class Service010202Impl implements Service010202{
     }
 
     private Tb103 dtoToEntity(Tb103Dto dto){
+        if(dto.getFk_tb_101()==null) dto.setFk_tb_101(27);
         return Tb103.builder()
                 .seq(dto.getSeq())
                 .fk_tb_101(dto.getFk_tb_101())
