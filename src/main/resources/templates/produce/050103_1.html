@@ -93,7 +93,7 @@
                 <input type="hidden" id="type" name="type" th:value="${search.type}">
                 <label for="ssearch_txt" class="">품목명</label>
                 <input type="text" th:field="${search.goodsNm}" id="ssearch_txt" value="" size="30" class="form-control ">
-                <button name="find" id="find" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">검색</button>&nbsp;
+                <button name="find" id="find" type="submit" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">검색</button>&nbsp;
                 <button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
               </td>
               <td class="text-end">

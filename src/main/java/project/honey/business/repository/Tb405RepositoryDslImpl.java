@@ -1,5 +1,6 @@
 package project.honey.business.repository;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ public class Tb405RepositoryDslImpl implements Tb405RepositoryDsl{
         List<Tb405> result = queryFactory.selectFrom(tb405)
                 .where(
                         goodsNmContains(search.getGoodsNm()),
+                        goodsCdEq(search.getGoodsCd()),
                         itemGb1Eq(search.getItemGb1()),
                         classSeqEq(search.getClassSeq())
                 )
@@ -71,6 +73,10 @@ public class Tb405RepositoryDslImpl implements Tb405RepositoryDsl{
 
     private BooleanExpression goodsNmContains(String goodsNm){
         return StringUtils.hasText(goodsNm) ? tb405.goodsNm.contains(goodsNm) : null;
+    }
+
+    private BooleanExpression goodsCdEq(String goodsCd){
+        return StringUtils.hasText(goodsCd) ? tb405.goodsCd.eq(goodsCd) : null;
     }
 
     private BooleanExpression itemGb1Eq(String itemGb1){

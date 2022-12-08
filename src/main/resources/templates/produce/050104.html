@@ -8,19 +8,19 @@
                     case "query" :
                         $('#size').val($('#num_per_page').val());
                         $('#page').val(1);
-                        fm_home.action = "/050103";
+                        fm_home.action = "/050104";
                         fm_home.method = "/get";
                         fm_home.submit();
                         break;
 
                     case "insert" : //저장
                     case "update" : //수정
-                        fm_input.action = "/050103/" + as_action
+                        fm_input.action = "/050104/" + as_action
                         fm_input.submit();
                         break;
 
                     case "excel" :
-                        fm_home.action = "/050103/excel"
+                        fm_home.action = "/050104/excel"
                         fm_home.method = "get"
                         fm_home.submit();
                         break;
@@ -41,18 +41,8 @@
                         <table>
                             <tbody><tr>
                                 <td class="p-1">
-                                    <label for="vclass" class="">품목구분</label>
-                                    <select class="form-select" id="vclass" name="classSeq" size="1">
-                                        <option value="">선택</option>
-                                        <option th:each="classSeqCode : ${classSeqCodes}"
-                                                th:value="${classSeqCode.value}"
-                                                th:text="${classSeqCode.text}"
-                                                th:attr="selected=${classSeqCode.value == search.classSeq ? 'true' : 'false'}">
-                                    </select>
-                                </td>
-                                <td class="p-1">
-                                    <label for="sgoodscd" class="">품목</label>
-                                    <input type="hidden" th:field="${search.goodsCd}" id="sgoodscd" size="30" class="form-control" readonly="">
+                                    <label for="sgoodscd" class="">BOM</label>
+                                    <input type="hidden" th:field="${search.goodsCd}" id="sgoodscd" value="" size="30" class="form-control" readonly="">
                                     <input type="text" th:field="${search.goodsNm}" id="sgoodsnm"  size="30" class="form-control" readonly="">
                                     <button name="clear" id="clear" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('sgoodscd').value='';document.getElementById('sgoodsnm').value='';">비움</button>
                                     <button name="findgoods" id="findgoods" type="button" class="btn btn-gfk btn-ssm"
@@ -77,18 +67,16 @@
                     <tbody>
                     <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}"><!-- td 렌더링 -->
                         <td class="list_td_1 text-center" th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.classSeq}"></td>
                         <td class="list_td_1 text-center" th:text="${dto.goodsCd}"></td>
                         <td class="list_td_1 text-center" th:text="${dto.goodsNm}"></td>
-                        <td class="list_td_1 text-center" th:text="${dto.classSeq}"></td>
-                        <td class="list_td_1 text-center" th:text="${dto.productNm}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.standard}"></td>
                         <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.qty,0, 'COMMA')}"></td>
-                        <td class="list_td_1 text-center" th:if="${dto.seq != null}">
-                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('050103/input?seq=' + [[${dto.seq}]],'','','','update', '');">수정</button>&nbsp;
-                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:data-id="${dto.seq}">삭제</button>&nbsp;
-                        </td>
-                        <td class="list_td_1 text-center" th:if="${dto.seq == null}">
-                            <button name="insert" id="insert" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('050103/input?goodsCd=' + [[${dto.goodsCd}]],'','','','insert', '');">등록</button>&nbsp;
-                        </td>
+                        <td class="list_td_1 text-center" th:text="${dto.fClassSeq}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.fGoodsCd}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.fGoodsNm}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.fStandard}"></td>
+                        <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.fQty,0, 'COMMA')}"></td>
                     </tr>
                     </tbody>
                     <tfoot>
