@@ -334,3 +334,29 @@ function asyncData(as_url,id,index,max,as_val1,as_val2){
 		$("#"+id+i).val(result);
 	}
 }
+
+function asyncSelectData(as_url,fstid,fstval,scdid,scdval){
+	if(fstid != '') {
+		fstval = $("#"+fstid).val();
+		scdval = '';
+	}
+	$.ajax({
+		url:as_url,
+		type:"GET",
+		data: {val : fstval, selectid : scdid},
+		dataType:"json",
+		success: function(data) {
+			$("select#"+scdid+" option").remove();
+			$("#"+scdid).append("<option value=''>선택</option>");
+			for(i = 0; i < data.length; i++){
+				if(data[i].scdid == scdval){
+					$("#"+scdid).append("<option value='"+data[i].scdid+"' selected>"+data[i].menunm+"</option>");
+				}
+				else{
+					$("#"+scdid).append("<option value='"+data[i].scdid+"'>"+data[i].menunm+"</option>");
+				}
+			}
+		},
+		error: (log)=>{alert("실패" + log)},
+	});
+}
