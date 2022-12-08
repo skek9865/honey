@@ -1,25 +1,14 @@
 package project.honey.produce.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import project.honey.business.entity.QTb405;
 import project.honey.produce.dto.QTb503_1Dto;
 import project.honey.produce.dto.Tb503_1Dto;
-import project.honey.produce.dto.input.Tb503Input;
-import project.honey.produce.entity.QTb501;
-import project.honey.produce.entity.QTb503;
-import project.honey.produce.entity.QTb503_1;
-import project.honey.produce.entity.Tb502;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static project.honey.business.entity.QTb405.*;
 import static project.honey.produce.entity.QTb501.*;
-import static project.honey.produce.entity.QTb502.tb502;
-import static project.honey.produce.entity.QTb503.*;
 import static project.honey.produce.entity.QTb503_1.*;
 
 public class Tb503_1RepositoryDslImpl implements Tb503_1RepositoryDsl{

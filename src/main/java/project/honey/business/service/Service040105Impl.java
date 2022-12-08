@@ -110,6 +110,10 @@ public class Service040105Impl implements Service040105{
         Map<String, String> itemGbMap = codeToName.itemGb();
         List<Tb405> tb405s = tb405Repository.findAllByExcel(search);
 
+        int stockQty = 0;
+        int aQty = 0;
+        int wPrice = 0;
+        int fPrice = 0;
         List<List<String>> dtoList = new ArrayList<>();
         for (Tb405 tb405 : tb405s) {
             List<String> list = new ArrayList<>();
@@ -123,27 +127,19 @@ public class Service040105Impl implements Service040105{
             list.add(productMap.get(tb405.getProduct()));
             list.add(itemGbMap.get(tb405.getItemGb1()));
             list.add(itemGbMap.get(tb405.getItemGb2()));
-            list.add(String.valueOf(tb405.getStockQty()));
-            list.add(String.valueOf(tb405.getAQty()));
-            list.add(String.valueOf(tb405.getWPrice()));
+            list.add(tb405.getStockQty() != null ? String.valueOf(tb405.getStockQty()) : "0");
+            list.add(tb405.getAQty() != null ? String.valueOf(tb405.getAQty()) : "0");
+            list.add(tb405.getWPrice() != null ? String.valueOf(tb405.getWPrice()) : "0");
             list.add(tb405.getWPriceVat());
-            list.add(String.valueOf(tb405.getFPrice()));
+            list.add(tb405.getFPrice() != null ? String.valueOf(tb405.getFPrice()) : "0");
             list.add(tb405.getFPriceVat());
             list.add(tb405.getImgNmSave());
             list.add(tb405.getImgNmOut());
             dtoList.add(list);
-        }
-
-        int stockQty = 0;
-        int aQty = 0;
-        int wPrice = 0;
-        int fPrice = 0;
-        for (Tb405 tb405 : tb405s) {
             stockQty += tb405.getStockQty() != null ? tb405.getStockQty() : 0;
             aQty += tb405.getAQty() != null ? tb405.getAQty() : 0;
             wPrice += tb405.getWPrice() != null ? tb405.getWPrice() : 0;
             fPrice += tb405.getFPrice() != null ? tb405.getFPrice() : 0;
-
         }
         List<String> list = new ArrayList<>();
         list.add("");
