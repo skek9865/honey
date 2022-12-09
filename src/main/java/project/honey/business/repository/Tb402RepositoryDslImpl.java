@@ -6,13 +6,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
+import project.honey.business.dto.QTb402Popup;
+import project.honey.business.dto.Tb402Popup;
 import project.honey.business.entity.Tb402;
+import project.honey.personDepart.entity.QTb201;
 
 import javax.persistence.EntityManager;
 
 import java.util.List;
 
 import static project.honey.business.entity.QTb402.tb402;
+import static project.honey.personDepart.entity.QTb201.*;
 
 public class Tb402RepositoryDslImpl implements Tb402RepositoryDsl{
 
@@ -64,6 +68,22 @@ public class Tb402RepositoryDslImpl implements Tb402RepositoryDsl{
                 .fetch();
 
         return result;
+    }
+
+    @Override
+    public List<Tb402Popup> findAllByPopup(String custNm) {
+        return queryFactory.select(
+                        new QTb402Popup(
+                                tb402.seq,
+                                tb402.custCd,
+                                tb402.custNm,
+                                tb402.ceoNm,
+                                tb201.empNm
+                        ))
+                .from(tb402)
+                .leftJoin(tb201).on(tb402.empCd.eq(tb201.empNo))
+                .where(custNmContains(custNm))
+                .fetch();
     }
 
     private BooleanExpression custNmContains(String custNm){

@@ -6,8 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import project.honey.business.dto.Tb402Dto;
+import project.honey.business.dto.search.SearchPopUp405;
 import project.honey.business.form.Tb402Form;
 import project.honey.business.service.Service040101;
 import project.honey.business.service.Service040102;
@@ -151,5 +153,24 @@ public class Controller040102 {
         String fileName = "거래처관리(040102).xlsx";
 
         excelMaker.makeExcel("거래처관리 (040102)", titles, excelData, excelType, fileName, response);
+    }
+
+    @GetMapping("/popup")
+    public String popup(String custNm, Model model) {
+        model.addAttribute("global", new GlobalConst());
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "거래처코드", "상호(이름)", "대표자명", "담당자", "선택"
+        );
+
+        model.addAttribute("titles", titles);
+        model.addAttribute("custNm", custNm);
+
+        if (StringUtils.hasText(custNm)) {
+            model.addAttribute("dtos", service040102.findAllByPopup(custNm));
+        } else {
+            model.addAttribute("dtos", null);
+        }
+        return "cust_popup";
     }
 }
