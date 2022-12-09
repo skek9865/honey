@@ -76,7 +76,7 @@
                                th:name="${'tb503_1Dtos['+ num + '].goodsNm'}"
                                th:id="${'goodsnm_' + num}" size="40" class="form-control ">
                         <button name="row_find" id="row_find" type="button" class="btn btn-gfk btn-sm"
-                                th:onclick='gf_popup("700","500","_search_goods","/050103/popup?type="+ [[${num+2}]] +"&product=true&stock=true")'>검색</button>&nbsp;
+                                th:onclick='gf_popup("700","500","_search_goods","/040105/popup?type="+ [[${num+2}]] +"&product=true&stock=true")'>검색</button>&nbsp;
                     </td>
                     <td>
                         <input type="text" th:value="${dto.tb503_1Dtos[num] != null ? dto.tb503_1Dtos[num].standard : ''}"
@@ -122,7 +122,7 @@
                     <td>
                     </td>
                     <td>
-                        <input type="text" name="qty_tot" id="qty_tot" value="0" size="5" class="form-control input_number " readonly="">           </td>
+                        <input type="text" name="qty_tot" th:value="${qty_tot}" id="qty_tot" size="5" class="form-control input_number " readonly="">           </td>
                     <td colspan="3">
                     </td>
                 </tr>

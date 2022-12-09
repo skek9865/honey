@@ -8,19 +8,19 @@
                     case "query" :
                         $('#size').val($('#num_per_page').val());
                         $('#page').val(1);
-                        fm_home.action = "/050104";
+                        fm_home.action = "/050201";
                         fm_home.method = "/get";
                         fm_home.submit();
                         break;
 
                     case "insert" : //저장
                     case "update" : //수정
-                        fm_input.action = "/050104/" + as_action
+                        fm_input.action = "/050201/" + as_action
                         fm_input.submit();
                         break;
 
                     case "excel" :
-                        fm_home.action = "/050104/excel"
+                        fm_home.action = "/050201/excel"
                         fm_home.method = "get"
                         fm_home.submit();
                         break;
@@ -39,17 +39,29 @@
                 <div class="row">
                     <div class="col-12 fixed-right p-2 px-4">
                         <table>
-                            <tbody><tr>
+                            <tbody>
+                            <tr>
                                 <td class="p-1">
-                                    <label for="sgoodscd" class="">BOM</label>
-                                    <input type="hidden" th:field="${search.goodsCd}" id="sgoodscd" value="" size="30" class="form-control" readonly="">
-                                    <input type="text" th:field="${search.goodsNm}" id="sgoodsnm"  size="30" class="form-control" readonly="">
-                                    <button name="clear" id="clear" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('sgoodscd').value='';document.getElementById('sgoodsnm').value='';">비움</button>
-                                    <button name="findgoods" id="findgoods" type="button" class="btn btn-gfk btn-ssm"
-                                            onclick='gf_popup("700","500","_search_goods","/040105/popup?type=1&product=true&stock=true")'>검색</button>
+                                    <div class="input-group input-daterange">
+                                        <div class="input-group-addon px-2">
+                                            <label for="symd1" class="">조회기간</label>
+                                        </div>
+                                        <input type="text" name="ymd1" th:value="${search.ymd1}" id="symd1" class="input_date" autocomplete="off">
+                                        <div class="input-group-addon">~&nbsp;</div>
+                                        <input type="text" name="ymd2" th:value="${search.ymd2}" id="symd2" class="input_date" autocomplete="off">
+                                    </div>
+                                </td>
+                                <td class="p-1">
+                                    <label for="sstatus" class="">진행상태</label>
+                                    <select class="form-select" id="sstatus" name="status" size="1">
+                                        <option value="">선택</option>
+                                        <option th:each="status : ${statuses}" th:value="${status.value}" th:text="${status.text}"
+                                        th:attr="selected=${status.value == search.status ? 'true' : 'false'}">대기중</option>
+                                    </select>
                                 </td>
                                 <td class="px-4">
                                     <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
+                                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="gf_modal('050201/input','','','','insert', '');">등록</button>
                                     <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>&nbsp;
                                 </td>
                             </tr>
@@ -67,16 +79,17 @@
                     <tbody>
                     <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}"><!-- td 렌더링 -->
                         <td class="list_td_1 text-center" th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
-                        <td class="list_td_1 text-center" th:text="${dto.classSeq}"></td>
-                        <td class="list_td_1 text-center" th:text="${dto.goodsCd}"></td>
+                        <td>
+                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('050201/input?seq=' + [[${dto.seq}]],'','','','update', '');">수정</button>&nbsp;
+                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:data-id="${dto.seq}">삭제</button>&nbsp;
+                        </td>
+                        <td class="list_td_1 text-center" th:text="${dto.workDtNo}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.empNm}"></td>
                         <td class="list_td_1 text-center" th:text="${dto.goodsNm}"></td>
-                        <td class="list_td_1 text-center" th:text="${dto.standard}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.deadDt}"></td>
                         <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.qty,0, 'COMMA')}"></td>
-                        <td class="list_td_1 text-center" th:text="${dto.fClassSeq}"></td>
-                        <td class="list_td_1 text-center" th:text="${dto.fGoodsCd}"></td>
-                        <td class="list_td_1 text-center" th:text="${dto.fGoodsNm}"></td>
-                        <td class="list_td_1 text-center" th:text="${dto.fStandard}"></td>
-                        <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.fQty,0, 'COMMA')}"></td>
+                        <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.rQty,0, 'COMMA')}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.status}"></td>
                     </tr>
                     </tbody>
                     <tfoot>

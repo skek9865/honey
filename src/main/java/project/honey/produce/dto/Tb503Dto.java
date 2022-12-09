@@ -2,12 +2,10 @@ package project.honey.produce.dto;
 
 import lombok.*;
 import project.honey.business.entity.Tb405;
-import project.honey.produce.dto.input.Tb503Input;
+import project.honey.produce.dto.form.Tb503Form;
 import project.honey.produce.entity.Tb503;
-import project.honey.produce.entity.Tb503_1;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -39,7 +37,7 @@ public class Tb503Dto {
                 .build();
     }
 
-    public static Tb503 toTb503(Tb503Input dto) {
+    public static Tb503 toTb503(Tb503Form dto) {
         return Tb503.builder()
                 .goodsCd(dto.getGoodsCd())
                 .productCd(dto.getProductCd())

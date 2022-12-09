@@ -1,4 +1,4 @@
-package project.honey.produce.dto.input;
+package project.honey.produce.dto.form;
 
 import lombok.*;
 import project.honey.business.entity.Tb405;
@@ -14,7 +14,7 @@ import java.util.Map;
 @ToString
 @Getter
 @Setter
-public class Tb503Input {
+public class Tb503Form {
 
     private Integer seq;
     private String goodsCd;
@@ -24,9 +24,9 @@ public class Tb503Input {
     private Integer qty;
     private List<Tb503_1Dto> tb503_1Dtos;
 
-    public static Tb503Input of(Tb503 tb503, Tb405 tb405,
-                                List<Tb503_1Dto> dtos, Map<String, String> productMap) {
-        return Tb503Input.builder()
+    public static Tb503Form of(Tb503 tb503, Tb405 tb405,
+                               List<Tb503_1Dto> dtos, Map<String, String> productMap) {
+        return Tb503Form.builder()
                 .seq(tb503.getSeq())
                 .goodsCd(tb405.getGoodsCd())
                 .goodsNm(tb405.getGoodsNm())

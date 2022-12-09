@@ -13,7 +13,7 @@ import project.honey.business.repository.Tb405Repository;
 import project.honey.comm.CodeToName;
 import project.honey.produce.dto.Tb503Dto;
 import project.honey.produce.dto.Tb503_1Dto;
-import project.honey.produce.dto.input.Tb503Input;
+import project.honey.produce.dto.form.Tb503Form;
 import project.honey.produce.entity.Tb503;
 import project.honey.produce.entity.Tb503_1;
 import project.honey.produce.repository.Tb503Repository;
@@ -36,7 +36,7 @@ public class Service050103Impl implements Service050103{
 
     @Override
     @Transactional
-    public Integer insert(Tb503Input dto) {
+    public Integer insert(Tb503Form dto) {
         Tb503 tb503 = Tb503Dto.toTb503(dto);
         List<Tb503_1> tb503_1s = dto.getTb503_1Dtos().stream()
                 .filter(f -> StringUtils.hasText(f.getGoodsCd()))
@@ -50,7 +50,7 @@ public class Service050103Impl implements Service050103{
 
     @Override
     @Transactional
-    public Integer update(Tb503Input dto) {
+    public Integer update(Tb503Form dto) {
         Tb503 tb503 = tb503Repository.findById(dto.getSeq()).orElseThrow(RuntimeException::new);
         List<Tb503_1> tb503_1s = dto.getTb503_1Dtos().stream()
                 .filter(f -> StringUtils.hasText(f.getGoodsCd()))
@@ -88,7 +88,7 @@ public class Service050103Impl implements Service050103{
     }
 
     @Override
-    public Tb503Input findById(Integer seq, String goodsCd) {
+    public Tb503Form findById(Integer seq, String goodsCd) {
         Map<String, String> productMap = codeToName.product();
 
         // 등록 요청
@@ -98,7 +98,7 @@ public class Service050103Impl implements Service050103{
             while (dtos.size() < 5) {
                 dtos.add(null);
             }
-            return Tb503Input.builder()
+            return Tb503Form.builder()
                     .goodsCd(tb405.getGoodsCd())
                     .goodsNm(tb405.getGoodsNm())
                     .productCd(tb405.getProduct())
@@ -116,7 +116,7 @@ public class Service050103Impl implements Service050103{
         while (dtos.size() < 5) {
             dtos.add(null);
         }
-        return Tb503Input.of(tb503, tb405, dtos, productMap);
+        return Tb503Form.of(tb503, tb405, dtos, productMap);
     }
 
     @Override
