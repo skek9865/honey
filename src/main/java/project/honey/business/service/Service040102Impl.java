@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.business.dto.Tb402Dto;
+import project.honey.business.dto.Tb402Popup;
 import project.honey.business.entity.Tb401;
 import project.honey.business.entity.Tb402;
 import project.honey.business.entity.Tb406;
@@ -122,6 +123,11 @@ public class Service040102Impl implements Service040102{
     public Boolean delete(Integer id) {
         tb402Repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<Tb402Popup> findAllByPopup(String custNm) {
+        return tb402Repository.findAllByPopup(custNm);
     }
 
     private String makeEmpNm(Tb402 entity, List<Tb201> tb201){

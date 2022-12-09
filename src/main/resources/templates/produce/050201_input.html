@@ -49,10 +49,10 @@
                         </td>
                         <td>
                             <label for="vcustcd" class="input_labal">납품처</label>
-                            <input type="hidden" name="vcustcd" id="vcustcd" value="" size="30" class="form-control" readonly="">
-                            <input type="text" name="vcustnm" id="vcustnm" value="" size="30" class="form-control" readonly="">
+                            <input type="hidden" th:field="${dto.custCd}" id="vcustcd" value="" size="30" class="form-control" readonly="">
+                            <input type="text" th:field="${dto.custNm}" id="vcustnm" value="" size="30" class="form-control" readonly="">
                             <button name="clear" id="clear" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('vcustcd').value='';document.getElementById('vcustnm').value='';">비움</button>
-                            <button name="findcust" id="findcust" type="button" class="btn btn-gfk btn-ssm" onclick="gf_comm(this.name,'1','vcustcd','vcustnm');">검색</button>
+                            <button name="findcust" id="findcust" type="button" class="btn btn-gfk btn-ssm" onclick='gf_popup("700","500","_search_cust","/040102/popup")'>검색</button>
                         </td>
                     </tr>
                     <tr>

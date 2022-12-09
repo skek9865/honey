@@ -45,33 +45,16 @@
         switch (as_action) {
           case "find" :
             var form = $('form[name="fm_home"]');
-            form.action = "/040105/popup"
+            form.action = "/040102/popup"
             form.attr("method", "get");
             form.submit();
             break;
+
         }
       }
-      function Do_Select(goodscd ,goodsnm,standard,unit,productnm,productcd) {
-        var type = Number($('#type').val());
-        var num = type - 2;
-        switch (type) {
-          case 1:
-            $(opener.document).find("#sgoodscd").val(goodscd);
-            $(opener.document).find("#sgoodsnm").val(goodsnm);
-            break;
-          case 2:
-          case 3:
-          case 4:
-          case 5:
-          case 6:
-            $(opener.document).find("#goodscd_" + num).val(goodscd);
-            $(opener.document).find("#goodsnm_" + num).val(goodsnm);
-            $(opener.document).find("#standard_" + num).val(standard);
-            $(opener.document).find("#unit_" + num).val(unit);
-            $(opener.document).find("#productnm_" + num).val(productnm);
-            $(opener.document).find("#productcd_" + num).val(productcd);
-            break;
-        }
+      function Do_Select(custCd, custNm) {
+        $(opener.document).find("#vcustcd").val(custCd);
+        $(opener.document).find("#vcustnm").val(custNm);
         self.close();
 
       }
@@ -83,23 +66,10 @@
             <tbody>
             <tr>
               <td>
-                <input type="hidden" id="type" name="type" th:value="${search.type}">
-                <label for="ssearch_txt" class="">품목명</label>
-                <input type="text" th:field="${search.goodsNm}" id="ssearch_txt" value="" size="30" class="form-control ">
+                <label for="ssearch_txt" class="">상호(이름)</label>
+                <input type="text" name="custNm" th:value="${custNm}" id="ssearch_txt" size="30" class="form-control ">
                 <button name="find" id="find" type="submit" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">검색</button>&nbsp;
                 <button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
-              </td>
-              <td class="text-end">
-                <div class="form-check form-check-inline">
-                  <input class="form-check-input" th:field="${search.stock}" id="gubun" type="checkbox"
-                         value="true" th:attr="checked=${search.stock ? 'true' : 'false'}">
-                  <label class="form-check-label" for="gubun">재고</label>
-                </div>
-                <div class="form-check form-check-inline">
-                 <input class="form-check-input" th:field="${search.product}" id="gubun1" type="checkbox"
-                        value="true" th:attr="checked=${search.product ? 'true' : 'false'}">
-                 <label class="form-check-label" for="gubun1">생산공정</label>
-              </div>
               </td>
             </tr>
             </tbody>
@@ -118,16 +88,14 @@
             </thead>
             <tbody>
               <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
-                <td class="list_td_1 text-center" th:text="${dto.goodsCd}"></td>
-                <td class="list_td_1 text-center" th:text="${dto.goodsNm}"></td>
-                <td class="list_td_1 text-center" th:text="${dto.unit}"></td>
-                <td th:if="${search.product}" class="list_td_1 text-center" th:text="${dto.productNm}"></td>
-                <td th:if="${search.stock}" class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.stockQty, 0, 'COMMA')}"></td>
+                <td class="list_td_1 text-center" th:text="${dto.custCd}"></td>
+                <td class="list_td_1 text-center" th:text="${dto.custNm}"></td>
+                <td class="list_td_1 text-center" th:text="${dto.ceoNm}"></td>
+                <td class="list_td_1 text-center" th:text="${dto.empNm}"></td>
                 <td class="list_td_1 text-center">
                   <button name="select" id="select" type="button"
                           class="btn btn-gfk btn-ssm"
-                          th:onclick="Do_Select([[${dto.goodsCd}]],[[${dto.goodsNm}]],[[${dto.standard}]],[[${dto.unit}]],
-                          [[${dto.productNm}]],[[${dto.productCd}]]);">선택</button>&nbsp;
+                          th:onclick="Do_Select([[${dto.custCd}]],[[${dto.custNm}]]);">선택</button>&nbsp;
                 </td>
               </tr>
             </tbody>
