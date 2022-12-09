@@ -78,6 +78,11 @@
                         <td th:text="${dto.note}" class="list_td_1 text-center"></td>
                     </tr>
                     </tbody>
+                    <tfoot>
+                    <tr class="tableList_h_tr">
+                        <th class="text-right" th:each="foot : ${footer}" th:text="${#numbers.formatInteger(foot,0, 'COMMA')}">타이틀</th>
+                    </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

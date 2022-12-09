@@ -19,4 +19,7 @@ public interface Service010203 {
 
     //id값을 이용해 카드 삭제
     Integer delete(Integer id);
+
+    //카드한도 total 가져오기
+    Integer getTotalLimitamt();
 }

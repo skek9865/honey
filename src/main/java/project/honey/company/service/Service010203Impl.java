@@ -49,6 +49,11 @@ public class Service010203Impl implements Service010203{
     }
 
     @Override
+    public Integer getTotalLimitamt() {
+        return tb104Repository.getTotalLimitamt();
+    }
+
+    @Override
     @Transactional
     public Integer delete(Integer id) {
         tb104Repository.deleteById(id);

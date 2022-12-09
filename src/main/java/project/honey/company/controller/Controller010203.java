@@ -44,6 +44,9 @@ public class Controller010203 {
         );
 
         //footer (총 한도)
+        List<String> footer = GlobalMethod.makeFooter(
+                "", "", "", "", "", "", "", "", "", service010203.getTotalLimitamt().toString(), "", "", ""
+        );
 
         model.addAttribute("global", new GlobalConst());
         model.addAttribute("menus", menuMaker.getMenuId(1,"","",""));
@@ -51,6 +54,7 @@ public class Controller010203 {
 
         model.addAttribute("titles",titles);
         model.addAttribute("dtos",resultList);
+        model.addAttribute("footer",footer);
 
         model.addAttribute("pageMaker", new PageMaker(pageable, resultList.getTotalElements()));
 
