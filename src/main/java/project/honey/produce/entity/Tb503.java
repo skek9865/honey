@@ -6,11 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
-import project.honey.produce.dto.input.Tb503Input;
+import project.honey.produce.dto.form.Tb503Form;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -35,6 +34,7 @@ public class Tb503 extends BaseAtt {
     @Column(name = "productcd", length = 5, columnDefinition = "char")
     private String productCd;
 
+    @NotNull
     @Comment("생산수량")
     @Column(length = 11, columnDefinition = "int")
     private Integer qty;
@@ -47,7 +47,7 @@ public class Tb503 extends BaseAtt {
         tb503_1s.addAll(list);
     }
 
-    public void updateData(Tb503Input dto, List<Tb503_1> tb503_1s) {
+    public void updateData(Tb503Form dto, List<Tb503_1> tb503_1s) {
         this.goodsCd = dto.getGoodsCd();
         this.productCd = dto.getProductCd();
         this.qty = dto.getQty();

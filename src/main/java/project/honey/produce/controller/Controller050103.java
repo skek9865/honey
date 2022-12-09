@@ -4,14 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import project.honey.business.dto.search.Search405;
-import project.honey.business.dto.search.SearchPopUp405;
 import project.honey.business.service.Service040105;
 import project.honey.comm.ExcelMaker;
 import project.honey.comm.GlobalConst;
@@ -19,9 +15,9 @@ import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.produce.dto.Tb502Dto;
 import project.honey.produce.dto.Tb503Dto;
-import project.honey.produce.dto.input.Tb503Input;
+import project.honey.produce.dto.Tb503_1Dto;
+import project.honey.produce.dto.form.Tb503Form;
 import project.honey.produce.service.Service050103;
 import project.honey.system.service.Service990301;
 
@@ -74,7 +70,7 @@ public class Controller050103 {
     }
 
     @PostMapping("/insert")
-    public String insert(@ModelAttribute Tb503Input dto, Model model, HttpServletRequest request) {
+    public String insert(@ModelAttribute Tb503Form dto, Model model, HttpServletRequest request) {
         log.info("dto : {}", dto);
         model.addAttribute("msg", service050103.insert(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
         model.addAttribute("url", request.getHeader("referer"));
@@ -82,7 +78,7 @@ public class Controller050103 {
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Tb503Input dto, Model model, HttpServletRequest request) {
+    public String update(@ModelAttribute Tb503Form dto, Model model, HttpServletRequest request) {
         log.info("dto : {}", dto);
         model.addAttribute("msg", service050103.update(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
         model.addAttribute("url", request.getHeader("referer"));
@@ -96,27 +92,6 @@ public class Controller050103 {
         return "redirect";
     }
 
-    @GetMapping("/popup")
-    public String popup(@ModelAttribute("search") SearchPopUp405 search, Model model) {
-        model.addAttribute("global", new GlobalConst());
-
-        List<String> titles = GlobalMethod.makeTitle(
-                "코드", "품목명", "규격", "생산공정", "재고", "선택"
-        );
-
-        if(!search.isProduct()) titles.remove("생산공정");
-        if(!search.isStock()) titles.remove("재고");
-
-        model.addAttribute("titles", titles);
-
-        if (StringUtils.hasText(search.getGoodsNm())) {
-            model.addAttribute("dtos", service040105.findAllByPopUp(search));
-        } else {
-            model.addAttribute("dtos", null);
-        }
-        return "produce/050103_1";
-    }
-
     @GetMapping("/input")
     public String input(Model model,String action,String goodsCd, Integer seq){
         log.info("input");
@@ -126,10 +101,18 @@ public class Controller050103 {
                 "삭제","코드", "품목명", "규격","단위","수량", "생산공정", "위치",
                 "적요"
         );
-
         model.addAttribute("action", action);
         model.addAttribute("titles", titles);
-        model.addAttribute("dto", service050103.findById(seq, goodsCd));
+        Tb503Form form = service050103.findById(seq, goodsCd);
+        List<Tb503_1Dto> dtoList = form.getTb503_1Dtos();
+
+        int qty = 0;
+        for (Tb503_1Dto tb503_1Dto : dtoList) {
+            qty += tb503_1Dto != null ? tb503_1Dto.getQty() : 0;
+        }
+
+        model.addAttribute("dto", form);
+        model.addAttribute("qty_tot", qty);
         model.addAttribute("global", new GlobalConst());
         return "produce/050103_input";
     }

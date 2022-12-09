@@ -6,9 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import project.honey.business.dto.search.Search405;
 import project.honey.business.dto.Tb405Dto;
+import project.honey.business.dto.search.SearchPopUp405;
 import project.honey.business.form.Tb405Form;
 import project.honey.business.service.Service040104;
 import project.honey.business.service.Service040105;
@@ -143,6 +145,28 @@ public class Controller040105 {
         model.addAttribute("dto", dto);
         return "business/040105_input";
     }
+
+    @GetMapping("/popup")
+    public String popup(@ModelAttribute("search") SearchPopUp405 search, Model model) {
+        model.addAttribute("global", new GlobalConst());
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "코드", "품목명", "규격", "생산공정", "재고", "선택"
+        );
+
+        if(!search.isProduct()) titles.remove("생산공정");
+        if(!search.isStock()) titles.remove("재고");
+
+        model.addAttribute("titles", titles);
+
+        if (StringUtils.hasText(search.getGoodsNm())) {
+            model.addAttribute("dtos", service040105.findAllByPopUp(search));
+        } else {
+            model.addAttribute("dtos", null);
+        }
+        return "goods_popup";
+    }
+
 
     @GetMapping("/excel")
     public void excel(Search405 search, HttpServletResponse response, HttpServletRequest request) throws IOException {

@@ -174,12 +174,9 @@
     <script th:src="@{|/js/scripts_sub.js|}"></script>
     <script th:inline="javascript">
 
-
         $(document).ready(function () {
             gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
             $("#datatable_1").width([[${global.mainWidth}]]);
-
-
 
             // 삭제
             $('button[name="delete"]').click(function (e) {
@@ -196,13 +193,6 @@
                     })
                 }
             });
-
-            // $('button[name="paymnt"]').click(function (e) {
-            //     e.preventDefault();
-            //     var url = window.location.href + "";
-            //     gf_popup("550","800","030103_inputbox",url.split('?')[0] + "/popup/" + $(this).data("empno") + "?fstId=" + [[${menuId.fstId}]]
-            //         + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]) ;
-            // });
 
         });
     </script>
