@@ -2,6 +2,7 @@ package project.honey.business.entity;
 
 import lombok.*;
 import org.hibernate.annotations.Comment;
+import project.honey.business.form.Tb406Form;
 import project.honey.comm.BaseAtt;
 
 import javax.persistence.*;
@@ -36,4 +37,11 @@ public class Tb406 extends BaseAtt {
     @Comment("특별그룹명")
     @Column(name = "specialnm", length = 50)
     private String specialNm;
+
+    public void updateData(Tb406Form form){
+        this.seq = form.getSeq();
+        this.specialCd = form.getSpecialCd();
+        this.specialAl = form.getSpecialAl();
+        this.specialNm = form.getSpecialNm();
+    }
 }
