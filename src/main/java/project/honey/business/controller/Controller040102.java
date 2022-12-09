@@ -11,7 +11,7 @@ import project.honey.business.dto.Tb402Dto;
 import project.honey.business.form.Tb402Form;
 import project.honey.business.service.Service040101;
 import project.honey.business.service.Service040102;
-import project.honey.business.service.Service040106;
+import project.honey.business.service.Service040107;
 import project.honey.business.service.Service040109;
 import project.honey.comm.ExcelMaker;
 import project.honey.comm.GlobalConst;
@@ -37,7 +37,7 @@ public class Controller040102 {
     private final Service040102 service040102;
     private final Service020101 service020101;
     private final Service040101 service040101;
-    private final Service040106 service040106;
+    private final Service040107 service040107;
     private final Service040109 service040109;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
@@ -89,7 +89,7 @@ public class Controller040102 {
         model.addAttribute("taxGbCodes",service990301.findByFstId("09"));
         model.addAttribute("typeCodes",service990301.findByFstId("11"));
         model.addAttribute("empCodes",service020101.findAllBySelect());
-        model.addAttribute("specialCodes",service040106.findAllBySelect());
+        model.addAttribute("specialCodes", service040107.findAllBySelect());
         model.addAttribute("excgCodes",service040109.findAllBySelect());
         model.addAttribute("class1Codes",service040101.findAllBySelect(1));
         model.addAttribute("class2Codes",service040101.findAllBySelect(2));
