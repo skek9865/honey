@@ -83,4 +83,9 @@ public class Tb504_1 extends BaseAtt {
 
     @OneToMany(mappedBy = "tb504_1", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Tb504_2> tb504_2s;
+
+    public void changeTb504_2s(List<Tb504_2> list) {
+        this.tb504_2s.clear();
+        tb504_2s.addAll(list);
+    }
 }

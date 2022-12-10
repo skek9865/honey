@@ -118,7 +118,7 @@
                     <td>
                         <input th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].seq : ''}"
                                th:name="${'tb504_1Dtos['+ num + '].seq'}"
-                               th:id="${'fk_tb_503_' + num}" type="hidden">
+                               th:id="${'fk_tb_504_' + num}" type="hidden">
                         <button name="row_del" id="row_del" type="button" class="btn btn-gfk btn-sm"
                                 th:onclick="gf_rowdel([[${num}]]); gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">삭제</button>&nbsp;
                     </td>

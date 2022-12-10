@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" method="post" enctype="multipart/form-data">
+    <main>
+        <script th:inline="javascript">
+            function gf_rowdel(num) {
+                $('#qty_' + num).val(0)
+                $('#rqty_' + num).val(0)
+                $('#status_' + num).val("")
+                $('#machineNo_' + num).val("")
+                $('#empNo_' + num).val("")
+                $('#note_' + num).val("")
+                return false;
+            }
+        </script>
+        <div class="container-fluid p-2">
+            <div class="input_div button_table">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td class="float-end">
+                            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm" th:onclick="lf_confirm([[${action}]],'','','')">저장</button>&nbsp;
+                            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>&nbsp;
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="input_div">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="input-group input-daterange">
+                                <div class="input-group-addon px-2">
+                                    <label for="iworkdt" class="input_labal">일자</label>
+                                </div>
+                                <input type="text" th:field="${dto.workDt1}" id="iworkdt" size="6" class="input_date" autocomplete="off" readonly="">
+                            </div>
+                        </td>
+                        <td>
+                            <label for="vworkdtno" class="input_labal">작업지시순번</label>
+                            <input type="text" th:field="${dto.workDtNo}" id="vworkdtno" size="11" class="form-control input_number " readonly="">
+                        <td>
+                            <label for="vcustnm" class="input_labal">납품처</label>
+                            <input type="text" th:field="${dto.custNm}" id="vcustnm" value="" size="30" class="form-control" readonly="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vproductcd" class="input_labal">생산공정명</label>
+                            <select class="form-select" id="vproductcd" name="productCd" size="1" disabled="">
+                            <option value="">선택</option>
+                            <option th:each="product : ${products}" th:value="${product.key}" th:text="${product.value}"
+                            th:attr="selected=${product.key == dto.productCd ? 'true' : 'false'}"></option>
+                        </select>
+                        </td>
+                        <td>
+                            <label for="vempno" class="input_labal">작업자</label>
+                            <select class="form-select" id="vempno" name="empNo" size="1" disabled="">
+                            <option value="">선택</option>
+                            <option th:each="emp : ${emps}" th:value="${emp.key}" th:text="${emp.value}"
+                            th:attr="selected=${emp.key == dto.empNo ? 'true' : 'false'}">홍길동4</option>
+                        </select>
+                        </td>
+                        <td>
+                            <div class="input-group input-daterange">
+                                <div class="input-group-addon px-2"><label for="vdeaddt" class="input_labal">납기일자</label>
+                                </div>
+                                <input type="text" th:field="${dto.deadDt}" id="vdeaddt" size="6" class="input_date" autocomplete="off" readonly="">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="iigoodsnm" class="input_labal">품목</label>
+                            <input type="text" th:field="${dto.goodsNm}" id="iigoodsnm" size="40" class="form-control " readonly=""> 						</td>
+                        <td>
+                            <label for="iiqty" class="input_labal">목표수량</label>
+                            <input type="text" th:field="${dto.qty}" id="iiqty" size="10" class="form-control input_number " readonly="">
+                        </td>
+                        <td>
+                            <label for="iimachineno" class="input_labal">호기</label>
+                            <select type="text" name="machineNo" id="iimachineno" size="1" class="form-select " disabled="">
+                                <option value="">선택</option>
+                                <option th:each="machine : ${machines}" th:value="${machine.value}" th:text="${machine.text}"
+                                        th:selected="${machine.value} == ${dto.machineNo}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="input-group input-daterange">
+                                <div class="input-group-addon px-2">
+                                    <label for="vworkdt" class="input_labal">작업일자</label>
+                                </div>
+                                <input type="text" name="workDt2" th:value="${dto.workDt2}" id="vworkdt" value="" size="6" class="input_date" autocomplete="off">
+                            </div>
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_2">
+                    <tbody>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    <tr th:each="num : ${#numbers.sequence(0,4)}" style="height: 30px;">
+                        <td>
+                            <input th:value="${dto.tb504_2Dtos[num] != null ? dto.tb504_2Dtos[num].seq : ''}"
+                                   th:name="${'tb504_2Dtos['+ num + '].seq'}"
+                                   th:id="${'fk_tb_504_1_' + num}" type="hidden">
+                            <button name="row_del" id="row_del" type="button" class="btn btn-gfk btn-sm"
+                                    th:onclick="gf_rowdel([[${num}]]); gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">삭제</button>&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" th:value="${dto.tb504_2Dtos[num] != null ? dto.tb504_2Dtos[num].qty : 0}"
+                                   th:name="${'tb504_2Dtos['+ num + '].qty'}"
+                                   th:id="${'qty_' + num}" size="5" class="form-control input_number"
+                                   onchange="gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">
+                        </td>
+                        <td>
+                            <input type="text" th:value="${dto.tb504_2Dtos[num] != null ? dto.tb504_2Dtos[num].rQty : 0}"
+                                   th:name="${'tb504_2Dtos['+ num + '].rQty'}"
+                                   th:id="${'rqty_' + num}" size="5" class="form-control input_number"
+                                   onchange="gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">
+                        </td>
+                        <td>
+                            <select th:value="${dto.tb504_2Dtos[num] != null ? dto.tb504_2Dtos[num].status : ''}"
+                                    th:name="${'tb504_2Dtos['+ num + '].status'}"
+                                    th:id="${'status_' + num}" size="1" class="form-select ">
+                                <option value="">선택</option>
+                                <option th:each="status : ${statuses}" th:value="${status.value}" th:text="${status.text}"
+                                        th:selected="${status.value} == ${dto.tb504_2Dtos[num] != null ? dto.tb504_2Dtos[num].status : ''}"></option>
+                            </select>
+                        </td>
+                        <td>
+                            <select type="text" th:value="${dto.tb504_2Dtos[num] != null ? dto.tb504_2Dtos[num].machineNo : ''}"
+                                    th:name="${'tb504_2Dtos['+ num + '].machineNo'}"
+                                    th:id="${'machineNo_' + num}" size="1" class="form-select ">
+                                <option value="">선택</option>
+                                <option th:each="machine : ${machines}" th:value="${machine.value}" th:text="${machine.text}"
+                                        th:selected="${machine.value} == ${dto.tb504_2Dtos[num] != null
+                                    ? dto.tb504_2Dtos[num].machineNo : ''}">대기중</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select type="text" th:value="${dto.tb504_2Dtos[num] != null ? dto.tb504_2Dtos[num].empNo : ''}"
+                                    th:name="${'tb504_2Dtos['+ num + '].empNo'}"
+                                    th:id="${'empNo_' + num}" size="1" class="form-select ">
+                                <option value="">선택</option>
+                                <option th:each="emp : ${emps}" th:value="${emp.key}" th:text="${emp.value}"
+                                        th:selected="${emp.key} == ${dto.tb504_2Dtos[num] != null
+                                    ? dto.tb504_2Dtos[num].empNo : ''}">홍길동4</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" th:value="${dto.tb504_2Dtos[num] != null ? dto.tb504_2Dtos[num].note : ''}"
+                                   th:name="${'tb504_2Dtos['+ num + '].note'}"
+                                   th:id="${'note_' + num}" size="50" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr style="height: 30px;">
+                        <td class="CaptionTD">
+                            합계
+                        </td>
+                        <td>
+                            <input type="text" name="qty_tot" th:value="${qty_tot}" id="qty_tot" size="5" class="form-control input_number " readonly="">
+                        </td>
+                        <td>
+                            <input type="text" name="rqty_tot" th:value="${rqty_tot}" id="rqty_tot" size="8" class="form-control input_number " readonly="">
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <input type="hidden" name="seq" th:value="${dto.seq}" id="vseq" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>

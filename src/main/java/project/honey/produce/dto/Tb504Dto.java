@@ -25,12 +25,12 @@ public class Tb504Dto {
     private Integer rQty;
     private String status;
 
-    public static Tb504Dto of(Tb504 tb504, String goodsNm, Integer qty, Integer rQty,
+    public static Tb504Dto of(Integer seq,Tb504 tb504, String goodsNm, Integer qty, Integer rQty,
                               Map<String, String> empMap,Map<String, String> statusMap) {
         String deadDt = GlobalMethod.makeYmd(tb504.getDeadDt(),"yyyy-MM-dd");
         String workDtNo = deadDt + "-" + tb504.getWorkDtNo();
         return Tb504Dto.builder()
-                .seq(tb504.getSeq())
+                .seq(seq)
                 .workDtNo(workDtNo)
                 .empNm(empMap.get(tb504.getEmpNo()))
                 .goodsNm(goodsNm)

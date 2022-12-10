@@ -36,7 +36,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class Service050201Impl implements Service050201{
 
-    private final Tb405Repository tb405Repository;
     private final Tb504Repository tb504Repository;
     private final Tb504_1Repository tb504_1Repository;
     private final CodeToName codeToName;
@@ -93,7 +92,7 @@ public class Service050201Impl implements Service050201{
             tb504_1s.sort(Comparator.comparing(Tb504_1::getSeq));
 
             // 대표품목명
-            String showNm = goodsMap.get(tb504_1s.get(0).getGoodsCd());
+            String goodsNm = goodsMap.get(tb504_1s.get(0).getGoodsCd());
             int cnt = 0;
             int qty = 0;
             int rQty = 0;
@@ -104,8 +103,8 @@ public class Service050201Impl implements Service050201{
                 rQty += tb504_1.getRQty();
                 cnt++;
             }
-            if (cnt > 1) showNm += "외" + (cnt - 1) + "건";
-            Tb504Dto dto = Tb504Dto.of(tb504, showNm, qty, rQty, empMap, statusMap);
+            if (cnt > 1) goodsNm += "외" + (cnt - 1) + "건";
+            Tb504Dto dto = Tb504Dto.of(tb504.getSeq(),tb504, goodsNm, qty, rQty, empMap, statusMap);
             dtoList.add(dto);
         }
 
