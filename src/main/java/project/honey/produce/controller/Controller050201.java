@@ -6,19 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import project.honey.business.dto.search.Search405;
-import project.honey.comm.CodeToName;
-import project.honey.comm.GlobalConst;
-import project.honey.comm.GlobalMethod;
-import project.honey.comm.PageMaker;
+import org.springframework.web.bind.annotation.*;
+import project.honey.comm.*;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
 import project.honey.personDepart.service.Service020101;
-import project.honey.produce.dto.Dto050104;
-import project.honey.produce.dto.Tb503_1Dto;
 import project.honey.produce.dto.Tb504Dto;
 import project.honey.produce.dto.Tb504_1Dto;
 import project.honey.produce.dto.form.Tb504Form;
@@ -27,6 +19,9 @@ import project.honey.produce.service.Service050101;
 import project.honey.produce.service.Service050201;
 import project.honey.system.service.Service990301;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -43,6 +38,7 @@ public class Controller050201 {
     private final Service990301 service990301;
     private final CodeToName codeToName;
     private final MenuMaker menuMaker;
+    private final ExcelMaker excelMaker;
 
     @GetMapping
     public String findAll(@ModelAttribute("menuId") MenuIdDto menuIdDto,
@@ -85,6 +81,28 @@ public class Controller050201 {
         return "produce/050201";
     }
 
+    @PostMapping("/insert")
+    public String insert(@ModelAttribute Tb504Form dto, Model model, HttpServletRequest request) {
+        log.info("dto : {}", dto);
+        model.addAttribute("msg", service050201.insert(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
+
+    @PostMapping("/update")
+    public String update(@ModelAttribute Tb504Form dto, Model model, HttpServletRequest request) {
+        log.info("dto : {}", dto);
+        model.addAttribute("msg", service050201.update(dto) != null ? "정상적으로 저장 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
+
+    @PostMapping("/delete/{seq}")
+    public String delete(@PathVariable Integer seq, HttpServletRequest request, Model model) {
+        model.addAttribute("msg", service050201.delete(seq) != null ? "정상적으로 삭제 되었습니다." : "문제가 발생 하였습니다.");
+        model.addAttribute("url", request.getHeader("referer"));
+        return "redirect";
+    }
     @GetMapping("/input")
     public String input(Model model,String action, Integer seq){
 
@@ -121,5 +139,23 @@ public class Controller050201 {
         model.addAttribute("rqty_tot", rQty);
 
         return "produce/050201_input";
+    }
+
+    @GetMapping("/excel")
+    public void excel(Search050201 search, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        log.info("작업지시서관리 excel");
+        log.info("url = {}", request.getHeader("referer"));
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "순번", "작업지시순번", "담당자", "품목", "납기일자", "목표수량", "생산수량", "상태"
+        );
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String", "String", "int", "int", "String"
+        );
+
+        List<List<String>> excelData = service050201.findAllByExcel(search);
+        String fileName = "작업지시서관리(050201).xls";
+
+        excelMaker.makeExcel("작업지시서관리 (050201)", titles, excelData, excelType, fileName, response);
     }
 }

@@ -6,9 +6,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
+import project.honey.comm.GlobalMethod;
+import project.honey.produce.dto.form.Tb504Form;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -75,4 +78,28 @@ public class Tb504 extends BaseAtt {
     @OneToMany(mappedBy = "tb504", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Tb504_1> tb504_1s;
 
+    // 컬렉션 채우기
+    public void addList(List<Tb504_1> list) {
+        tb504_1s.addAll(list);
+    }
+
+    public void updateData(Tb504Form dto, List<Tb504_1> tb504_1s) {
+
+        String closeYn = dto.getCloseYn() != null ? dto.getCloseYn() : "N";
+
+        this.workDt = GlobalMethod.replaceYmd(dto.getWorkDt(), "-");
+        this.workDtNo = dto.getWorkDtNo();
+        this.custCd = dto.getCustCd();
+        this.productCd = dto.getProductCd();
+        this.empNo = dto.getEmpNo();
+        this.deadDt = GlobalMethod.replaceYmd(dto.getDeadDt(), "-");
+        this.note = dto.getNote();
+        this.status = dto.getStatus();
+        this.closeYn = closeYn;
+
+
+        // 컬렉션 교체
+        this.tb504_1s.clear();
+        this.tb504_1s.addAll(tb504_1s);
+    }
 }

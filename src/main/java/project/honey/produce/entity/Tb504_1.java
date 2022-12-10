@@ -1,9 +1,6 @@
 package project.honey.produce.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
 
@@ -60,12 +57,10 @@ public class Tb504_1 extends BaseAtt {
     @Comment("특이사항")
     private String note;
 
-    @NotNull
     @Comment("검수수량")
     @Column(name="qqty", length = 11)
     private Integer qQty;
 
-    @NotNull
     @Comment("남은검수수량")
     @Column(name="qqtyn", length = 11)
     private Integer qQtyN;

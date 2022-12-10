@@ -2,8 +2,10 @@ package project.honey.produce.dto;
 
 import lombok.*;
 import project.honey.comm.GlobalMethod;
+import project.honey.produce.dto.form.Tb504Form;
 import project.honey.produce.entity.Tb504;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -36,6 +38,26 @@ public class Tb504Dto {
                 .qty(qty)
                 .rQty(rQty)
                 .status(statusMap.get(tb504.getStatus()))
+                .build();
+    }
+
+    public static Tb504 toTb504(Tb504Form form) {
+
+        String closeYn = form.getCloseYn() != null ? form.getCloseYn() : "N";
+
+        return Tb504.builder()
+                .workDt(GlobalMethod.replaceYmd(form.getWorkDt(), "-"))
+                .workDtNo(form.getWorkDtNo())
+                .custCd(form.getCustCd())
+                .productCd(form.getProductCd())
+                .empNo(form.getEmpNo())
+                .deadDt(GlobalMethod.replaceYmd(form.getDeadDt(), "-"))
+                .note(form.getNote())
+                .status(form.getStatus())
+                .closeYn(closeYn)
+                .prtEmp(null)
+                .prtDt(null)
+                .tb504_1s(new ArrayList<>())
                 .build();
     }
 }

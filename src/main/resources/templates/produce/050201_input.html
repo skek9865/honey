@@ -83,7 +83,7 @@
                     <tr>
                         <td>
                             <label for="vstatus" class="input_labal">진행상태</label>
-                            <select class="form-select" id="vstatus" name="vstatus" size="1">
+                            <select class="form-select" id="vstatus" name="status" size="1">
                             <option value="">선택</option>
                             <option th:each="status : ${statuses}" th:value="${status.value}" th:text="${status.text}"
                                     th:attr="selected=${status.value == dto.status ? 'true' : 'false'}">대기중</option>
