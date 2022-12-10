@@ -1,15 +1,21 @@
 package project.honey.produce.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import project.honey.business.entity.QTb405;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.util.StringUtils;
 import project.honey.produce.dto.QTb504_1Dto;
 import project.honey.produce.dto.Tb504_1Dto;
-import project.honey.produce.entity.QTb504_1;
+import project.honey.produce.dto.search.Search050201;
+import project.honey.produce.entity.Tb504_1;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
 import static project.honey.business.entity.QTb405.*;
+import static project.honey.produce.entity.QTb504.*;
 import static project.honey.produce.entity.QTb504_1.*;
 
 public class Tb504_1RepositoryDslImpl implements Tb504_1RepositoryDsl{
@@ -18,6 +24,28 @@ public class Tb504_1RepositoryDslImpl implements Tb504_1RepositoryDsl{
 
     public Tb504_1RepositoryDslImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
+    }
+
+    @Override
+    public Page<Tb504_1> findAllByDsl(Search050201 search, Pageable pageable) {
+        List<Tb504_1> result = queryFactory.select(tb504_1)
+                .from(tb504_1)
+                .leftJoin(tb504_1.tb504).fetchJoin()
+                .where(
+                        workDtBetween(search.getYmd1(), search.getYmd2())
+                )
+                .orderBy(tb504_1.seq.asc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        int total = queryFactory.selectFrom(tb504_1)
+                .where(
+                        workDtBetween(search.getYmd1(), search.getYmd2())
+                )
+                .fetch().size();
+
+        return new PageImpl<>(result, pageable, total);
     }
 
     @Override
@@ -42,4 +70,9 @@ public class Tb504_1RepositoryDslImpl implements Tb504_1RepositoryDsl{
                 .orderBy(tb504_1.seq.asc())
                 .fetch();
     }
+
+    private BooleanExpression workDtBetween(String ymd1, String ymd2) {
+        return StringUtils.hasText(ymd1) ? tb504_1.tb504.workDt.between(ymd1, ymd2) : null;
+    }
+
 }
