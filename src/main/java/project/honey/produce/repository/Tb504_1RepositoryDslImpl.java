@@ -39,6 +39,7 @@ public class Tb504_1RepositoryDslImpl implements Tb504_1RepositoryDsl{
                 .from(tb504_1)
                 .leftJoin(tb405).on(tb504_1.goodsCd.eq(tb405.goodsCd))
                 .where(tb504_1.tb504.seq.eq(fk))
+                .orderBy(tb504_1.seq.asc())
                 .fetch();
     }
 }

@@ -132,7 +132,7 @@ public class Service050103Impl implements Service050103{
         Map<String, String> productMap = codeToName.product();
         List<Tb405> tb405s = tb405Repository.findAllByExcel(search);
         List<Tb503> tb503s = tb503Repository.findAll();
-        List<List<String>> dtoList = new ArrayList<>();
+        List<List<String>> excelList = new ArrayList<>();
 
         int total = 0;
         for (Tb405 tb405 : tb405s) {
@@ -151,7 +151,7 @@ public class Service050103Impl implements Service050103{
             list.add(classMap.get(tb405.getClassSeq()));
             list.add(productMap.get(tb405.getProduct()));
             list.add(String.valueOf(sum != 0 ? sum : ""));
-            dtoList.add(list);
+            excelList.add(list);
 
             total += sum;
         }
@@ -161,7 +161,7 @@ public class Service050103Impl implements Service050103{
         list.add("");
         list.add("총계");
         list.add(String.valueOf(total));
-        dtoList.add(list);
-        return dtoList;
+        excelList.add(list);
+        return excelList;
     }
 }

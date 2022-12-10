@@ -2,6 +2,8 @@ package project.honey.produce.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
+import project.honey.produce.entity.Tb504;
+import project.honey.produce.entity.Tb504_1;
 
 @NoArgsConstructor
 @Builder
@@ -36,5 +38,24 @@ public class Tb504_1Dto {
         this.machineNo = machineNo;
         this.empNo = empNo;
         this.note = note;
+    }
+
+    public static Tb504_1 toTb504_1(Tb504_1Dto dto, Tb504 tb504) {
+        return Tb504_1.builder()
+                .tb504(tb504)
+                .goodsCd(dto.getGoodsCd())
+                .qty(dto.getQty())
+                .rQty(dto.getRQty())
+                .status(dto.getStatus())
+                .machineNo(dto.getMachineNo())
+                .empNo(dto.getEmpNo())
+                .note(dto.getNote())
+                .standard(dto.getStandard())
+                .qQty(null)
+                .qQtyN(null)
+                .statusQ(null)
+                .empNoQ(null)
+                .noteQ(null)
+                .build();
     }
 }

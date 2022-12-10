@@ -49,6 +49,19 @@ public class Tb504RepositoryDslImpl implements Tb504RepositoryDsl{
         return new PageImpl<>(result, pageable, total);
     }
 
+    @Override
+    public List<Tb504> findAllByExcel(Search050201 search) {
+        return queryFactory.select(tb504)
+                .distinct()
+                .from(tb504)
+                .leftJoin(tb504.tb504_1s).fetchJoin()
+                .where(
+                        workDtBetween(search.getYmd1(), search.getYmd2()),
+                        statusEq(search.getStatus())
+                )
+                .fetch();
+    }
+
     private BooleanExpression workDtBetween(String ymd1, String ymd2) {
         return StringUtils.hasText(ymd1) ? tb504.workDt.between(ymd1, ymd2) : null;
     }
