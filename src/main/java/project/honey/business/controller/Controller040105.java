@@ -6,10 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import project.honey.business.dto.Search040105;
-import project.honey.business.dto.Tb404Dto;
+import project.honey.business.dto.search.Search405;
 import project.honey.business.dto.Tb405Dto;
+import project.honey.business.dto.search.SearchPopUp405;
 import project.honey.business.form.Tb405Form;
 import project.honey.business.service.Service040104;
 import project.honey.business.service.Service040105;
@@ -19,8 +20,6 @@ import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
-import project.honey.personDepart.dto.Tb201Dto;
-import project.honey.personDepart.form.Tb201Form;
 import project.honey.produce.service.Service050101;
 import project.honey.system.service.Service990301;
 
@@ -45,7 +44,7 @@ public class Controller040105 {
 
     @GetMapping
     public String findAll(@ModelAttribute("menuId") MenuIdDto menuIdDto, @ModelAttribute("search")
-            Search040105 search, Model model, Pageable pageable){
+            Search405 search, Model model, Pageable pageable){
         log.info("품목관리 메인");
         log.info("menuId = {}", menuIdDto);
         log.info("search = {}", search);
@@ -147,8 +146,30 @@ public class Controller040105 {
         return "business/040105_input";
     }
 
+    @GetMapping("/popup")
+    public String popup(@ModelAttribute("search") SearchPopUp405 search, Model model) {
+        model.addAttribute("global", new GlobalConst());
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "코드", "품목명", "규격", "생산공정", "재고", "선택"
+        );
+
+        if(!search.isProduct()) titles.remove("생산공정");
+        if(!search.isStock()) titles.remove("재고");
+
+        model.addAttribute("titles", titles);
+
+        if (StringUtils.hasText(search.getGoodsNm())) {
+            model.addAttribute("dtos", service040105.findAllByPopUp(search));
+        } else {
+            model.addAttribute("dtos", null);
+        }
+        return "goods_popup";
+    }
+
+
     @GetMapping("/excel")
-    public void excel(Search040105 search, HttpServletResponse response, HttpServletRequest request) throws IOException {
+    public void excel(Search405 search, HttpServletResponse response, HttpServletRequest request) throws IOException {
         log.info("품목관리 excel");
         log.info("url = {}", request.getHeader("referer"));
 

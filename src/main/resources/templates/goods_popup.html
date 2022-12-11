@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link rel="icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
+  <link rel="shortcut icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
+  <link th:href="@{|${global.cssDir}/bootstrap.min.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/bootstrap-datepicker3.min.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/bootstrap-icons.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/bootstrap.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/styles.css|}" rel="stylesheet" />
+  <link th:href="@{|${global.cssDir}/style_old.css|}" rel="stylesheet" />
+  <link th:href="@{|${global.cssDir}/bootstrap4-toggle.min.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/theme.blue.css|}" rel="stylesheet" >
+
+  <script th:src="@{|${global.jsDir}/all.min.js|}" crossorigin="anonymous"></script>
+  <script th:src="@{|${global.jsDir}/jquery-3.4.1.min.js|}"></script>
+  <script th:src="@{|${global.jsDir}/jquery-ui.min.js|}"></script>
+
+  <script th:src="@{|${global.jsDir}/colResizable-1.6.js|}"></script>
+  <script th:src="@{|${global.jsDir}/jquery.tablesorter.min.js|}"></script>
+  <script th:src="@{|${global.jsDir}/bootstrap4-toggle.min.js|}"></script>
+  <script th:src="@{|${global.jsDir}/popper.min.js|}"></script>
+
+  <script th:src="@{|${global.jsDir}/bootstrap.min.js|}"></script>
+  <script th:src="@{|${global.jsDir}/bootstrap-datepicker.min.js|}" type='text/javascript' ></script>
+  <script th:src="@{|${global.jsDir}/bootstrap-datepicker.ko.min.js|}" charset="UTF-8"></script>
+
+  <script th:src="@{|${global.jsDir}/showModalDialog.js|}" type="text/javascript"></script>
+  <script th:src="@{|${global.jsDir}/showModalDialogCallee.js|}" type="text/javascript"></script>
+
+  <script th:src="@{|${global.jsDir}/comfunction.js|}"></script>
+  <script th:src="@{|${global.jsDir}/comfunction_src.js|}"></script>
+  <script th:src="@{|${global.jsDir}/clientValidate.js|}"></script>
+
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+</head>
+<body>
+<form name="fm_home" method="post">
+  <main>
+    <script th:inline="javascript">
+      function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+        switch (as_action) {
+          case "find" :
+            var form = $('form[name="fm_home"]');
+            form.action = "/040105/popup"
+            form.attr("method", "get");
+            form.submit();
+            break;
+        }
+      }
+      function Do_Select(goodscd ,goodsnm,standard,unit,productnm,productcd) {
+        var type = Number($('#type').val());
+        var num = type - 2;
+        switch (type) {
+          case 1:
+            $(opener.document).find("#sgoodscd").val(goodscd);
+            $(opener.document).find("#sgoodsnm").val(goodsnm);
+            break;
+          case 2:
+          case 3:
+          case 4:
+          case 5:
+          case 6:
+            $(opener.document).find("#goodscd_" + num).val(goodscd);
+            $(opener.document).find("#goodsnm_" + num).val(goodsnm);
+            $(opener.document).find("#standard_" + num).val(standard);
+            $(opener.document).find("#unit_" + num).val(unit);
+            $(opener.document).find("#productnm_" + num).val(productnm);
+            $(opener.document).find("#productcd_" + num).val(productcd);
+            break;
+        }
+        self.close();
+
+      }
+    </script>
+    <div class="container-fluid p-2">
+      <div class="" id="searchBar">
+        <div class="p-2">
+          <table width="100%">
+            <tbody>
+            <tr>
+              <td>
+                <input type="hidden" id="type" name="type" th:value="${search.type}">
+                <label for="ssearch_txt" class="">품목명</label>
+                <input type="text" th:field="${search.goodsNm}" id="ssearch_txt" value="" size="30" class="form-control ">
+                <button name="find" id="find" type="submit" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">검색</button>&nbsp;
+                <button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
+              </td>
+              <td class="text-end">
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" th:field="${search.stock}" id="gubun" type="checkbox"
+                         value="true" th:attr="checked=${search.stock ? 'true' : 'false'}">
+                  <label class="form-check-label" for="gubun">재고</label>
+                </div>
+                <div class="form-check form-check-inline">
+                 <input class="form-check-input" th:field="${search.product}" id="gubun1" type="checkbox"
+                        value="true" th:attr="checked=${search.product ? 'true' : 'false'}">
+                 <label class="form-check-label" for="gubun1">생산공정</label>
+              </div>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="table-responsive text-nowrap" id="tableWrapper">
+        <div class="tableWrapper">
+          <table class="table table-striped tableList" style="width:98%;" id="datatable_1">
+            <thead>
+            <tr class="tableList_h_tr tablesorter-headerRow">
+              <th th:each="title,titleStat : ${titles}" th:data-column="${titleStat.index}" class="tablesorter-header tablesorter-headerAsc">
+                <div class="tablesorter-header-inner" th:text="${title}"></div>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+              <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
+                <td class="list_td_1 text-center" th:text="${dto.goodsCd}"></td>
+                <td class="list_td_1 text-center" th:text="${dto.goodsNm}"></td>
+                <td class="list_td_1 text-center" th:text="${dto.unit}"></td>
+                <td th:if="${search.product}" class="list_td_1 text-center" th:text="${dto.productNm}"></td>
+                <td th:if="${search.stock}" class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.stockQty, 0, 'COMMA')}"></td>
+                <td class="list_td_1 text-center">
+                  <button name="select" id="select" type="button"
+                          class="btn btn-gfk btn-ssm"
+                          th:onclick="Do_Select([[${dto.goodsCd}]],[[${dto.goodsNm}]],[[${dto.standard}]],[[${dto.unit}]],
+                          [[${dto.productNm}]],[[${dto.productCd}]]);">선택</button>&nbsp;
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+</form>
+</body>
+</html>

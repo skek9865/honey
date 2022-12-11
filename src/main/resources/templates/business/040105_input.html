@@ -48,10 +48,10 @@
         <tr>
           <td>
             <label for="vproduct" class="input_labal">생산공정</label>
-            <select class="form-select" id="vproduct" name="product" th:value="*{product}" size="1">
+            <select class="form-select" id="vproduct" name="product" th:value="*{productNm}" size="1">
               <option value="">선택</option>
               <option th:each="productCode : ${productCodes}" th:value="${productCode.key}" th:text="${productCode.value}"
-                      th:attr="selected=${productCode.value == dto.product?'true' : 'false'}"></option>
+                      th:attr="selected=${productCode.value == dto.productNm?'true' : 'false'}"></option>
           </select>
           </td>
           <td>

@@ -3,8 +3,12 @@ package project.honey.comm;
 import lombok.RequiredArgsConstructor;
 import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Component;
+import project.honey.business.entity.Tb402;
 import project.honey.business.entity.Tb404;
+import project.honey.business.entity.Tb405;
+import project.honey.business.repository.Tb402Repository;
 import project.honey.business.repository.Tb404Repository;
+import project.honey.business.repository.Tb405Repository;
 import project.honey.pay.entity.Tb301;
 import project.honey.pay.repository.Tb301Repository;
 import project.honey.personDepart.entity.Tb201;
@@ -31,7 +35,9 @@ public class CodeToName {
     private final Tb201Repository tb201Repository;
     private final Tb202Repository tb202Repository;
     private final Tb301Repository tb301Repository;
+    private final Tb402Repository tb402Repository;
     private final Tb404Repository tb404Repository;
+    private final Tb405Repository tb405Repository;
     private final Tb501Repository tb501Repository;
     private final Tb904Repository tb904Repository;
     private final Tb906Repository tb906Repository;
@@ -77,5 +83,17 @@ public class CodeToName {
     public Map<String, String> itemGb() {
         return tb404Repository.findAll().stream()
                 .collect(Collectors.toMap(Tb404::getClassCd, Tb404::getClassNm));
+    }
+
+    // 품목  tb405
+    public Map<String, String> goods() {
+        return tb405Repository.findAll().stream()
+                .collect(Collectors.toMap(Tb405::getGoodsCd, Tb405::getGoodsNm));
+    }
+
+    // 거래처 tb402
+    public Map<String, String> cust() {
+        return tb402Repository.findAll().stream()
+                .collect(Collectors.toMap(Tb402::getCustCd, Tb402::getCustNm));
     }
 }

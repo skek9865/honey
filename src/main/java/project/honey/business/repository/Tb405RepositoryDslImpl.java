@@ -1,12 +1,14 @@
 package project.honey.business.repository;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
-import project.honey.business.dto.Search040105;
+import project.honey.business.dto.search.Search405;
+import project.honey.business.dto.search.SearchPopUp405;
 import project.honey.business.entity.Tb405;
 
 import javax.persistence.EntityManager;
@@ -23,12 +25,14 @@ public class Tb405RepositoryDslImpl implements Tb405RepositoryDsl{
     }
 
     @Override
-    public Page<Tb405> findAllByDsl(Search040105 search, Pageable pageable) {
+    public Page<Tb405> findAllByDsl(Search405 search, Pageable pageable) {
 
         List<Tb405> result = queryFactory.selectFrom(tb405)
                 .where(
                         goodsNmContains(search.getGoodsNm()),
-                        itemGb1Eq(search.getItemGb1())
+                        goodsCdEq(search.getGoodsCd()),
+                        itemGb1Eq(search.getItemGb1()),
+                        classSeqEq(search.getClassSeq())
                 )
                 .orderBy(tb405.seq.asc())
                 .offset(pageable.getOffset())
@@ -38,18 +42,30 @@ public class Tb405RepositoryDslImpl implements Tb405RepositoryDsl{
         int total = queryFactory.selectFrom(tb405)
                 .where(
                         goodsNmContains(search.getGoodsNm()),
-                        itemGb1Eq(search.getItemGb1())
+                        itemGb1Eq(search.getItemGb1()),
+                        classSeqEq(search.getClassSeq())
                 ).fetch().size();
 
         return new PageImpl<>(result, pageable, total);
     }
 
     @Override
-    public List<Tb405> findAllByExcel(Search040105 search) {
+    public List<Tb405> findAllByPopUp(SearchPopUp405 search) {
+        return queryFactory.selectFrom(tb405)
+                .where(
+                        goodsNmContains(search.getGoodsNm())
+                )
+                .orderBy(tb405.seq.asc())
+                .fetch();
+    }
+
+    @Override
+    public List<Tb405> findAllByExcel(Search405 search) {
         return queryFactory.selectFrom(tb405)
                 .where(
                         goodsNmContains(search.getGoodsNm()),
-                        itemGb1Eq(search.getItemGb1())
+                        itemGb1Eq(search.getItemGb1()),
+                        classSeqEq(search.getClassSeq())
                 )
                 .orderBy(tb405.seq.asc())
                 .fetch();
@@ -59,7 +75,15 @@ public class Tb405RepositoryDslImpl implements Tb405RepositoryDsl{
         return StringUtils.hasText(goodsNm) ? tb405.goodsNm.contains(goodsNm) : null;
     }
 
+    private BooleanExpression goodsCdEq(String goodsCd){
+        return StringUtils.hasText(goodsCd) ? tb405.goodsCd.eq(goodsCd) : null;
+    }
+
     private BooleanExpression itemGb1Eq(String itemGb1){
         return StringUtils.hasText(itemGb1) ? tb405.itemGb1.eq(itemGb1) : null;
+    }
+
+    private BooleanExpression classSeqEq(String classSeq){
+        return StringUtils.hasText(classSeq) ? tb405.classSeq.eq(classSeq) : null;
     }
 }

@@ -21,7 +21,8 @@ public class Tb405Dto {
     private String classSeq;
     private String setYn;
     private String stockYn;
-    private String product;
+    private String productCd;
+    private String productNm;
     private String itemGb1;
     private String itemGb2;
     private Integer stockQty;
@@ -44,7 +45,8 @@ public class Tb405Dto {
                 .classSeq(classMap.get(entity.getClassSeq()))
                 .setYn(entity.getSetYn())
                 .stockYn(entity.getStockYn())
-                .product(productMap.get(entity.getProduct()))
+                .productCd(entity.getProduct())
+                .productNm(productMap.get(entity.getProduct()))
                 .itemGb1(itemGbMap.get(entity.getItemGb1()))
                 .itemGb2(itemGbMap.get(entity.getItemGb2()))
                 .stockQty(entity.getStockQty())

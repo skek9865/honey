@@ -6,20 +6,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import project.honey.business.dto.Search040105;
+import project.honey.business.dto.search.Search405;
+import project.honey.business.dto.search.SearchPopUp405;
 import project.honey.business.dto.Tb405Dto;
 import project.honey.business.entity.Tb405;
 import project.honey.business.form.Tb405Form;
 import project.honey.business.repository.Tb405Repository;
 import project.honey.comm.CodeToName;
 import project.honey.comm.UploadService;
-import project.honey.personDepart.entity.Tb201;
-import project.honey.personDepart.form.Tb201Form;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -51,7 +51,7 @@ public class Service040105Impl implements Service040105{
     }
 
     @Override
-    public Page<Tb405Dto> findAll(Search040105 search,Pageable pageable) {
+    public Page<Tb405Dto> findAll(Search405 search, Pageable pageable) {
         Map<String, String> classMap = codeToName.commonCode("07");
         Map<String, String> productMap = codeToName.product();
         Map<String, String> itemGbMap = codeToName.itemGb();
@@ -104,12 +104,16 @@ public class Service040105Impl implements Service040105{
     }
 
     @Override
-    public List<List<String>> findAllByExcel(Search040105 search) {
+    public List<List<String>> findAllByExcel(Search405 search) {
         Map<String, String> classMap = codeToName.commonCode("07");
         Map<String, String> productMap = codeToName.product();
         Map<String, String> itemGbMap = codeToName.itemGb();
         List<Tb405> tb405s = tb405Repository.findAllByExcel(search);
 
+        int stockQty = 0;
+        int aQty = 0;
+        int wPrice = 0;
+        int fPrice = 0;
         List<List<String>> dtoList = new ArrayList<>();
         for (Tb405 tb405 : tb405s) {
             List<String> list = new ArrayList<>();
@@ -123,27 +127,19 @@ public class Service040105Impl implements Service040105{
             list.add(productMap.get(tb405.getProduct()));
             list.add(itemGbMap.get(tb405.getItemGb1()));
             list.add(itemGbMap.get(tb405.getItemGb2()));
-            list.add(String.valueOf(tb405.getStockQty()));
-            list.add(String.valueOf(tb405.getAQty()));
-            list.add(String.valueOf(tb405.getWPrice()));
+            list.add(tb405.getStockQty() != null ? String.valueOf(tb405.getStockQty()) : "0");
+            list.add(tb405.getAQty() != null ? String.valueOf(tb405.getAQty()) : "0");
+            list.add(tb405.getWPrice() != null ? String.valueOf(tb405.getWPrice()) : "0");
             list.add(tb405.getWPriceVat());
-            list.add(String.valueOf(tb405.getFPrice()));
+            list.add(tb405.getFPrice() != null ? String.valueOf(tb405.getFPrice()) : "0");
             list.add(tb405.getFPriceVat());
             list.add(tb405.getImgNmSave());
             list.add(tb405.getImgNmOut());
             dtoList.add(list);
-        }
-
-        int stockQty = 0;
-        int aQty = 0;
-        int wPrice = 0;
-        int fPrice = 0;
-        for (Tb405 tb405 : tb405s) {
             stockQty += tb405.getStockQty() != null ? tb405.getStockQty() : 0;
             aQty += tb405.getAQty() != null ? tb405.getAQty() : 0;
             wPrice += tb405.getWPrice() != null ? tb405.getWPrice() : 0;
             fPrice += tb405.getFPrice() != null ? tb405.getFPrice() : 0;
-
         }
         List<String> list = new ArrayList<>();
         list.add("");
@@ -166,6 +162,17 @@ public class Service040105Impl implements Service040105{
         list.add("");
         dtoList.add(list);
         return dtoList;
+    }
+
+    @Override
+    public List<Tb405Dto> findAllByPopUp(SearchPopUp405 search) {
+        Map<String, String> classMap = codeToName.commonCode("07");
+        Map<String, String> productMap = codeToName.product();
+        Map<String, String> itemGbMap = codeToName.itemGb();
+
+        return tb405Repository.findAllByPopUp(search).stream()
+                .map(m -> Tb405Dto.of(m, classMap, productMap, itemGbMap))
+                .collect(Collectors.toList());
     }
 
 }
