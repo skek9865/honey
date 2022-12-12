@@ -8,14 +8,25 @@
         case "query" :
           $('#size').val($('#num_per_page').val());
           $('#page').val(1);
-          fm_home.action = "/040108";
-          fm_home.method = "/get";
+          fm_home.action = "/040110";
+          fm_home.method = "get";
           fm_home.submit();
           break;
+        case "insert" : //저장
         case "update" : //저장
-          fm_input.action = "/040108/" + as_action;
+          fm_input.action = "/040110/" + as_action;
           fm_input.method = "post";
           fm_input.submit();
+          break;
+        case "delete" : //저장
+          fm_home.action = "/040110/" + as_action + "/" + as_val1;
+          fm_home.method = "post";
+          fm_home.submit();
+          break;
+        case "excel" :
+          fm_home.action = "/040110/excel";
+          fm_home.method = "get";
+          fm_home.submit();
           break;
       }
     }
@@ -35,6 +46,12 @@
               <tr>
                 <td>
                   <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>
+                  <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal"
+                          data-target="#inputpopup"
+                          th:onclick="gf_modal('040110/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">
+                    등록
+                  </button>
+                  <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
                 </td>
               </tr>
             </table>
@@ -54,19 +71,17 @@
             <td class="list_td_1 text-center">
               <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal"
                       data-target="#inputpopup"
-                      th:onclick="gf_modal('040108/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
+                      th:onclick="gf_modal('040110/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
                 수정
               </button>&nbsp;
+              <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm"
+                      th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제
+              </button>&nbsp;
             </td>
-            <td class="list_td_1 text-center" th:text="${dto.custCd}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.custNm}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.ceoNm}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.empCd}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.saleCd}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.class1}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.class2}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.saleGr}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.buyGr}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.excgCd}">내용</td>
+            <td class="list_td_1 text-center" th:text="${dto.excgNm}">내용</td>
+            <td class="list_td_1 text-end" th:text="${dto.excgRate}" style="text-align: right">내용</td>
+            <td class="list_td_1 text-center" th:text="${dto.useYn} ? 'Y' : 'N'">내용</td>
           </tr>
           </tbody>
         </table>
@@ -80,6 +95,6 @@
 <script src="/js/scripts_sub.js"></script>
 <script th:inline="javascript">
   $(document).ready(function () {
-    $("#datatable_1").width("1400");
+    $("#datatable_1").width([[${global.mainWidth}]]);
   });
 </script>
