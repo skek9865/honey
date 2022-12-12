@@ -94,6 +94,20 @@ public class Service040103Impl implements Service040103{
         return true;
     }
 
+    @Override
+    public List<CodeDto> findAllBySelect() {
+        List<CodeDto> resultList = new ArrayList<>();
+        List<Tb403> result = tb403Repository.findAll();
+        result.forEach(e -> {
+            CodeDto dto = CodeDto.builder()
+                    .value(e.getWhouseCd())
+                    .text(e.getWhouseNm())
+                    .build();
+            resultList.add(dto);
+        });
+        return resultList;
+    }
+
     private String makeWhouseClaNm(Tb403 entity, List<CodeDto> tb906){
         String whouseClaNm;
 
