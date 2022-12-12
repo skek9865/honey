@@ -2,6 +2,7 @@ package project.honey.business.entity;
 
 import lombok.*;
 import org.hibernate.annotations.Comment;
+import project.honey.business.dto.Tb402Dto;
 import project.honey.business.form.Tb402Form;
 import project.honey.comm.BaseAtt;
 
@@ -210,5 +211,13 @@ public class Tb402 extends BaseAtt {
         this.saleType = form.getSaleType();
         this.buyType = form.getBuyType();
         this.note = form.getNote();
+    }
+
+    public void updateData040108(Tb402Form form){
+        this.seq = form.getSeq();
+        this.custCd = form.getCustCd();
+        this.custNm = form.getCustNm();
+        this.saleGr = form.getSaleGr();
+        this.buyGr = form.getBuyGr();
     }
 }
