@@ -7,13 +7,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import project.honey.business.entity.Tb405;
-import project.honey.business.repository.Tb405Repository;
+import project.honey.business.entity.basic.Tb405;
+import project.honey.business.repository.basic.Tb405Repository;
 import project.honey.comm.CodeToName;
 import project.honey.produce.dto.Dto050104;
 import project.honey.produce.entity.Tb503;
 import project.honey.produce.entity.Tb503_1;
-import project.honey.produce.repository.Tb503Repository;
 import project.honey.produce.repository.Tb503_1Repository;
 
 import java.util.*;

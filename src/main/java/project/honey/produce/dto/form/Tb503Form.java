@@ -1,7 +1,7 @@
 package project.honey.produce.dto.form;
 
 import lombok.*;
-import project.honey.business.entity.Tb405;
+import project.honey.business.entity.basic.Tb405;
 import project.honey.produce.dto.Tb503_1Dto;
 import project.honey.produce.entity.Tb503;
 

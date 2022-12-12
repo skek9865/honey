@@ -1,8 +1,7 @@
 package project.honey.produce.dto;
 
-import com.querydsl.core.annotations.QueryProjection;
 import lombok.*;
-import project.honey.business.entity.Tb405;
+import project.honey.business.entity.basic.Tb405;
 import project.honey.produce.entity.Tb503;
 import project.honey.produce.entity.Tb503_1;
 

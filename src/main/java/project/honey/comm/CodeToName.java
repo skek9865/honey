@@ -1,14 +1,13 @@
 package project.honey.comm;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Component;
-import project.honey.business.entity.Tb402;
-import project.honey.business.entity.Tb404;
-import project.honey.business.entity.Tb405;
-import project.honey.business.repository.Tb402Repository;
-import project.honey.business.repository.Tb404Repository;
-import project.honey.business.repository.Tb405Repository;
+import project.honey.business.entity.basic.Tb402;
+import project.honey.business.entity.basic.Tb404;
+import project.honey.business.entity.basic.Tb405;
+import project.honey.business.repository.basic.Tb402Repository;
+import project.honey.business.repository.basic.Tb404Repository;
+import project.honey.business.repository.basic.Tb405Repository;
 import project.honey.pay.entity.Tb301;
 import project.honey.pay.repository.Tb301Repository;
 import project.honey.personDepart.entity.Tb201;
@@ -19,12 +18,9 @@ import project.honey.produce.entity.Tb501;
 import project.honey.produce.repository.Tb501Repository;
 import project.honey.system.dto.CodeDto;
 import project.honey.system.entity.Tb904;
-import project.honey.system.entity.Tb906;
 import project.honey.system.repository.Tb904Repository;
 import project.honey.system.repository.Tb906Repository;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
