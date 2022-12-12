@@ -14,7 +14,7 @@ import project.honey.produce.entity.Tb504_1;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static project.honey.business.entity.QTb405.*;
+import static project.honey.business.entity.basic.QTb405.*;
 import static project.honey.produce.entity.QTb504.*;
 import static project.honey.produce.entity.QTb504_1.*;
 

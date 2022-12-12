@@ -5,7 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import project.honey.business.dto.Tb402Dto;
+import project.honey.business.dto.basic.Tb402Dto;
+import project.honey.business.service.basic.Service040102;
 
 @SpringBootTest
 public class Service040102Test {

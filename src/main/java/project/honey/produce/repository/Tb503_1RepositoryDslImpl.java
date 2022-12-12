@@ -7,7 +7,7 @@ import project.honey.produce.dto.Tb503_1Dto;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static project.honey.business.entity.QTb405.*;
+import static project.honey.business.entity.basic.QTb405.*;
 import static project.honey.produce.entity.QTb501.*;
 import static project.honey.produce.entity.QTb503_1.*;
 

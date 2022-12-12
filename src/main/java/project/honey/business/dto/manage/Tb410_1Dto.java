@@ -1,0 +1,46 @@
+package project.honey.business.dto.manage;
+
+import lombok.*;
+import project.honey.business.entity.manage.Tb410_1;
+
+import java.math.BigDecimal;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@ToString
+public class Tb410_1Dto {
+
+    private Integer seqC;
+    private Integer tb410;
+    private String goodsCd;
+    private String standard;
+    private Integer qty;
+    private BigDecimal price;
+    private BigDecimal amt;
+    private BigDecimal vat;
+    private String noteC;
+    private String createDate;
+    private String createId;
+    private String updateDate;
+    private String updateId;
+
+    public static Tb410_1Dto of (Tb410_1 entity){
+        return Tb410_1Dto.builder()
+                .seqC(entity.getSeq())
+                .tb410(entity.getFk_tb_410().getSeq())
+                .goodsCd(entity.getGoodsCd())
+                .standard(entity.getStandard())
+                .qty(entity.getQty())
+                .price(entity.getPrice())
+                .amt(entity.getAmt())
+                .vat(entity.getVat())
+                .noteC(entity.getNote())
+                .createDate(entity.getCreateDate())
+                .createId(entity.getCreateId())
+                .updateDate(entity.getUpdateDate())
+                .updateId(entity.getUpdateId())
+                .build();
+    }
+}

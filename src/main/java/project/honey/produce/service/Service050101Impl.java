@@ -6,7 +6,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.honey.business.entity.Tb404;
 import project.honey.produce.dto.Tb501Dto;
 import project.honey.produce.entity.Tb501;
 import project.honey.produce.repository.Tb501Repository;
