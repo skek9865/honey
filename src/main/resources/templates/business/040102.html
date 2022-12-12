@@ -91,8 +91,8 @@
           </thead>
           <tbody>
           <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
-            <td class="list_td_1" th:text="${dtoStat.count}" text-center></td>
-            <td class="list_td_1" text-center>
+            <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
+            <td class="list_td_1 text-center">
               <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal"
                       data-target="#inputpopup"
                       th:onclick="gf_modal('040102/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
@@ -102,18 +102,18 @@
                       th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제
               </button>&nbsp;
             </td>
-            <td class="list_td_1" th:text="${dto.custCd}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.custNm}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.ceoNm}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.phone}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.mobile}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.custFax}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.empCd}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.saleCd}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.class1}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.class2}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.saleGr}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.buyGr}" text-center>내용</td>
+            <td class="list_td_1 text-center" th:text="${dto.custCd}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.custNm}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.ceoNm}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.phone}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.mobile}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.custFax}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.empCd}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.saleCd}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.class1}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.class2}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.saleGr}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.buyGr}"></td>
           </tr>
           </tbody>
         </table>

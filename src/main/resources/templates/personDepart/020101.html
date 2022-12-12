@@ -87,8 +87,8 @@
           </thead>
           <tbody>
           <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
-            <td class="list_td_1" th:text="${dtoStat.count}" text-center></td>
-            <td class="list_td_1" text-center>
+            <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
+            <td class="list_td_1 text-center">
               <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal"
                       data-target="#inputpopup"
                       th:onclick="gf_modal('020101/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
@@ -98,15 +98,15 @@
                       th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제
               </button>&nbsp;
             </td>
-            <td class="list_td_1" th:text="${dto.empNo}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.empNm}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.empDt}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.post}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.phone}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.mobile}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.email}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.deptCd}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.workCd}" text-center>내용</td>
+            <td class="list_td_1 text-center" th:text="${dto.empNo}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.empNm}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.empDt}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.post}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.phone}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.mobile}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.email}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.deptCd}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.workCd}"></td>
           </tr>
           </tbody>
         </table>

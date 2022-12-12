@@ -67,8 +67,8 @@
           </thead>
           <tbody>
           <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
-            <td class="list_td_1" th:text="${dtoStat.count}" text-center></td>
-            <td class="list_td_1" text-center>
+            <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
+            <td class="list_td_1 text-center">
               <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal"
                       data-target="#inputpopup"
                       th:onclick="gf_modal('040103/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
@@ -78,11 +78,11 @@
                       th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제
               </button>&nbsp;
             </td>
-            <td class="list_td_1" th:text="${dto.whouseCla}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.productCd}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.whouseCd}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.whouseAl}" text-center>내용</td>
-            <td class="list_td_1" th:text="${dto.whouseNm}" text-center>내용</td>
+            <td class="list_td_1 text-center" th:text="${dto.whouseCla}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.productCd}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.whouseCd}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.whouseAl}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.whouseNm}"></td>
           </tr>
           </tbody>
         </table>
