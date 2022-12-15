@@ -30,7 +30,6 @@ public class Tb504RepositoryDslImpl implements Tb504RepositoryDsl{
 
         List<Tb504> result = queryFactory.select(tb504)
                 .from(tb504)
-                .leftJoin(tb504.tb504_1s).fetchJoin()
                 .where(
                         workDtBetween(search.getYmd1(), search.getYmd2()),
                         statusEq(search.getStatus())
@@ -54,7 +53,6 @@ public class Tb504RepositoryDslImpl implements Tb504RepositoryDsl{
         return queryFactory.select(tb504)
                 .distinct()
                 .from(tb504)
-                .leftJoin(tb504.tb504_1s).fetchJoin()
                 .where(
                         workDtBetween(search.getYmd1(), search.getYmd2()),
                         statusEq(search.getStatus())
