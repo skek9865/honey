@@ -151,11 +151,11 @@ public class Service040105Impl implements Service040105{
         list.add("");
         list.add("");
         list.add("");
-        list.add("");
+        list.add("총계");
         list.add(String.valueOf(stockQty));
         list.add(String.valueOf(aQty));
         list.add(String.valueOf(wPrice));
-        list.add("총계");
+        list.add("");
         list.add(String.valueOf(fPrice));
         list.add("");
         list.add("");

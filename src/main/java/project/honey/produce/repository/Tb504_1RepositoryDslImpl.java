@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
+import project.honey.business.entity.basic.QTb405;
 import project.honey.produce.dto.QTb504_1Dto;
 import project.honey.produce.dto.Tb504_1Dto;
 import project.honey.produce.dto.search.Search050201;
@@ -15,7 +16,6 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static project.honey.business.entity.basic.QTb405.*;
-import static project.honey.produce.entity.QTb504.*;
 import static project.honey.produce.entity.QTb504_1.*;
 
 public class Tb504_1RepositoryDslImpl implements Tb504_1RepositoryDsl{
