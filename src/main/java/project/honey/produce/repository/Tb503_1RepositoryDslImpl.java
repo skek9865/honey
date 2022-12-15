@@ -1,8 +1,12 @@
 package project.honey.produce.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import project.honey.produce.dto.QTb503_1Dto;
 import project.honey.produce.dto.Tb503_1Dto;
+import project.honey.produce.entity.Tb503_1;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -17,6 +21,22 @@ public class Tb503_1RepositoryDslImpl implements Tb503_1RepositoryDsl{
 
     public Tb503_1RepositoryDslImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
+    }
+
+    @Override
+    public Page<Tb503_1> findAllByDsl(Pageable pageable) {
+        List<Tb503_1> result = queryFactory.select(tb503_1)
+                .from(tb503_1)
+                .leftJoin(tb503_1.tb503).fetchJoin()
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        int total = queryFactory.select(tb503_1)
+                .from(tb503_1)
+                .fetch().size();
+
+        return new PageImpl<>(result, pageable, total);
     }
 
     @Override

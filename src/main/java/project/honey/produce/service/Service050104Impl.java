@@ -30,7 +30,7 @@ public class Service050104Impl implements Service050104{
     @Override
     public Page<Dto050104> findAll(String goodsCd, Pageable pageable) {
         // 필요한 데이터 세팅
-        Page<Tb503_1> pagingTb503_1s = tb503_1Repository.findAll(pageable);
+        Page<Tb503_1> pagingTb503_1s = tb503_1Repository.findAllByDsl(pageable);
         List<Tb503_1> tb503_1s = pagingTb503_1s.getContent();
         Map<String, String> classMap = codeToName.commonCode("07");
 
@@ -76,7 +76,7 @@ public class Service050104Impl implements Service050104{
     @Override
     public List<List<String>> findAllByExcel(String goodsCd) {
         // 필요한 데이터 세팅
-        List<Tb503_1> tb503_1s = tb503_1Repository.findAll();
+        List<Tb503_1> tb503_1s = tb503_1Repository.findAllByExcel();
         Map<String, String> classMap = codeToName.commonCode("07");
 
         List<Dto050104> dtoList = new ArrayList<>();
