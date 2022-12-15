@@ -19,16 +19,18 @@ public class Tb506_1Dto {
     private String goodsCd;
     private String goodsNm;
     private Integer qty;
+    private Integer wPrice;
     private String standard;
     private String note;
 
     @QueryProjection
-    public Tb506_1Dto(Integer seq, Integer fkTb506, String goodsCd, String goodsNm, Integer qty, String standard, String note) {
+    public Tb506_1Dto(Integer seq, Integer fkTb506, String goodsCd, String goodsNm, Integer qty, Integer wPrice, String standard, String note) {
         this.seq = seq;
         this.fkTb506 = fkTb506;
         this.goodsCd = goodsCd;
         this.goodsNm = goodsNm;
         this.qty = qty;
+        this.wPrice = wPrice;
         this.standard = standard;
         this.note = note;
     }
