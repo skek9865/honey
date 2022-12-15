@@ -32,6 +32,7 @@ public class Tb506_1RepositoryDslImpl implements Tb506_1RepositoryDsl{
                                 tb506_1.goodsCd,
                                 tb405.goodsNm,
                                 tb506_1.qty,
+                                tb405.wPrice,
                                 tb506_1.standard,
                                 tb506_1.note
                         ))
