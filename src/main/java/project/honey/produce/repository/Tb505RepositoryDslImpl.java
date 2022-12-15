@@ -29,7 +29,7 @@ public class Tb505RepositoryDslImpl implements Tb505RepositoryDsl{
 
         List<Tb505> result = queryFactory.select(tb505)
                 .from(tb505)
-                .leftJoin(tb505.tb505_1s).fetchJoin()
+//                .leftJoin(tb505.tb505_1s).fetchJoin()
                 .where(
                         whoUseDtBetween(search.getYmd1(), search.getYmd2()),
                         statusEq(search.getStatus())
@@ -53,7 +53,7 @@ public class Tb505RepositoryDslImpl implements Tb505RepositoryDsl{
         return queryFactory.select(tb505)
                 .distinct()
                 .from(tb505)
-                .leftJoin(tb505.tb505_1s).fetchJoin()
+//                .leftJoin(tb505.tb505_1s).fetchJoin()
                 .where(
                         whoUseDtBetween(search.getYmd1(), search.getYmd2()),
                         statusEq(search.getStatus())
