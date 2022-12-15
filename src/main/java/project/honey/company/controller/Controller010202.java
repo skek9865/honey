@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import project.honey.comm.CodeToName;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
@@ -32,7 +33,7 @@ public class Controller010202 {
 
     private final MenuMaker menuMaker;
     private final Service010202 service010202;
-    private final Tb201Repository tb201Repository;
+    private final Service020101 service020101;
 
     @GetMapping()
     public String findAll(@ModelAttribute("menuId") MenuIdDto menuIdDto, Model model, Pageable pageable){
@@ -63,7 +64,7 @@ public class Controller010202 {
         model.addAttribute("thdId", map.get("thdId"));
         model.addAttribute("action", map.get("action"));
         model.addAttribute("global", new GlobalConst());
-        model.addAttribute("empList",tb201Repository.findAll().stream().filter(e -> !StringUtils.hasText(e.getLeaveRs())).collect(Collectors.toList()));
+        model.addAttribute("empList", service020101.findAllByWorking());
         if(map.get("vseq").isEmpty()){
             model.addAttribute("dto",new Tb103Dto());
             return "company/010202_input";

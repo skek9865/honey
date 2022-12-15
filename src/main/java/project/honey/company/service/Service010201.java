@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import project.honey.company.dto.Tb102Dto;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface Service010201 {
@@ -19,6 +20,9 @@ public interface Service010201 {
 
     //모든 통장 가져오기2
     List<Tb102Dto> findAll();
+
+    //모든 통장 <id값, 계좌번호> 형식으로 가져오기
+    Map<Integer, String> bank();
 
     //id값을 이용해 통장 가져오기
     Tb102Dto findById(Integer id);

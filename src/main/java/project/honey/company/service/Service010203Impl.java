@@ -5,9 +5,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.honey.comm.CodeToName;
+import project.honey.comm.GlobalMethod;
 import project.honey.company.dto.Tb104Dto;
 import project.honey.company.entity.Tb104;
 import project.honey.company.repository.Tb104Repository;
+
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +19,9 @@ import project.honey.company.repository.Tb104Repository;
 public class Service010203Impl implements Service010203{
 
     private final Tb104Repository tb104Repository;
+    private final Service010202 service010202;
+    private final Service010201 service010201;
+    private final CodeToName codeToName;
 
     @Override
     @Transactional
@@ -61,19 +68,34 @@ public class Service010203Impl implements Service010203{
     }
 
     private Tb104Dto entityToDto(Tb104 entity){
+        String expdt = GlobalMethod.makeYmd(entity.getExpdt(), "yyyy-MM-dd");
+        String issuedt = GlobalMethod.makeYmd(entity.getIssuedt(), "yyyy-MM-dd");
+
+        //사원명 변환
+        Map<String, String> emp = codeToName.emp();
+        String empNm = emp.get(entity.getEmpno());
+
+        //인증서명으로 변환
+        Map<Integer, String> cer = service010202.cer();
+        String cerNm = cer.get(entity.getFk_tb_103());
+
+        //통장 계좌번호로 변환
+        Map<Integer, String> bank = service010201.bank();
+        String bankNo = bank.get(entity.getFk_tb_102());
+
         return Tb104Dto.builder()
                 .seq(entity.getSeq())
                 .fk_tb_101(entity.getFk_tb_101())
                 .cardnm(entity.getCardnm())
                 .cardno(entity.getCardno())
-                .expdt(entity.getExpdt())
+                .expdt(expdt)
                 .cvcno(entity.getCvcno())
                 .useyn(entity.getUseyn())
-                .empno(entity.getEmpno())
-                .fk_tb_102(entity.getFk_tb_102())
+                .empno(empNm)
+                .fk_tb_102(bankNo)
                 .limitamt(entity.getLimitamt())
-                .issuedt(entity.getIssuedt())
-                .fk_tb_103(entity.getFk_tb_103())
+                .issuedt(issuedt)
+                .fk_tb_103(cerNm)
                 .note(entity.getNote())
                 .createId(entity.getCreateId())
                 .createDate(entity.getCreateDate())
@@ -93,10 +115,10 @@ public class Service010203Impl implements Service010203{
                 .cvcno(dto.getCvcno())
                 .useyn(dto.getUseyn())
                 .empno(dto.getEmpno())
-                .fk_tb_102(dto.getFk_tb_102())
+                .fk_tb_102(Integer.parseInt(dto.getFk_tb_102()))
                 .limitamt(dto.getLimitamt())
                 .issuedt(dto.getIssuedt())
-                .fk_tb_103(dto.getFk_tb_103())
+                .fk_tb_103(Integer.parseInt(dto.getFk_tb_103()))
                 .note(dto.getNote())
                 .build();
     }

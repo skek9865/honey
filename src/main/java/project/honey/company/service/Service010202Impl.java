@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.honey.comm.CodeToName;
+import project.honey.comm.GlobalMethod;
 import project.honey.company.dto.Tb103Dto;
 import project.honey.company.entity.Tb103;
 import project.honey.company.repository.Tb103Repository;
@@ -13,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 public class Service010202Impl implements Service010202{
 
     private final Tb103Repository tb103Repository;
+    private final CodeToName codeToName;
 
     @Transactional
     @Override
@@ -70,16 +74,16 @@ public class Service010202Impl implements Service010202{
         return id;
     }
 
+    public Map<Integer, String> cer(){
+        return tb103Repository.findAll().stream()
+                .collect(Collectors.toMap(Tb103::getSeq, Tb103::getCernm));
+    }
+
     private Tb103Dto entityToDto(Tb103 entity){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat beforeSdf= new SimpleDateFormat("yyyyMMdd");
-        Date date = null;
-        try{
-            date = beforeSdf.parse(entity.getExpdt());
-        } catch(ParseException e){
-            e.printStackTrace();
-        }
-        String expdt = sdf.format(date);
+        String expdt = GlobalMethod.makeYmd(entity.getExpdt(), "yyyy-MM-dd");
+
+        Map<String, String> emp = codeToName.emp();
+        String empNm = emp.get(entity.getEmpno());
 
         return Tb103Dto.builder()
                 .seq(entity.getSeq())
@@ -88,7 +92,7 @@ public class Service010202Impl implements Service010202{
                 .expdt(expdt)
                 .usenote(entity.getUsenote())
                 .savemtd(entity.getSavemtd())
-                .empno(entity.getEmpno())
+                .empno(empNm)
                 .useyn(entity.getUseyn())
                 .note(entity.getNote())
                 .createId(entity.getCreateId())

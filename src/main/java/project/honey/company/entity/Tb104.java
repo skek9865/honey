@@ -78,10 +78,10 @@ public class Tb104 extends BaseAtt {
         this.cvcno = dto.getCvcno();
         this.useyn = dto.getUseyn();
         this.empno = dto.getEmpno();
-        this.fk_tb_102 = dto.getFk_tb_102();
+        this.fk_tb_102 = Integer.parseInt(dto.getFk_tb_102());
         this.limitamt = dto.getLimitamt();
         this.issuedt = dto.getIssuedt();
-        this.fk_tb_103 = dto.getFk_tb_103();
+        this.fk_tb_103 = Integer.parseInt(dto.getFk_tb_103());
         this.note = dto.getNote();
     }
 }

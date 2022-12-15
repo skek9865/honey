@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.company.dto.Tb102Dto;
 import project.honey.company.entity.Tb102;
+import project.honey.company.entity.Tb103;
 import project.honey.company.repository.Tb102Repository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -71,6 +73,12 @@ public class Service010201Impl implements Service010201{
     public Integer delete(Integer id) {
         tb102Repository.deleteById(id);
         return id;
+    }
+
+    @Override
+    public Map<Integer, String> bank() {
+        return tb102Repository.findAll().stream()
+                .collect(Collectors.toMap(Tb102::getSeq, Tb102::getAccountno));
     }
 
     private Tb102Dto entityToDto(Tb102 entity){

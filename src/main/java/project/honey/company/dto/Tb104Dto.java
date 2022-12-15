@@ -27,13 +27,13 @@ public class Tb104Dto {
 
     private String empno;
 
-    private Integer fk_tb_102;
+    private String fk_tb_102;
 
     private Integer limitamt;
 
     private String issuedt;
 
-    private Integer fk_tb_103;
+    private String fk_tb_103;
 
     private String note;
 

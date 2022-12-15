@@ -6,11 +6,11 @@
             switch (as_action) {
                 case "insert" : //저장
                 case "update" : //저장
-                    fm_input.action = "/010203/" + as_action;
+                    fm_input.action = "/010204/" + as_action;
                     fm_input.submit();
                     break;
                 case "delete" : //저장
-                    fm_home.action = "/010203/" + as_action + "/" + as_val1;
+                    fm_home.action = "/010204/" + as_action + "/" + as_val1;
                     fm_home.submit();
                     break;
             }
@@ -35,7 +35,7 @@
                                             onclick="javascript:history.go(0);">조회</button>&nbsp;
                                     <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm"
                                             data-toggle="modal" data-target="#inputpopup"
-                                            th:onclick="gf_modal('010203/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">등록
+                                            th:onclick="gf_modal('010204/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">등록
                                     </button>&nbsp;
                                     <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm"
                                             onclick="">엑셀
@@ -59,22 +59,24 @@
                         <td class="list_td_1 text-center">
                             <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm"
                                     data-toggle="modal" data-target="#inputpopup"
-                                    th:onclick="gf_modal('010203/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update',[[${dto.seq}]],'');">수정
+                                    th:onclick="gf_modal('010204/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update',[[${dto.seq}]],'');">수정
                             </button>&nbsp;
                             <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm"
                                     th:onclick="lf_confirm(this.name, [[${dto.seq}]],'','')">삭제
                             </button>&nbsp;
+                            <button name="popup" id="popup" type="button" class="btn btn-gfk btn-ssm"
+                                    th:onclick="lf_confirm(this.name, [[${dto.seq}]],'','')">납입관리
+                            </button>&nbsp;
                         </td>
-                        <td th:text="${dto.cardnm}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.cardno}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.expdt}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.cvcno}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.useyn}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.empno}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.loannm}" class="list_td_1 text-center"></td>
                         <td th:text="${dto.fk_tb_102}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.newdt}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.expdt}" class="list_td_1 text-center"></td>
                         <td th:text="${#numbers.formatInteger(dto.limitamt, 0, 'COMMA')}" class="list_td_1 text-right"></td>
-                        <td th:text="${dto.issuedt}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.fk_tb_103}" class="list_td_1 text-center"></td>
+                        <td th:text="${#numbers.formatInteger(dto.instamt, 0, 'COMMA')}" class="list_td_1 text-right"></td>
+                        <td th:text="${#numbers.formatInteger(dto.limitamt - dto.instamt, 0, 'COMMA')}" class="list_td_1 text-right"></td>
+                        <td th:text="${dto.ipaydt}" class="list_td_1 text-center"></td>
+                        <td th:text="${#numbers.formatDecimal(dto.irate,1,'COMMA',3,'POINT')}" class="list_td_1 text-right"></td>
                         <td th:text="${dto.note}" class="list_td_1 text-center"></td>
                     </tr>
                     </tbody>
