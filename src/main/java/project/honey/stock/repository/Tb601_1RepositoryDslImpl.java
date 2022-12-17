@@ -30,6 +30,7 @@ public class Tb601_1RepositoryDslImpl implements Tb601_1RepositoryDsl{
                                 tb405.goodsNm,
                                 tb601_1.qty,
                                 tb601_1.rQty,
+                                tb405.wPrice,
                                 tb601_1.note
                         ))
                 .from(tb601_1)
