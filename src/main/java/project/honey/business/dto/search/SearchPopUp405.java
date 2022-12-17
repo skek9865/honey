@@ -11,6 +11,7 @@ public class SearchPopUp405 {
 
     private String goodsNm;
     private String type;
+    private String exchange; // 대체품목
     private boolean stock;
     private boolean product;
 }
