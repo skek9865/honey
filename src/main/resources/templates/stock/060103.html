@@ -1,0 +1,134 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::form})}"
+      xmlns:th="http://www.thymeleaf.org">
+<form name="fm_home" method="post" >
+    <main >
+        <script th:inline="javascript">
+            function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+                switch (as_action) {
+                    case "query" :
+                        $('#size').val($('#num_per_page').val());
+                        $('#page').val(1);
+                        fm_home.action = "/060103";
+                        fm_home.method = "/get";
+                        fm_home.submit();
+                        break;
+
+                    case "insert" : //저장
+                    case "update" : //수정
+                        fm_input.action = "/060103/" + as_action
+                        fm_input.submit();
+                        break;
+
+                    case "excel" :
+                        fm_home.action = "/060103/excel"
+                        fm_home.method = "get"
+                        fm_home.submit();
+                        break;
+
+                }
+            }
+        </script>
+        <div class="container-fluid p-2">
+            <div class="titleBar" id="titleBar">
+                <div class="row">
+                    <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+                    <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+                </div>
+            </div>
+            <div class="searchBar" id="searchBar">
+                <div class="row">
+                    <div class="col-12 fixed-right p-2 px-4">
+                        <table>
+                            <tbody>
+                            <tr>
+                                <td class="p-1">
+                                    <div class="input-group input-daterange">
+                                        <div class="input-group-addon px-2">
+                                            <label for="symd1" class="">조회기간</label>
+                                        </div>
+                                        <input type="text" name="ymd1" th:value="${search.ymd1}" id="symd1" class="input_date" autocomplete="off">
+                                        <div class="input-group-addon">~&nbsp;</div>
+                                        <input type="text" name="ymd2" th:value="${search.ymd2}" id="symd2" class="input_date" autocomplete="off">
+                                    </div>
+                                </td>
+                                <td class="p-1">
+                                    <label for="sstatus" class="">진행상태</label>
+                                    <select class="form-select" id="sstatus" name="status" size="1">
+                                        <option value="">선택</option>
+                                        <option th:each="status : ${statuses}" th:value="${status.value}" th:text="${status.text}"
+                                        th:attr="selected=${status.value == search.status ? 'true' : 'false'}">대기중</option>
+                                    </select>
+                                </td>
+                                <td class="px-4">
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
+                                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="gf_modal('060103/input','','','','insert', '');">등록</button>
+                                    <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>&nbsp;
+                                </td>
+                            </tr>
+                            </tbody></table>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_1" >
+                    <thead>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}"><!-- td 렌더링 -->
+                        <td class="list_td_1 text-center" th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
+                        <td>
+                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('060103/input?seq=' + [[${dto.seq}]],'','','','update', '');">수정</button>&nbsp;
+                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:data-id="${dto.seq}">삭제</button>&nbsp;
+                        </td>
+                        <td class="list_td_1 text-center" th:text="${dto.wHouseNo}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.wHouseOut}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.goodsNm}"></td>
+                        <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.qty,0, 'COMMA')}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.prcsmTd}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.status}"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="tableList_f_tr">
+                        <th th:each="footer, footerStat : ${footers}"
+                            class="tableList_f_td"
+                            th:text="${footer != '' ? #numbers.formatInteger(footer,0, 'COMMA') : ''}"></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- 페이징 부분 -->
+            <div th:replace="paging.html :: paging">
+        </div>
+
+        </div>
+    </main>
+    <script th:src="@{|/js/scripts_sub.js|}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
+            $("#modal_main").addClass("modal-xl");
+            $("#datatable_1").width("1101px");
+
+            // 삭제
+            $('button[name="delete"]').click(function (e) {
+                e.preventDefault();
+                if(confirm("자료를 삭제하시겠습니까?")){
+                    var url = window.location.href + "";
+                    $.ajax({
+                        url: url.split('?')[0] + "/delete/" + $(this).data('id'),
+                        type : 'post',
+                        success : function (){
+                            alert("자료가 삭제되었습니다.");
+                            location.reload();
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+
+</form>
