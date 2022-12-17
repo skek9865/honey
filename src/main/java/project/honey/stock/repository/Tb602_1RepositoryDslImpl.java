@@ -28,6 +28,7 @@ public class Tb602_1RepositoryDslImpl implements Tb602_1RepositoryDsl{
                                 tb602_1.goodsCd,
                                 tb405.goodsNm,
                                 tb602_1.qty,
+                                tb405.wPrice,
                                 tb602_1.useType,
                                 tb602_1.note
                         ))
