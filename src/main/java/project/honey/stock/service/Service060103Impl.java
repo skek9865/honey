@@ -46,7 +46,7 @@ public class Service060103Impl implements Service060103{
 
         // 날짜 부호 빼주기
         Search060103 realSearch = new Search060103(GlobalMethod.replaceYmd(search.getYmd1(), "-"),
-                GlobalMethod.replaceYmd(search.getYmd2(), "-"), search.getStatus());
+                GlobalMethod.replaceYmd(search.getYmd2(), "-"), search.getStatus(), search.getPrcsmTd());
 
         Page<Tb603> pagingTb603s = tb603Repository.findAllByDsl(realSearch, pageable);
         List<Tb603> tb603s = pagingTb603s.getContent();
@@ -154,7 +154,7 @@ public class Service060103Impl implements Service060103{
     public List<List<String>> findAllByExcel(Search060103 search) {
         // 날짜 부호 빼주기
         Search060103 realSearch = new Search060103(GlobalMethod.replaceYmd(search.getYmd1(), "-"),
-                GlobalMethod.replaceYmd(search.getYmd2(), "-"), search.getStatus());
+                GlobalMethod.replaceYmd(search.getYmd2(), "-"), search.getStatus(), search.getPrcsmTd());
 
         List<Tb603> tb603s = tb603Repository.findAllByExcel(realSearch);
 

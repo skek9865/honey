@@ -30,6 +30,7 @@ public class Tb603RepositoryDslImpl implements Tb603RepositoryDsl{
                 .from(tb603)
                 .where(
                         whoUseDtBetween(search.getYmd1(), search.getYmd2()),
+                        prcsmTdEq(search.getPrcsmTd()),
                         statusEq(search.getStatus())
                 )
                 .orderBy(tb603.seq.asc())
@@ -41,6 +42,7 @@ public class Tb603RepositoryDslImpl implements Tb603RepositoryDsl{
                 .from(tb603)
                 .where(
                         whoUseDtBetween(search.getYmd1(), search.getYmd2()),
+                        prcsmTdEq(search.getPrcsmTd()),
                         statusEq(search.getStatus())
                 )
                 .fetch().size();
@@ -54,6 +56,7 @@ public class Tb603RepositoryDslImpl implements Tb603RepositoryDsl{
                 .from(tb603)
                 .where(
                         whoUseDtBetween(search.getYmd1(), search.getYmd2()),
+                        prcsmTdEq(search.getPrcsmTd()),
                         statusEq(search.getStatus())
                 )
                 .orderBy(tb603.seq.asc())
@@ -66,5 +69,9 @@ public class Tb603RepositoryDslImpl implements Tb603RepositoryDsl{
 
     private BooleanExpression statusEq(String status) {
         return StringUtils.hasText(status) ? tb603.status.eq(status) : null;
+    }
+
+    private BooleanExpression prcsmTdEq(String prcsmTd) {
+        return StringUtils.hasText(prcsmTd) ? tb603.prcsmTd.eq(prcsmTd) : null;
     }
 }
