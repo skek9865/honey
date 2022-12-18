@@ -34,7 +34,6 @@ import java.util.stream.Collectors;
 public class Service060109Impl implements Service060109 {
 
     private final Tb506_1Repository tb506_1Repository;
-    private final Tb603Repository tb603Repository;
     private final Tb603_1Repository tb603_1Repository;
     private final CodeToName codeToName;
 
