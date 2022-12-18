@@ -2,17 +2,21 @@ package project.honey.business.entity.manage;
 
 import lombok.*;
 import org.hibernate.annotations.Comment;
+import project.honey.business.form.manage.Tb410Form;
 import project.honey.comm.BaseAtt;
+import project.honey.comm.GlobalMethod;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Builder
-@ToString
+@ToString(exclude = "tb410_1s")
 @Table(name = "tb_410")
 public class Tb410 extends BaseAtt {
 
@@ -83,7 +87,7 @@ public class Tb410 extends BaseAtt {
     private String email;
 
     @Comment("장문형식1")
-    @Column(length = 255)
+    @Column(columnDefinition = "TEXT")
     private String note2;
 
     @NotNull
@@ -103,4 +107,35 @@ public class Tb410 extends BaseAtt {
     @Comment("인쇄일시")
     @Column(name = "prtdt", length = 20, columnDefinition = "char")
     private String prtDt;
+
+    @OneToMany(mappedBy = "tb410", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<Tb410_1> tb410_1s = new ArrayList<>();
+
+    public void updateData(Tb410Form form, List<Tb410_1> tb410_1) {
+        String estDt = GlobalMethod.replaceYmd(form.getEstimDt(),"-");
+        String closeYn = "N";
+        if(form.getCloseYn()) closeYn = "Y";
+        this.seq = form.getSeqP();
+        this.estimDt = estDt;
+        this.estimNo = form.getEstimNo();
+        this.custCd = form.getCustCd();
+        this.empNo = form.getEmpNo();
+        this.whouseCd = form.getWhouseCd();
+        this.saleType = form.getSaleType();
+        this.excgCd = form.getExcgCd();
+        this.note = form.getNoteP();
+        this.payCondit = form.getPayCondit();
+        this.name = form.getName();
+        this.expDt = form.getExpDt();
+        this.phone = form.getPhone();
+        this.email = form.getEmail();
+        this.note2 = form.getNote2();
+        this.status = form.getStatus();
+        this.closeYn = closeYn;
+        this.prtEmp = form.getPrtEmp();
+        this.prtDt = form.getPrtDt();
+
+        this.tb410_1s.clear();
+        this.tb410_1s.addAll(tb410_1);
+    }
 }

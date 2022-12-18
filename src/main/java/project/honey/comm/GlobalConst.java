@@ -9,4 +9,5 @@ public class GlobalConst {
     private final String jsDir = "/js";
     private final String imgDir = "/images";
     private final String mainWidth = "1200px";
+    private final int subInputIdx = 5;
 }

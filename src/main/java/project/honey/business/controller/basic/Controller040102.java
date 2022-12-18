@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import project.honey.business.dto.basic.Tb402Dto;
+import project.honey.business.dto.search.SearchPopUp402;
 import project.honey.business.form.basic.Tb402Form;
 import project.honey.business.service.basic.Service040101;
 import project.honey.business.service.basic.Service040102;
@@ -155,7 +156,7 @@ public class Controller040102 {
     }
 
     @GetMapping("/popup")
-    public String popup(String custNm, Model model) {
+    public String popup(@ModelAttribute("search") SearchPopUp402 search, Model model) {
         model.addAttribute("global", new GlobalConst());
 
         List<String> titles = GlobalMethod.makeTitle(
@@ -163,10 +164,9 @@ public class Controller040102 {
         );
 
         model.addAttribute("titles", titles);
-        model.addAttribute("custNm", custNm);
 
-        if (StringUtils.hasText(custNm)) {
-            model.addAttribute("dtos", service040102.findAllByPopup(custNm));
+        if (StringUtils.hasText(search.getCustNm())) {
+            model.addAttribute("dtos", service040102.findAllByPopup(search.getCustNm()));
         } else {
             model.addAttribute("dtos", null);
         }

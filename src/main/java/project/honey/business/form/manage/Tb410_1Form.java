@@ -1,18 +1,16 @@
 package project.honey.business.form.manage;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import project.honey.business.entity.manage.Tb410;
 import project.honey.business.entity.manage.Tb410_1;
 
 import java.math.BigDecimal;
 
-@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
 @ToString
+@Setter
 public class Tb410_1Form {
 
     private Integer seqC;
@@ -20,16 +18,16 @@ public class Tb410_1Form {
     private String goodsCd;
     private String standard;
     private Integer qty;
-    private BigDecimal price;
-    private BigDecimal amt;
-    private BigDecimal vat;
+    private Integer price;
+    private Integer amt;
+    private Integer vat;
     private String noteC;
 
-    public static Tb410_1 toTb410_1(Tb410_1Form form){
-        Tb410 tb410 = Tb410.builder().seq(form.getSeqC()).build();
+    public static Tb410_1 toTb410_1(Tb410_1Form form, Integer fk){
+        Tb410 tb410 = Tb410.builder().seq(fk).build();
 
         return Tb410_1.builder()
-                .fk_tb_410(tb410)
+                .tb410(tb410)
                 .goodsCd(form.getGoodsCd())
                 .standard(form.getStandard())
                 .qty(form.getQty())
@@ -38,5 +36,17 @@ public class Tb410_1Form {
                 .vat(form.getVat())
                 .note(form.getNoteC())
                 .build();
+    }
+
+    public Tb410_1Form(Integer seqC, Integer tb410, String goodsCd, String standard, Integer qty, Integer price, Integer amt, Integer vat, String noteC) {
+        this.seqC = seqC;
+        this.tb410 = tb410;
+        this.goodsCd = goodsCd;
+        this.standard = standard;
+        this.qty = qty;
+        this.price = price;
+        this.amt = amt;
+        this.vat = vat;
+        this.noteC = noteC;
     }
 }

@@ -1,14 +1,16 @@
 package project.honey.business.form.manage;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.*;
 import project.honey.business.entity.manage.Tb410;
+import project.honey.comm.GlobalMethod;
+
+import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Getter
+@Setter
 @ToString
 public class Tb410Form {
     private Integer seqP;
@@ -27,13 +29,17 @@ public class Tb410Form {
     private String email;
     private String note2;
     private String status;
-    private String closeYn;
+    private Boolean closeYn;
     private String prtEmp;
     private String prtDt;
+    List<Tb410_1Form> tb410_1Forms;
 
     public static Tb410 toTb410(Tb410Form form){
+        String closeYn = "N";
+        if(form.getCloseYn()) closeYn = "Y";
+        String estDt = GlobalMethod.replaceYmd(form.getEstimDt(), "-");
         return Tb410.builder()
-                .estimDt(form.getEstimDt())
+                .estimDt(estDt)
                 .estimNo(form.getEstimNo())
                 .custCd(form.getCustCd())
                 .empNo(form.getEmpNo())
@@ -48,7 +54,7 @@ public class Tb410Form {
                 .email(form.getEmail())
                 .note2(form.getNote2())
                 .status(form.getStatus())
-                .closeYn(form.getCloseYn())
+                .closeYn(closeYn)
                 .prtEmp(form.getPrtEmp())
                 .prtDt(form.getPrtDt())
                 .build();
