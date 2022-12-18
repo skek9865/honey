@@ -2,7 +2,6 @@ package project.honey.stock.dto;
 
 import lombok.*;
 import project.honey.comm.GlobalMethod;
-import project.honey.produce.dto.Query506_1Dto;
 import project.honey.stock.dto.query.Query604Dto;
 
 import java.util.Map;
