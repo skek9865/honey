@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Getter
 @Builder
-@ToString
+@ToString(exclude = "tb410")
 @Table(name = "tb_410_1")
 public class Tb410_1 extends BaseAtt {
 
@@ -24,8 +24,9 @@ public class Tb410_1 extends BaseAtt {
     private Integer seq;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "fk_tb_410")
     @Comment("견적순번")
-    private Tb410 fk_tb_410;
+    private Tb410 tb410;
 
     @NotNull
     @Comment("품목코드")
@@ -42,15 +43,15 @@ public class Tb410_1 extends BaseAtt {
 
     @NotNull
     @Comment("단가")
-    private BigDecimal price;
+    private Integer price;
 
     @NotNull
     @Comment("공급가액")
-    private BigDecimal amt;
+    private Integer amt;
 
     @NotNull
     @Comment("부가세")
-    private BigDecimal vat;
+    private Integer vat;
 
     @Comment("적요")
     @Column(length = 255)

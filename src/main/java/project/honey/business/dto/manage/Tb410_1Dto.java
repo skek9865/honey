@@ -15,22 +15,31 @@ public class Tb410_1Dto {
     private Integer seqC;
     private Integer tb410;
     private String goodsCd;
+    private String goodsNm;
     private String standard;
     private Integer qty;
-    private BigDecimal price;
-    private BigDecimal amt;
-    private BigDecimal vat;
+    private Integer price;
+    private Integer amt;
+    private Integer vat;
     private String noteC;
     private String createDate;
     private String createId;
     private String updateDate;
     private String updateId;
 
-    public static Tb410_1Dto of (Tb410_1 entity){
+    public Tb410_1Dto(int num){
+        this.qty = num;
+        this.price = num;
+        this.amt = num;
+        this.vat = num;
+    }
+
+    public static Tb410_1Dto of (Tb410_1 entity, String goodsNm){
         return Tb410_1Dto.builder()
                 .seqC(entity.getSeq())
-                .tb410(entity.getFk_tb_410().getSeq())
+                .tb410(entity.getTb410().getSeq())
                 .goodsCd(entity.getGoodsCd())
+                .goodsNm(goodsNm)
                 .standard(entity.getStandard())
                 .qty(entity.getQty())
                 .price(entity.getPrice())
