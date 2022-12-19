@@ -107,7 +107,7 @@ public class Controller040110 {
         List<String> titles = GlobalMethod.makeTitle(
                 "순번", "외화코드", "외화코드명", "환율", "사용여부"
         );
-        List<String> excelType = GlobalMethod.makeExcelType("String", "String", "String", "String");
+        List<String> excelType = GlobalMethod.makeExcelType("String", "String", "double", "String");
 
         List<List<String>> excelData = service040110.findAllByExcel();
         String fileName = "외화관리(040110).xlsx";
