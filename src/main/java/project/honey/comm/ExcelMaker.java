@@ -68,13 +68,13 @@ public class ExcelMaker {
             List<String> data = excelData.get(i);
             for (int j = 0; j < data.size(); j++) {
                 cell = row.createCell(j + 1);
-                if(data.get(j) != null && !data.get(j).equals("") &&
-                        (excelType.get(j).equals("int") || excelType.get(j).equals("Tint"))) {
-                    if(excelType.get(j).equals("Tint")) totalIntList[j] += Integer.parseInt(data.get(j));
+                if(data.get(j) != null && !data.get(j).equals("") && (excelType.get(j).equals("int") || excelType.get(j).equals("Tint"))) {
+                    if(excelType.get(j).equals("Tint")) {
+                        totalIntList[j] += Integer.parseInt(data.get(j));
+                    }
                     cell.setCellValue(Integer.parseInt(data.get(j)));
                 }
-                else if(data.get(j) != null && !data.get(j).equals("") &&
-                        (excelType.get(j).equals("double") || excelType.get(j).equals("Tdouble"))){
+                else if(data.get(j) != null && !data.get(j).equals("") && (excelType.get(j).equals("double") || excelType.get(j).equals("Tdouble"))){
                     if(excelType.get(j).equals("Tdouble")) totalDoubleList[j] += Double.parseDouble(data.get(j));
                     cell.setCellValue(Double.parseDouble(data.get(j)));
                 }
@@ -85,11 +85,11 @@ public class ExcelMaker {
             }
         }
 
-        // 총계 데이터 삽입
+        row = sheet.createRow(rowNum++);
         boolean flag = true;
+        // 총계 데이터 삽입
         for(int i = 0; i < size; i++){
             if (totalIntList[i] != 0 || totalDoubleList[i] != 0.0){
-                row = sheet.createRow(rowNum++);
                 if(flag){
                     cell = row.createCell(i);
                     cell.setCellValue("총계");

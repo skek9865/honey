@@ -8,7 +8,7 @@ import project.honey.business.entity.manage.Tb410_1;
 
 import java.util.List;
 
-public interface Tb410_1Repository extends JpaRepository<Tb410_1,Integer>, Tb410_1RepositoryDsl {
+public interface Tb410_1Repository extends JpaRepository<Tb410_1,Integer>{
 
     @Query("select t from Tb410_1 t where t.tb410.seq = :fk")
     List<Tb410_1> findByFk(@Param("fk")Integer fk);

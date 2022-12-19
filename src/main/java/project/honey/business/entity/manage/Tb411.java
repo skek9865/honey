@@ -2,7 +2,10 @@ package project.honey.business.entity.manage;
 
 import lombok.*;
 import org.hibernate.annotations.Comment;
+import project.honey.business.form.manage.Tb411Form;
+import project.honey.business.form.manage.Tb411_1Form;
 import project.honey.comm.BaseAtt;
+import project.honey.comm.GlobalMethod;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -106,4 +109,37 @@ public class Tb411 extends BaseAtt {
 
     @OneToMany(mappedBy = "tb411", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Tb411_1> tb411_1s = new ArrayList<>();
+
+    public void updateData(Tb411Form tb411Form, List<Tb411_1> tb411_1){
+        String closeYn = "N";
+        String prtDt = "";
+        String prtEmp = "";
+        if(tb411Form.getCloseYn()) closeYn = "Y";
+        if(tb411Form.getPrtDt() != null) prtDt = tb411Form.getPrtDt();
+        if(tb411Form.getPrtEmp() != null) prtEmp = tb411Form.getPrtEmp();
+        String orderDt = GlobalMethod.replaceYmd(tb411Form.getOrderDt(), "-");
+        String deadDt = GlobalMethod.replaceYmd(tb411Form.getDeadDt(), "-");
+
+        this.seq = tb411Form.getSeq();
+        this.orderDt = orderDt;
+        this.orderNo = tb411Form.getOrderNo();
+        this.custCd = tb411Form.getCustCd();
+        this.empNo = tb411Form.getEmpNo();
+        this.whouseCd = tb411Form.getWhouseCd();
+        this.saleType = tb411Form.getSaleType();
+        this.excgCd = tb411Form.getExcgCd();
+        this.projectCd = tb411Form.getProjectCd();
+        this.note = tb411Form.getNote();
+        this.payCondit = tb411Form.getPayCondit();
+        this.expDt = tb411Form.getExpDt();
+        this.deadDt = deadDt;
+        this.note2 = tb411Form.getNote2();
+        this.status = tb411Form.getStatus();
+        this.closeYn = closeYn;
+        this.prtEmp = prtEmp;
+        this.prtDt = prtDt;
+
+        this.tb411_1s.clear();
+        this.tb411_1s.addAll(tb411_1);
+    }
 }

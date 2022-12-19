@@ -14,6 +14,7 @@ public class Tb411Dto {
     private String orderDt;
     private Integer orderNo;
     private String custCd;
+    private String custNm;
     private String empNo;
     private String whouseCd;
     private String saleType;
@@ -25,7 +26,7 @@ public class Tb411Dto {
     private String deadDt;
     private String note2;
     private String status;
-    private String closeYn;
+    private Boolean closeYn;
     private String prtEmp;
     private String prtDt;
     private String createDate;
@@ -33,11 +34,24 @@ public class Tb411Dto {
     private String updateDate;
     private String updateId;
 
-    public static Tb411Dto of(Tb411 entity){
+    public Tb411Dto (String orderDt, Integer orderNo){
+        this.orderDt = orderDt;
+        this.orderNo = orderNo;
+        this.deadDt = orderDt;
+    }
+
+    public static Tb411Dto of(Tb411 entity, String custNm){
+        Boolean closeYn = false;
+        if(entity.getCloseYn().equals("Y")) closeYn = true;
+        String orderDt = entity.getOrderDt().substring(0,4) + "-" + entity.getOrderDt().substring(4,6) + "-" +entity.getOrderDt().substring(6,8);
+        String deadDt = entity.getDeadDt().substring(0,4) + "-" + entity.getDeadDt().substring(4,6) + "-" +entity.getDeadDt().substring(6,8);
+
         return Tb411Dto.builder()
-                .orderDt(entity.getOrderDt())
+                .seq(entity.getSeq())
+                .orderDt(orderDt)
                 .orderNo(entity.getOrderNo())
                 .custCd(entity.getCustCd())
+                .custNm(custNm)
                 .empNo(entity.getEmpNo())
                 .whouseCd(entity.getWhouseCd())
                 .saleType(entity.getSaleType())
@@ -46,10 +60,10 @@ public class Tb411Dto {
                 .note(entity.getNote())
                 .payCondit(entity.getPayCondit())
                 .expDt(entity.getExpDt())
-                .deadDt(entity.getDeadDt())
+                .deadDt(deadDt)
                 .note2(entity.getNote2())
                 .status(entity.getStatus())
-                .closeYn(entity.getCloseYn())
+                .closeYn(closeYn)
                 .prtEmp(entity.getPrtEmp())
                 .prtDt(entity.getPrtDt())
                 .createDate(entity.getCreateDate())

@@ -23,9 +23,7 @@ public class Tb410_1Form {
     private Integer vat;
     private String noteC;
 
-    public static Tb410_1 toTb410_1(Tb410_1Form form, Integer fk){
-        Tb410 tb410 = Tb410.builder().seq(fk).build();
-
+    public static Tb410_1 toTb410_1(Tb410_1Form form, Tb410 tb410){
         return Tb410_1.builder()
                 .tb410(tb410)
                 .goodsCd(form.getGoodsCd())

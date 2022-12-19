@@ -12,8 +12,9 @@ import project.honey.business.entity.manage.Tb411_1;
 public class Tb411_1Dto {
 
     private Integer seq;
-    private Tb411 tb411;
+    private Integer tb411;
     private String goodsCd;
+    private String goodsNm;
     private String standard;
     private Integer qty;
     private Integer price;
@@ -26,19 +27,31 @@ public class Tb411_1Dto {
     private String updateDate;
     private String updateId;
 
-    public static Tb411_1Dto of(Tb411_1 entity){
-        Tb411 tb411 = Tb411.builder().seq(entity.getSeq()).build();
+    public Tb411_1Dto(int num){
+        this.qty = num;
+        this.price = num;
+        this.amt = num;
+        this.vat = num;
+    }
+
+    public static Tb411_1Dto of(Tb411_1 entity, String goodsNm){
+
+        String deadDt = "";
+        if(!entity.getDeadDt().equals("")) {
+            deadDt = entity.getDeadDt().substring(0,4) + "-" + entity.getDeadDt().substring(4,6) + "-" + entity.getDeadDt().substring(6,8);
+        }
 
         return Tb411_1Dto.builder()
                 .seq(entity.getSeq())
-                .tb411(tb411)
+                .tb411(entity.getTb411().getSeq())
                 .goodsCd(entity.getGoodsCd())
+                .goodsNm(goodsNm)
                 .standard(entity.getStandard())
                 .qty(entity.getQty())
                 .price(entity.getPrice())
                 .amt(entity.getAmt())
                 .vat(entity.getVat())
-                .deadDt(entity.getDeadDt())
+                .deadDt(deadDt)
                 .note(entity.getNote())
                 .createDate(entity.getCreateDate())
                 .createId(entity.getCreateId())
