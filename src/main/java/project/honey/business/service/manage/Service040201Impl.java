@@ -1,27 +1,27 @@
 package project.honey.business.service.manage;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import project.honey.business.dto.manage.Tb410Dto;
-import project.honey.business.dto.manage.Tb410MainDto;
-import project.honey.business.dto.manage.Tb410_1Dto;
+import project.honey.business.dto.manage.*;
+import project.honey.business.entity.basic.Tb405;
 import project.honey.business.entity.manage.Tb410;
 import project.honey.business.entity.manage.Tb410_1;
 import project.honey.business.form.manage.Search040201;
 import project.honey.business.form.manage.Tb410Form;
 import project.honey.business.form.manage.Tb410_1Form;
+import project.honey.business.repository.basic.Tb405Repository;
 import project.honey.business.repository.manage.Tb410Repository;
 import project.honey.business.repository.manage.Tb410_1Repository;
 import project.honey.comm.CodeToName;
+import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
-import project.honey.system.dto.CodeDto;
+import project.honey.company.entity.Tb101;
+import project.honey.company.repository.Tb101Repository;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -30,11 +30,12 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
 public class Service040201Impl implements Service040201{
 
     private final Tb410Repository tb410Repository;
     private final Tb410_1Repository tb410_1Repository;
+    private final Tb101Repository tb101Repository;
+    private final Tb405Repository tb405Repository;
     private final CodeToName codeToName;
 
     @Transactional
@@ -67,8 +68,6 @@ public class Service040201Impl implements Service040201{
         set.forEach(seqList::add);
 
         Page<Tb410> result = tb410Repository.findAllByDsl(ymd1, ymd2, search040201, seqList, pageable);
-
-        result.forEach(e -> log.info("findResult = {}", e));
 
         List<Tb410MainDto> resultList = new ArrayList<>();
 
@@ -139,8 +138,6 @@ public class Service040201Impl implements Service040201{
         for(Tb410 entity : result){
             if(seq == entity.getSeq()) continue;
             List<Tb410_1> tb410_1s = entity.getTb410_1s();
-            log.info("entity = {}", entity);
-            log.info("tb_410_1 = {}", tb410_1s);
             String prt = "인쇄전";
 
             String estDt = entity.getEstimDt();
@@ -234,7 +231,32 @@ public class Service040201Impl implements Service040201{
     }
 
     @Override
-    public List<CodeDto> findAllBySelect(Integer type) {
-        return null;
+    public PrintData040201 findPrintData(Integer id) {
+        List<Tb101> tb101s = tb101Repository.findAll();
+        Tb101 tb101 = tb101s.get(0);
+        Tb410 tb410 = tb410Repository.findById(id).orElseThrow(RuntimeException::new);
+        List<Tb410_1> tb410_1s = tb410_1Repository.findByFk(id);
+
+        Map<String, String> custMap = codeToName.cust();
+        String custNm = custMap.get(tb410.getCustCd());
+        Map<String, String> empMap = codeToName.emp();
+        String empNm = empMap.get(tb410.getEmpNo());
+        Map<String, String> goodsMap = codeToName.goods();
+
+        List<PrintData040201_1> printData040201_1s = new ArrayList<>();
+        GlobalConst globalConst = new GlobalConst();
+        tb410_1s.forEach(e -> {
+            Tb405 tb405 = tb405Repository.findByGoodsCd(e.getGoodsCd()).orElseThrow(RuntimeException::new);
+            PrintData040201_1 printData040201_1 = PrintData040201_1.of(e, goodsMap.get(e.getGoodsCd()), tb405.getUnit());
+            printData040201_1s.add(printData040201_1);
+        });
+        if(tb410_1s.size() < globalConst.getSubInputIdx()){
+            for (int i = tb410_1s.size() - 1; i < globalConst.getSubInputIdx(); i++){
+                printData040201_1s.add(new PrintData040201_1());
+            }
+        }
+
+        PrintData040201 resultList = PrintData040201.of(tb101, tb410, printData040201_1s, custNm, empNm);
+        return resultList;
     }
 }

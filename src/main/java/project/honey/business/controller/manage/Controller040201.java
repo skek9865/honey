@@ -7,9 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import project.honey.business.dto.manage.Tb410Dto;
-import project.honey.business.dto.manage.Tb410MainDto;
-import project.honey.business.dto.manage.Tb410_1Dto;
+import project.honey.business.dto.manage.*;
 import project.honey.business.form.manage.Search040201;
 import project.honey.business.form.manage.Tb410Form;
 import project.honey.business.service.basic.Service040103;
@@ -200,5 +198,28 @@ public class Controller040201 {
         String fileName = "견적서관리(040201).xlsx";
 
         excelMaker.makeExcel("견적서관리 (040201)", titles, excelData, excelType, fileName, response);
+    }
+
+    @GetMapping("/popup/{seq}")
+    public String popUp(@PathVariable("seq") Integer seq, Model model){
+        log.info("견적서관리 print");
+
+        PrintData040201 printData = service040201.findPrintData(seq);
+        int totalAmt = 0, total = 0;
+        List<PrintData040201_1> tb410_1Dtos = printData.getTb410_1Dtos();
+        for(PrintData040201_1 pd : tb410_1Dtos){
+            if(pd.getAmt() != null && pd.getVat() != null){
+                totalAmt += pd.getAmt();
+                total += (pd.getAmt() + pd.getVat());
+            }
+        }
+        model.addAttribute("totalAmt", totalAmt);
+        model.addAttribute("total", total);
+
+        model.addAttribute("global", new GlobalConst());
+        model.addAttribute("printData", printData);
+        model.addAttribute("subPrintData", printData.getTb410_1Dtos());
+
+        return "business/040201_prt";
     }
 }

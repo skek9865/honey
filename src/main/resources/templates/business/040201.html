@@ -126,6 +126,8 @@
               <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm"
                       th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제
               </button>&nbsp;
+              <button name="print" id="print" type="button" class="btn btn-gfk btn-ssm" th:data-seq="${dto.seq}">인쇄
+              </button>&nbsp;
             </td>
             <td class="list_td_1 text-center" th:text="${dto.est}"></td>
             <td class="list_td_1 text-center" th:text="${dto.custCd}"></td>
@@ -158,5 +160,12 @@
   $(document).ready(function () {
     $("#modal_main").addClass("modal-xl");
     $("#datatable_1").width([[${global.mainWidth}]]);
+  });
+</script>
+<script th:inline="javascript">
+  $('button[name="print"]').click(function (e) {
+    e.preventDefault();
+    var url = window.location.href + "";
+    gf_popup("850","950","040201_inputbox",url.split('?')[0] + "/popup/" + $(this).data("seq"));
   });
 </script>
