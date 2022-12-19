@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>견적서</title>
+</head>
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<style>
+    table {border-collapse:collapse; border-spacing:0;}
+    .estimate-t-1 {width: 100%; height: 150px; border: 2px solid black; font-size: 12px;}
+    .estimate-t-1-main-title {width: 10%; text-align: center; font-weight: 1000; border: 1px solid black;}
+    .estimate-t-1-title {width: 20%; text-align: center; font-weight: 1000; border: 1px solid black;}
+    .estimate-t-1-content {width: 70%; padding-left: 10px; border: 1px solid black; text-align: center;}
+    .estimate-t-2 {width: 100%; height: 150px; border: 2px solid black; font-size: 12px;}
+    .estimate-t-2-main-title { width: 8%; text-align: center; font-weight: 1000; border: 1px solid black;}
+    .estimate-t-2-title { width: 130px; text-align: center; font-weight: 1000; border: 1px solid black;}
+    .estimate-t-2-title-sm { width: 50px; text-align: center; font-weight: 1000; border: 1px solid black;}
+    .estimate-t-2-content {width: 170px; padding-left: 10px; border: 1px solid black; text-align: center;}
+    .estimate-t-2-content-sm {width: 120px; padding-left: 10px; border: 1px solid black; text-align: center;}
+    .estimate-t-3 td{ height: 28px; }
+    .estimate-footer {border:3px solid black; width: 755px;}
+    .estimate-footer p {padding-left: 25px;}
+    @page  {size: A4; margin: 0;}
+    @media print {
+        .print-background {background-color:#eee !important; -webkit-print-color-adjust:exact;}
+    }
+</style>
+<script src="<?=$gs_jsDir?>printPreview_a.js"></script>
+<div id='report'>
+  <button id="btnPrint" onclick="this.style.display='none'; pagePrintPreview(); this.style.display='block'; ">미리보기</button>
+  <div th:object="${printData}">
+    <img class="main-style" th:src="@{|/images/corp/*{stampFnm}|}" title="회사도장" style="position: absolute; top: 125px; left: 88%;" width="50">
+    <h1 style="font-weight: 900; font-size: 35px; padding-bottom: 20px; text-align: center; margin-top: 20px;">견&nbsp;&nbsp;&nbsp;적&nbsp;&nbsp;&nbsp;서</h1>
+    <table style="width: 100%;">
+      <tr>
+        <td style="width: 30%;">
+          <table class="estimate-t-1">
+            <tr>
+              <td class="estimate-t-1-main-title" rowspan="3">공<br>급<br>받<br>는<br>자<br></td>
+              <td class="estimate-t-1-title">견적일</td>
+              <td class="estimate-t-1-content" th:text="*{estDt}"></td>
+            </tr>
+            <tr>
+              <td class="estimate-t-1-title">상&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;호</td>
+              <td class="estimate-t-1-content" th:text="*{custNm}"></td>
+            </tr>
+            <tr>
+              <td class="estimate-t-1-title">당&nbsp;담&nbsp;자</td>
+              <td class="estimate-t-1-content" th:text="|*{empNm} 님|"></td>
+            </tr>
+            <tr>
+              <td colspan="3" style="font-weight: bold; text-align: center; border: 2px solid black">아래와 같이 견적합니다.</td>
+            </tr>
+          </table>
+        </td>
+        <td style="width: 70%;">
+          <table class="estimate-t-2">
+            <tr>
+              <td class="estimate-t-2-main-title" rowspan="5" style="width: 20px">공<br>급<br>자<br></td>
+              <td class="estimate-t-2-title">사업자등록번호</td>
+              <td class="estimate-t-2-content" colspan="3" th:text="*{corpNo}"></td>
+            </tr>
+            <tr>
+              <td class="estimate-t-2-title">상&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;호</td>
+              <td class="estimate-t-2-content" th:text="*{corpNm}"></td>
+              <td class="estimate-t-2-title-sm">성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;명</td>
+              <td class="estimate-t-2-content-sm" style="text-align: left" th:text="*{ceoNm}"></td>
+            </tr>
+            <tr>
+              <td class="estimate-t-2-title">사 업 장 주 소</td>
+              <td class="estimate-t-2-content" colspan="3" th:text="*{address}"></td>
+            </tr>
+            <tr>
+              <td class="estimate-t-2-title">업&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;태</td>
+              <td class="estimate-t-2-content" th:text="*{bsns}"></td>
+              <td class="estimate-t-2-title-sm">종&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;목</td>
+              <td class="estimate-t-2-content-sm" th:text="*{item}"></td>
+            </tr>
+            <tr>
+              <td class="estimate-t-2-title">전 화 번 호</td>
+              <td class="estimate-t-2-content" th:text="*{corpTel}"></td>
+              <td class="estimate-t-2-title-sm">팩&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;스</td>
+              <td class="estimate-t-2-content-sm" th:text="*{fax}"></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+    <table width="100%">
+      <tr>
+        <td height="20"></td>
+      </tr>
+      <tr style="border: 2px solid black;">
+        <td class="estimate-t-2-title" style="width: 250px">합&nbsp;&nbsp;계&nbsp;&nbsp;급&nbsp;&nbsp;액<br>(공급가액+세엑)</td>
+        <td class="estimate-t-2-title" style="width: 500px" th:text="|￦ ${#numbers.formatInteger(total,0, 'COMMA')}|"></td>
+        <td class="estimate-t-2-title" style="width: 500px" th:text="|일금 ${#numbers.formatInteger(total,0, 'COMMA')} 원정|"></td>
+      </tr>
+      <tr>
+        <td height="20"></td>
+      </tr>
+      <tr>
+        <td colspan="5">
+          <table class="estimate-t-3" border="1px solid black">
+            <tr class="estimate-content-head">
+              <td class="print-background" width="300" align="center"  style="font-weight: 700; background-color: #eee;">주문내역</td>
+              <td class="print-background" width="80" align="center" style="font-weight: 700; background-color: #eee;">규격(g)</td>
+              <td class="print-background" width="80" align="center" style="font-weight: 700; background-color: #eee;">단 위</td>
+              <td class="print-background" width="80" align="center" style="font-weight: 700; background-color: #eee;">수 량</td>
+              <td class="print-background" width="120" align="center" style="font-weight: 700; background-color: #eee;">단 가</td>
+              <td class="print-background" width="150" align="center" style="font-weight: 700; background-color: #eee;">공급가액</td>
+              <td class="print-background" width="100" align="center" style="font-weight: 700; background-color: #eee;">세액</td>
+              <td class="print-background" width="100" align="center" style="font-weight: 700; background-color: #eee;">비고</td>
+            </tr>
+            <tr th:each="subDto : ${subPrintData}">
+              <td style="text-align: center" th:text="${subDto.goodsNm}"></td>
+              <td style="text-align: center" th:text="${subDto.standard}"></td>
+              <td style="text-align: center" th:text="${subDto.unit}"></td>
+              <td style="text-align: right" th:text="${#numbers.formatInteger(subDto.qty,0, 'COMMA')}"></td>
+              <td style="text-align: right" th:text="${#numbers.formatInteger(subDto.price,0, 'COMMA')}"></td>
+              <td style="text-align: right" th:text="${#numbers.formatInteger(subDto.amt,0, 'COMMA')}"></td>
+              <td style="text-align: right" th:text="${#numbers.formatInteger(subDto.vat,0, 'COMMA')}"></td>
+              <td style="text-align: center" th:text="${subDto.note}"></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align: center">소 계</td>
+              <td></td>
+              <td style="text-align: right" th:text="${#numbers.formatInteger(totalAmt,0, 'COMMA')}"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td style="text-align: center">부가세 10%</td>
+              <td></td>
+              <td style="text-align: right" th:text="${#numbers.formatInteger(total,0, 'COMMA')}"></td>
+              <td></td>
+            </tr>
+            <tr>
+              <td colspan="8" style="height: 100px; font-size: 13px">
+                참조<br><br>[[*{note}]]
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4" style="font-weight: bold; text-align: center" >합 계</td>
+              <td colspan="2" style="text-align: right; padding-right: 10px" th:text="|￦ ${#numbers.formatInteger(total,0, 'COMMA')}|"></td>
+              <td colspan="2" style="padding-left: 10px">VAT포함</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td height="20"></td>
+      </tr>
+      <tr>
+        <td colspan="4">
+          <table class="estimate-footer" style="width: 100%">
+            <tr>
+              <td>
+                <font style="font-weight: 1000">&nbsp;&nbsp;(특 기 사 항)</font>
+              </td>
+            </tr>
+            <tr style="font-weight: bold; font-size: 10px">
+              <td>
+                <p>
+                  가. 견적서 유효기간 : [[*{expDt}]]
+                  <br>
+                  나. 결제조건 : [[*{payCondit}]]
+                  <br>
+                  &nbsp;&nbsp;- 선지급 : 72,943,000원(백원단위 절삭) /70%잔금 170,200,000원, 6개 국소 설치완료 후 지급
+                  <br>
+                  &nbsp;&nbsp;- 계좌정보 :농협 301-0248-9814-71 농업회사법인 허니엣비 주식회사
+                  <br>
+                  다. 납품/설치 기한 : 선지급금 확인 후 2주이내 설치 착수, 8주이내 설치 완료
+                  <br>
+                  라. 설치장소 : 임대차 계약서 명시 6개 국소에 한함.
+                  <br><br>
+                  첨부. 1. 스마트양봉 시스템 구성(1-1~1-4) 1부
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. 임차료 세부 견적 1부
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. 허니엣비(주) 사업자등록증명 1부
+                  <br>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. 허니엣비(주) 통장사본 1부. 끝.
+                </p>
+              </td>
+            </tr>
+          </table>
+    </table>
+    <p style="color: red; font-weight: bold">이 자료는 허니엣비㈜의 지적재산권 및 영업기밀에 속하므로 무단복제 및 배포를 금합니다.</p>
+  </div >
+</div>
+</html>

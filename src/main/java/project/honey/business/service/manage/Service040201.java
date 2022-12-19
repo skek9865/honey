@@ -2,6 +2,7 @@ package project.honey.business.service.manage;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import project.honey.business.dto.manage.PrintData040201;
 import project.honey.business.dto.manage.Tb410Dto;
 import project.honey.business.dto.manage.Tb410MainDto;
 import project.honey.business.dto.manage.Tb410_1Dto;
@@ -30,5 +31,5 @@ public interface Service040201 {
 
     Boolean delete(Integer id);
 
-    List<CodeDto> findAllBySelect(Integer type);
+    PrintData040201 findPrintData(Integer id);
 }
