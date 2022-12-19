@@ -66,7 +66,7 @@ public class Tb105 extends BaseAtt {
     public void changeInfo(Tb105Dto dto){
         this.fk_tb_101 = dto.getFk_tb_101();
         this.loannm = dto.getLoannm();
-        this.fk_tb_102 = Integer.parseInt(dto.getFk_tb_102());
+        this.fk_tb_102 = dto.getFk_tb_102();
         this.newdt = dto.getNewdt();
         this.expdt = dto.getExpdt();
         this.limitamt = dto.getLimitamt();

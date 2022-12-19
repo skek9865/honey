@@ -8,10 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import project.honey.comm.CodeToName;
-import project.honey.comm.GlobalConst;
-import project.honey.comm.GlobalMethod;
-import project.honey.comm.PageMaker;
+import project.honey.comm.*;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
 import project.honey.company.dto.Tb102Dto;
@@ -19,8 +16,11 @@ import project.honey.company.dto.Tb103Dto;
 import project.honey.company.service.Service010202;
 import project.honey.personDepart.repository.Tb201Repository;
 import project.honey.personDepart.service.Service020101;
+import project.honey.system.dto.CodeDto;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,6 +34,7 @@ public class Controller010202 {
     private final MenuMaker menuMaker;
     private final Service010202 service010202;
     private final Service020101 service020101;
+    private final ExcelMaker excelMaker;
 
     @GetMapping()
     public String findAll(@ModelAttribute("menuId") MenuIdDto menuIdDto, Model model, Pageable pageable){
@@ -64,7 +65,8 @@ public class Controller010202 {
         model.addAttribute("thdId", map.get("thdId"));
         model.addAttribute("action", map.get("action"));
         model.addAttribute("global", new GlobalConst());
-        model.addAttribute("empList", service020101.findAllByWorking());
+        model.addAttribute("empList", service020101.findAllBySelect());
+
         if(map.get("vseq").isEmpty()){
             model.addAttribute("dto",new Tb103Dto());
             return "company/010202_input";
@@ -101,5 +103,24 @@ public class Controller010202 {
         model.addAttribute("msg", service010202.delete(id) != null ? "정상적으로 삭제 되었습니다." : "문제가 발생 하였습니다.");
         model.addAttribute("url", request.getHeader("referer"));
         return "redirect";
+    }
+
+    @GetMapping("/excel")
+    public void excel(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        log.info("url = {}", request.getHeader("referer"));
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "순번", "인증서명", "만료일", "사용용도", "보관형태",
+                "관리자", "사용여부","비고"
+        );
+
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String", "String", "String",
+                "String", "String"
+        );
+
+        List<List<String>> excelData = service010202.findAllByExcel();
+        String fileName = "인증서관리(010202)";
+        excelMaker.makeExcel("인증서관리 (010202)", titles, excelData, excelType,fileName, response);
     }
 }

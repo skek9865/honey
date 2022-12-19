@@ -29,4 +29,7 @@ public interface Service010201 {
 
     //id값을 이용해 통장 삭제
     Integer delete(Integer id);
+
+    //excel 출력
+    List<List<String>> findAllByExcel();
 }

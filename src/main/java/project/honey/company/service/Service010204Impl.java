@@ -7,7 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.comm.GlobalMethod;
+import project.honey.company.dto.Tb104Dto;
 import project.honey.company.dto.Tb105Dto;
+import project.honey.company.dto.Tb105_1Dto;
 import project.honey.company.entity.Tb105;
 import project.honey.company.entity.Tb105_1;
 import project.honey.company.repository.Tb105Repository;
@@ -16,6 +18,7 @@ import project.honey.company.repository.Tb105_1Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,6 +76,36 @@ public class Service010204Impl implements Service010204{
     }
 
     @Override
+    public List<List<String>> findAllByExcel() {
+        List<Tb105> entityList = tb105Repository.findAllByDsl();
+
+        List<Tb105Dto> dtoList = new ArrayList<>();
+        for (Tb105 tb105 : entityList) {
+            int totalInstamt = tb105.getTb105_1List().stream().mapToInt(Tb105_1::getInstamt).sum();
+            Tb105Dto dto = entityToDto(tb105);
+            dto.setInstamt(totalInstamt);
+            dtoList.add(dto);
+        }
+
+        List<List<String>> excelData = new ArrayList<>();
+        for(Tb105Dto dto : dtoList){
+            List<String> list = new ArrayList<>();
+            list.add(dto.getLoannm());
+            list.add(dto.getFk_tb_102_text());
+            list.add(dto.getNewdt());
+            list.add(dto.getExpdt());
+            list.add(dto.getLimitamt().toString());
+            list.add(dto.getInstamt().toString());
+            list.add(String.valueOf(dto.getLimitamt()-dto.getInstamt()));
+            list.add(dto.getIpaydt());
+            list.add(String.valueOf(dto.getIrate()));
+            list.add(dto.getNote());
+            excelData.add(list);
+        }
+        return excelData;
+    }
+
+    @Override
     public Integer getTotalLimitamt(List<Tb105Dto> dtoList) {
         return dtoList.stream().mapToInt(Tb105Dto::getLimitamt).sum();
     }
@@ -80,6 +113,11 @@ public class Service010204Impl implements Service010204{
     @Override
     public Integer getTotalInstamt(List<Tb105Dto> dtoList) {
         return dtoList.stream().mapToInt(Tb105Dto::getInstamt).sum();
+    }
+
+    @Override
+    public List<Tb105_1Dto> findAllListById(Integer id) {
+        return null;
     }
 
     private Tb105Dto entityToDto(Tb105 entity){
@@ -96,7 +134,8 @@ public class Service010204Impl implements Service010204{
                 .seq(entity.getSeq())
                 .fk_tb_101(entity.getFk_tb_101())
                 .loannm(entity.getLoannm())
-                .fk_tb_102(bankNo)
+                .fk_tb_102(entity.getFk_tb_102())
+                .fk_tb_102_text(bankNo)
                 .newdt(newdt)
                 .expdt(expdt)
                 .limitamt(entity.getLimitamt())
@@ -116,7 +155,7 @@ public class Service010204Impl implements Service010204{
                 .seq(dto.getSeq())
                 .fk_tb_101(dto.getFk_tb_101())
                 .loannm(dto.getLoannm())
-                .fk_tb_102(Integer.parseInt(dto.getFk_tb_102()))
+                .fk_tb_102(dto.getFk_tb_102())
                 .newdt(dto.getNewdt())
                 .expdt(dto.getExpdt())
                 .limitamt(dto.getLimitamt())

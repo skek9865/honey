@@ -5,12 +5,19 @@
         function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
             switch (as_action) {
                 case "insert" : //저장
-                case "update" : //저장
+                case "update" : //수정
                     fm_input.action = "/010204/" + as_action;
                     fm_input.submit();
                     break;
-                case "delete" : //저장
+                case "delete" : //삭제
                     fm_home.action = "/010204/" + as_action + "/" + as_val1;
+                    fm_home.method = "post";
+                    fm_home.submit();
+                    break;
+
+                case "excel" :  //엑셀 출력
+                    fm_home.action = "/010204/excel";
+                    fm_home.method = "get";
                     fm_home.submit();
                     break;
             }
@@ -38,7 +45,7 @@
                                             th:onclick="gf_modal('010204/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">등록
                                     </button>&nbsp;
                                     <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm"
-                                            onclick="">엑셀
+                                            onclick="lf_confirm(this.name,'','','')">엑셀
                                     </button>
                                 </td>
                             </tr>
@@ -69,7 +76,7 @@
                             </button>&nbsp;
                         </td>
                         <td th:text="${dto.loannm}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.fk_tb_102}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.fk_tb_102_text}" class="list_td_1 text-center"></td>
                         <td th:text="${dto.newdt}" class="list_td_1 text-center"></td>
                         <td th:text="${dto.expdt}" class="list_td_1 text-center"></td>
                         <td th:text="${#numbers.formatInteger(dto.limitamt, 0, 'COMMA')}" class="list_td_1 text-right"></td>
@@ -93,5 +100,11 @@
         </div>
     </form>
 </main>
-
 </html>
+
+<script src="/js/scripts_sub.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $("#datatable_1").width([[${global.mainWidth}]]);
+    });
+</script>

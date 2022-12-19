@@ -25,6 +25,8 @@ public class Tb103Dto {
 
     private String empno;
 
+    private String empnm;
+
     private String useyn;
 
     private String note;

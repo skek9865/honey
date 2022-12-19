@@ -3,6 +3,7 @@ package project.honey.company.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.honey.company.dto.Tb105Dto;
+import project.honey.company.dto.Tb105_1Dto;
 
 import java.util.List;
 import java.util.Map;
@@ -28,5 +29,11 @@ public interface Service010204 {
 
     //납입금 total 가져오기
     Integer getTotalInstamt(List<Tb105Dto> dtoList);
+
+    //id값을 이용해 납입관리 list 가져오기
+    List<Tb105_1Dto> findAllListById(Integer id);
+
+    //엑셀 출력
+    List<List<String>> findAllByExcel();
 
 }

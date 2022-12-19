@@ -4,6 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.honey.company.dto.Tb104Dto;
 
+import java.util.List;
+
 public interface Service010203 {
     //카드 등록
     Integer insert(Tb104Dto dto);
@@ -22,4 +24,7 @@ public interface Service010203 {
 
     //카드한도 total 가져오기
     Integer getTotalLimitamt();
+
+    //엑셀 출력
+    List<List<String>> findAllByExcel();
 }

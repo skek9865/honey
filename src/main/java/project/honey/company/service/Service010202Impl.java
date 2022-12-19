@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.comm.CodeToName;
 import project.honey.comm.GlobalMethod;
+import project.honey.company.dto.Tb102Dto;
 import project.honey.company.dto.Tb103Dto;
 import project.honey.company.entity.Tb103;
 import project.honey.company.repository.Tb103Repository;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -74,6 +76,24 @@ public class Service010202Impl implements Service010202{
         return id;
     }
 
+    @Override
+    public List<List<String>> findAllByExcel() {
+        List<Tb103Dto> tb103DtoList = tb103Repository.findAll().stream().map(this::entityToDto).collect(Collectors.toList());
+        List<List<String>> excelData = new ArrayList<>();
+        for(Tb103Dto dto : tb103DtoList){
+            List<String> list = new ArrayList<>();
+            list.add(dto.getCernm());
+            list.add(dto.getExpdt());
+            list.add(dto.getUsenote());
+            list.add(dto.getSavemtd());
+            list.add(dto.getEmpnm());
+            list.add(dto.getUseyn());
+            list.add(dto.getNote());
+            excelData.add(list);
+        }
+        return excelData;
+    }
+
     public Map<Integer, String> cer(){
         return tb103Repository.findAll().stream()
                 .collect(Collectors.toMap(Tb103::getSeq, Tb103::getCernm));
@@ -84,7 +104,6 @@ public class Service010202Impl implements Service010202{
 
         Map<String, String> emp = codeToName.emp();
         String empNm = emp.get(entity.getEmpno());
-
         return Tb103Dto.builder()
                 .seq(entity.getSeq())
                 .fk_tb_101(entity.getFk_tb_101())
@@ -92,7 +111,8 @@ public class Service010202Impl implements Service010202{
                 .expdt(expdt)
                 .usenote(entity.getUsenote())
                 .savemtd(entity.getSavemtd())
-                .empno(empNm)
+                .empno(entity.getEmpno())
+                .empnm(empNm)
                 .useyn(entity.getUseyn())
                 .note(entity.getNote())
                 .createId(entity.getCreateId())

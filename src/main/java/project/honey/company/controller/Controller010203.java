@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import project.honey.comm.ExcelMaker;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
@@ -19,6 +20,8 @@ import project.honey.company.service.Service010203;
 import project.honey.personDepart.service.Service020101;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +32,7 @@ import java.util.Map;
 public class Controller010203 {
 
     private final MenuMaker menuMaker;
+    private final ExcelMaker excelMaker;
     private final Service010203 service010203;
     private final Service020101 service020101;
     private final Service010201 service010201;
@@ -71,7 +75,7 @@ public class Controller010203 {
         model.addAttribute("action", map.get("action"));
         model.addAttribute("global", new GlobalConst());
         //사원 list
-        model.addAttribute("empList", service020101.findAllByWorking());
+        model.addAttribute("empList", service020101.findAllBySelect());
         //계좌 list
         model.addAttribute("bankList", service010201.findAll());
         //인증서 list
@@ -113,6 +117,27 @@ public class Controller010203 {
         model.addAttribute("msg", service010203.delete(id) != null ? "정상적으로 삭제 되었습니다." : "문제가 발생 하였습니다.");
         model.addAttribute("url", request.getHeader("referer"));
         return "redirect";
+    }
+
+    @GetMapping("/excel")
+    public void excel(HttpServletResponse response, HttpServletRequest request) throws IOException {
+        log.info("url = {}", request.getHeader("referer"));
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "순번", "카드명", "카드번호", "유효기간", "cvc번호",
+                "사용여부", "사용자", "결제계좌", "한도", "발급일자",
+                "인증서", "비고"
+        );
+
+        List<String> excelType = GlobalMethod.makeExcelType(
+                "String", "String", "String", "String", "String",
+                "String", "String", "Tint", "String", "String",
+                "String"
+        );
+
+        List<List<String>> excelData = service010203.findAllByExcel();
+        String fileName = "카드관리(010203)";
+        excelMaker.makeExcel("카드관리(010203)", titles, excelData, excelType,fileName, response);
     }
 
 }

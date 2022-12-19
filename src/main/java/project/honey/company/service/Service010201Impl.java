@@ -10,9 +10,11 @@ import project.honey.company.dto.Tb102Dto;
 import project.honey.company.entity.Tb102;
 import project.honey.company.entity.Tb103;
 import project.honey.company.repository.Tb102Repository;
+import project.honey.pay.dto.Tb301Dto;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +75,26 @@ public class Service010201Impl implements Service010201{
     public Integer delete(Integer id) {
         tb102Repository.deleteById(id);
         return id;
+    }
+
+    @Override
+    public List<List<String>> findAllByExcel() {
+        List<Tb102Dto> tb102DtoList = tb102Repository.findAll().stream().map(this::entityToDto).collect(Collectors.toList());
+        List<List<String>> excelData = new ArrayList<>();
+        for(Tb102Dto dto : tb102DtoList){
+            List<String> list = new ArrayList<>();
+            list.add(dto.getAccountno());
+            list.add(dto.getBanknm());
+            list.add(dto.getAccounhd());
+            list.add(dto.getUsenote());
+            list.add(dto.getAccountid());
+            list.add(dto.getStdate());
+            list.add(dto.getNote());
+            list.add(dto.getNote1());
+            list.add(dto.getUseyn());
+            excelData.add(list);
+        }
+        return excelData;
     }
 
     @Override

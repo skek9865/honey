@@ -19,7 +19,9 @@ public class Tb105Dto {
 
     private String loannm;
 
-    private String fk_tb_102;
+    private Integer fk_tb_102;
+
+    private String fk_tb_102_text;
 
     private String newdt;
 

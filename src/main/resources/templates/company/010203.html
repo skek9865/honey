@@ -11,6 +11,12 @@
                     break;
                 case "delete" : //저장
                     fm_home.action = "/010203/" + as_action + "/" + as_val1;
+                    fm_home.method = "post";
+                    fm_home.submit();
+                    break;
+                case "excel" :  //엑셀 출력
+                    fm_home.action = "/010203/excel";
+                    fm_home.method = "get";
                     fm_home.submit();
                     break;
             }
@@ -38,7 +44,7 @@
                                             th:onclick="gf_modal('010203/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">등록
                                     </button>&nbsp;
                                     <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm"
-                                            onclick="">엑셀
+                                            onclick="lf_confirm(this.name,'','','')">엑셀
                                     </button>
                                 </td>
                             </tr>
@@ -70,11 +76,11 @@
                         <td th:text="${dto.expdt}" class="list_td_1 text-center"></td>
                         <td th:text="${dto.cvcno}" class="list_td_1 text-center"></td>
                         <td th:text="${dto.useyn}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.empno}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.fk_tb_102}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.empnm}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.fk_tb_102_text}" class="list_td_1 text-center"></td>
                         <td th:text="${#numbers.formatInteger(dto.limitamt, 0, 'COMMA')}" class="list_td_1 text-right"></td>
                         <td th:text="${dto.issuedt}" class="list_td_1 text-center"></td>
-                        <td th:text="${dto.fk_tb_103}" class="list_td_1 text-center"></td>
+                        <td th:text="${dto.fk_tb_103_text}" class="list_td_1 text-center"></td>
                         <td th:text="${dto.note}" class="list_td_1 text-center"></td>
                     </tr>
                     </tbody>
@@ -91,5 +97,11 @@
         </div>
     </form>
 </main>
-
 </html>
+
+<script src="/js/scripts_sub.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $("#datatable_1").width([[${global.mainWidth}]]);
+    });
+</script>

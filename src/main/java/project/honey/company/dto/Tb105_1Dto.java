@@ -14,21 +14,13 @@ public class Tb105_1Dto {
 
     private Integer seq;
 
-    private Integer fk_tb_101;
-
-    private Integer fk_tb_105;
-
     private String instdt;
 
     private Integer instamt;
 
+    //잔액
+    private Integer restamt;
+
     private String note;
 
-    private String createDate;
-
-    private String createId;
-
-    private String updateDate;
-
-    private String updateId;
 }

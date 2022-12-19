@@ -2,6 +2,8 @@ package project.honey.company.dto;
 
 import lombok.*;
 
+import javax.persistence.criteria.CriteriaBuilder;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,13 +29,19 @@ public class Tb104Dto {
 
     private String empno;
 
-    private String fk_tb_102;
+    private String empnm;
+
+    private Integer fk_tb_102;
+
+    private String fk_tb_102_text;
 
     private Integer limitamt;
 
     private String issuedt;
 
-    private String fk_tb_103;
+    private Integer fk_tb_103;
+
+    private String fk_tb_103_text;
 
     private String note;
 

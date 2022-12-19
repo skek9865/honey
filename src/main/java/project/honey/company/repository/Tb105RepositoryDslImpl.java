@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static project.honey.company.entity.QTb105.tb105;
 
@@ -20,6 +21,15 @@ public class Tb105RepositoryDslImpl implements Tb105RepositoryDsl{
 
     public Tb105RepositoryDslImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
+    }
+
+    @Override
+    public List<Tb105> findAllByDsl() {
+        //left join으로 인한 중복 컬럼제거
+        return queryFactory.select(tb105)
+                .from(tb105)
+                .leftJoin(tb105.tb105_1List).fetchJoin()
+                .fetch().stream().distinct().collect(Collectors.toList());
     }
 
     @Override

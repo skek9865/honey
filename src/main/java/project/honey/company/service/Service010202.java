@@ -31,4 +31,6 @@ public interface Service010202 {
     //id값을 이용해 인증서 삭제
     Integer delete(Integer id);
 
+    //엑셀 출력
+    List<List<String>> findAllByExcel();
 }
