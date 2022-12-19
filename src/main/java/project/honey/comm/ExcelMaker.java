@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,15 @@ public class ExcelMaker {
             cell.setCellStyle(headStyle);
         }
 
+        // 총계 변수 선언
+        Integer size = excelData.get(0).size();
+        Integer[] totalIntList = new Integer[size];
+        Double[] totalDoubleList = new Double[size];
+        for(int i = 0; i < size; i++){
+            totalIntList[i] = 0;
+            totalDoubleList[i] = 0.0;
+        }
+
         // 메인 데이터 삽입
         for(int i = 0; i < excelData.size(); i++) {
             row = sheet.createRow(rowNum++);
@@ -58,13 +68,37 @@ public class ExcelMaker {
             List<String> data = excelData.get(i);
             for (int j = 0; j < data.size(); j++) {
                 cell = row.createCell(j + 1);
-                if(data.get(j) != null && !data.get(j).equals("") && excelType.get(j) == "int") {
+                if(data.get(j) != null && !data.get(j).equals("") &&
+                        (excelType.get(j).equals("int") || excelType.get(j).equals("Tint"))) {
+                    if(excelType.get(j).equals("Tint")) totalIntList[j] += Integer.parseInt(data.get(j));
                     cell.setCellValue(Integer.parseInt(data.get(j)));
+                }
+                else if(data.get(j) != null && !data.get(j).equals("") &&
+                        (excelType.get(j).equals("double") || excelType.get(j).equals("Tdouble"))){
+                    if(excelType.get(j).equals("Tdouble")) totalDoubleList[j] += Double.parseDouble(data.get(j));
+                    cell.setCellValue(Double.parseDouble(data.get(j)));
                 }
                 else {
                     cell.setCellValue(data.get(j));
                     cell.setCellStyle(bodyStyle);
                 }
+            }
+        }
+
+        // 총계 데이터 삽입
+        boolean flag = true;
+        for(int i = 0; i < size; i++){
+            if (totalIntList[i] != 0 || totalDoubleList[i] != 0.0){
+                row = sheet.createRow(rowNum++);
+                if(flag){
+                    cell = row.createCell(i);
+                    cell.setCellValue("총계");
+                    cell.setCellStyle(bodyStyle);
+                    flag = false;
+                }
+                cell = row.createCell(i + 1);
+                if(totalIntList[i] != 0) cell.setCellValue(totalIntList[i]);
+                if(totalDoubleList[i] != 0.0) cell.setCellValue(totalDoubleList[i]);
             }
         }
 

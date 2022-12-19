@@ -193,7 +193,7 @@ public class Controller040201 {
         );
         List<String> excelType = GlobalMethod.makeExcelType(
                 "String", "String", "String", "String",
-                "String", "int", "String", "String", "String"
+                "String", "Tint", "String", "String", "String"
         );
 
         List<List<String>> excelData = service040201.findAllByExcel(search);
