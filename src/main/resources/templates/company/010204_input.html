@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" th:action="@{/010204/input}" method="post" th:object="${dto}">
+    <input type="hidden" name ="fk_tb_101"  th:value="*{fk_tb_101}">
+    <div class="container-fluid p-2">
+        <div class="input_div">
+            <table class="input_table">
+                <tr>
+                    <td>
+                        <label for="loannm" class="input_labal">대출명</label>
+                        <input type="text" id="loannm" th:field="*{loannm}" th:value="*{loannm}"  size="25" class="form-control ">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="fk_tb_102" class="input_labal">계좌번호</label>
+                        <select id="fk_tb_102" th:field="*{fk_tb_102}" th:value="*{fk_tb_102}" class="form-select" >
+                            <option value="">선택</option>
+                            <th:block th:each="bank : ${bankList}">
+                                <option th:value="${bank.seq}" th:text="${bank.accountno}" th:attr="selected=${bank.seq eq fk_tb_102 ? 'true' : 'false'}"></option>
+                            </th:block>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class='input-group input-daterange'>
+                            <div class='input-group-addon px-2'>
+                                <label for="newdt" class="input_labal">신규일</label>
+                            </div>
+                            <input type="text" id="newdt" th:field="*{newdt}" th:value="*{newdt}"  size="6" class="input_date" autocomplete="off">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class='input-group input-daterange'>
+                            <div class='input-group-addon px-2'>
+                                <label for="expdt" class="input_labal">만기일</label>
+                            </div>
+                            <input type="text" id="expdt" th:field="*{expdt}" th:value="*{expdt}"  size="6" class="input_date" autocomplete="off">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="limitamt" class="input_labal">약정한도</label>
+                        <input type="text" id="limitamt" th:field="*{limitamt}" th:value="*{limitamt}" size="5" class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class='input-group input-daterange'>
+                            <div class='input-group-addon px-2'>
+                                <label for="ipaydt" class="input_labal">이자일</label>
+                            </div>
+                            <input type="text" id="ipaydt" th:field="*{ipaydt}" th:value="*{ipaydt}"  size="6" class="input_date" autocomplete="off">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="irate" class="input_labal">금리</label>
+                        <input type="text" id="irate" th:field="*{irate}" th:value="*{#numbers.formatDecimal(irate,1,3)}"  size="25" class="form-control text-right">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="note" class="input_labal">비고</label>
+                        <input type="text" id="note" th:field="*{note}" th:value="*{note}"  size="25" class="form-control ">
+                    </td>
+                </tr>
+                </tr>
+            </table>
+        </div>
+        <div class="input_div button_table">
+            <table class="input_table">
+                <tr>
+                    <td class="float-end">
+                        <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                                th:onclick="lf_confirm([[${action}]],'','','')">저장
+                        </button>
+                        <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+    <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+    <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+    <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+    <input type="hidden" id="sEmpNm" name="sEmpNm" size="0" class="form-control ">
+    <input type="hidden" id="sPost" name="sPost" size="0" class="form-control ">
+    <input type="hidden" id="sDeptCd" name="sDeptCd" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>
+

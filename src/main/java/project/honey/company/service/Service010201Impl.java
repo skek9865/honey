@@ -8,11 +8,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.company.dto.Tb102Dto;
 import project.honey.company.entity.Tb102;
+import project.honey.company.entity.Tb103;
 import project.honey.company.repository.Tb102Repository;
+import project.honey.pay.dto.Tb301Dto;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -49,8 +55,16 @@ public class Service010201Impl implements Service010201{
     }
 
     @Override
-    public Tb102Dto findById(Integer id) {
+    public List<Tb102Dto> findAll() {
+        List<Tb102> entityList = tb102Repository.findAll();
+        List<Tb102Dto> dtoList = entityList.stream()
+                .map(e -> entityToDto(e))
+                .collect(Collectors.toList());
+        return dtoList;
+    }
 
+    @Override
+    public Tb102Dto findById(Integer id) {
         Tb102 entity = tb102Repository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 통장을 찾을 수 없습니다"));
         return entityToDto(entity);
@@ -61,6 +75,32 @@ public class Service010201Impl implements Service010201{
     public Integer delete(Integer id) {
         tb102Repository.deleteById(id);
         return id;
+    }
+
+    @Override
+    public List<List<String>> findAllByExcel() {
+        List<Tb102Dto> tb102DtoList = tb102Repository.findAll().stream().map(this::entityToDto).collect(Collectors.toList());
+        List<List<String>> excelData = new ArrayList<>();
+        for(Tb102Dto dto : tb102DtoList){
+            List<String> list = new ArrayList<>();
+            list.add(dto.getAccountno());
+            list.add(dto.getBanknm());
+            list.add(dto.getAccounhd());
+            list.add(dto.getUsenote());
+            list.add(dto.getAccountid());
+            list.add(dto.getStdate());
+            list.add(dto.getNote());
+            list.add(dto.getNote1());
+            list.add(dto.getUseyn());
+            excelData.add(list);
+        }
+        return excelData;
+    }
+
+    @Override
+    public Map<Integer, String> bank() {
+        return tb102Repository.findAll().stream()
+                .collect(Collectors.toMap(Tb102::getSeq, Tb102::getAccountno));
     }
 
     private Tb102Dto entityToDto(Tb102 entity){
