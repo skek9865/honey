@@ -45,7 +45,7 @@ public class Service040201Impl implements Service040201{
         Tb410 fk = tb410Repository.save(tb410);
         tb410_1Form.forEach(e -> {
             if(!e.getGoodsCd().isEmpty()) {
-                Tb410_1 tb410_1 = Tb410_1Form.toTb410_1(e, fk.getSeq());
+                Tb410_1 tb410_1 = Tb410_1Form.toTb410_1(e, fk);
                 tb410_1Repository.save(tb410_1);
             }
         });
@@ -217,7 +217,7 @@ public class Service040201Impl implements Service040201{
     @Override
     public Boolean update(Tb410Form tb410Form, List<Tb410_1Form> tb410_1Form) {
         Tb410 entity = tb410Repository.findById(tb410Form.getSeqP()).orElseThrow(RuntimeException::new);
-        List<Tb410_1> tb410_1s = tb410_1Form.stream().filter(e -> !e.getGoodsCd().isEmpty()).map(e -> Tb410_1Form.toTb410_1(e, entity.getSeq())).collect(Collectors.toList());
+        List<Tb410_1> tb410_1s = tb410_1Form.stream().filter(e -> !e.getGoodsCd().isEmpty()).map(e -> Tb410_1Form.toTb410_1(e, entity)).collect(Collectors.toList());
         entity.updateData(tb410Form, tb410_1s);
         return true;
     }
