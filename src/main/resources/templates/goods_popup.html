@@ -53,6 +53,7 @@
       }
       function Do_Select(goodscd ,goodsnm,standard,unit,productnm,productcd) {
         var type = Number($('#type').val());
+        var exchange = $('#exchange').val();
         var num = type - 2;
         switch (type) {
           case 1:
@@ -64,12 +65,17 @@
           case 4:
           case 5:
           case 6:
-            $(opener.document).find("#goodscd_" + num).val(goodscd);
-            $(opener.document).find("#goodsnm_" + num).val(goodsnm);
-            $(opener.document).find("#standard_" + num).val(standard);
-            $(opener.document).find("#unit_" + num).val(unit);
-            $(opener.document).find("#productnm_" + num).val(productnm);
-            $(opener.document).find("#productcd_" + num).val(productcd);
+            if(exchange == 'true'){
+              $(opener.document).find("#goodscds_" + num).val(goodscd);
+              $(opener.document).find("#goodsnms_" + num).val(goodsnm);
+            }else{
+              $(opener.document).find("#goodscd_" + num).val(goodscd);
+              $(opener.document).find("#goodsnm_" + num).val(goodsnm);
+              $(opener.document).find("#standard_" + num).val(standard);
+              $(opener.document).find("#unit_" + num).val(unit);
+              $(opener.document).find("#productnm_" + num).val(productnm);
+              $(opener.document).find("#productcd_" + num).val(productcd);
+            }
             break;
         }
         self.close();
@@ -84,6 +90,7 @@
             <tr>
               <td>
                 <input type="hidden" id="type" name="type" th:value="${search.type}">
+                <input type="hidden" id="exchange" name="exchange" th:value="${search.exchange}">
                 <label for="ssearch_txt" class="">품목명</label>
                 <input type="text" th:field="${search.goodsNm}" id="ssearch_txt" value="" size="30" class="form-control ">
                 <button name="find" id="find" type="submit" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">검색</button>&nbsp;

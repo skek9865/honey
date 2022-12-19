@@ -45,18 +45,26 @@
         switch (as_action) {
           case "find" :
             var form = $('form[name="fm_home"]');
-            form.action = "/040102/popup"
+            form.action = "/040102/popup?";
             form.attr("method", "get");
             form.submit();
             break;
 
         }
       }
-      function Do_Select(custCd, custNm) {
-        $(opener.document).find("#vcustcd").val(custCd);
-        $(opener.document).find("#vcustnm").val(custNm);
+      function Do_Select(custCd, custNm, type) {
+        type *= 1;
+        switch (type){
+          case 1:
+            $(opener.document).find("#scustcd").val(custCd);
+            $(opener.document).find("#scustnm").val(custNm);
+            break;
+          case 2:
+            $(opener.document).find("#vcustcd").val(custCd);
+            $(opener.document).find("#vcustnm").val(custNm);
+            break;
+        }
         self.close();
-
       }
     </script>
     <div class="container-fluid p-2">
@@ -67,7 +75,7 @@
             <tr>
               <td>
                 <label for="ssearch_txt" class="">상호(이름)</label>
-                <input type="text" name="custNm" th:value="${custNm}" id="ssearch_txt" size="30" class="form-control ">
+                <input type="text" name="custNm" th:value="${search.custNm}" id="ssearch_txt" size="30" class="form-control ">
                 <button name="find" id="find" type="submit" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">검색</button>&nbsp;
                 <button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
               </td>
@@ -95,7 +103,7 @@
                 <td class="list_td_1 text-center">
                   <button name="select" id="select" type="button"
                           class="btn btn-gfk btn-ssm"
-                          th:onclick="Do_Select([[${dto.custCd}]],[[${dto.custNm}]]);">선택</button>&nbsp;
+                          th:onclick="Do_Select([[${dto.custCd}]],[[${dto.custNm}]],[[${search.type}]]);">선택</button>&nbsp;
                 </td>
               </tr>
             </tbody>
@@ -104,6 +112,7 @@
       </div>
     </div>
   </main>
+  <input type="hidden" id="type" name="type" th:value="${search.type}">
 </form>
 </body>
 </html>

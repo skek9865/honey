@@ -107,103 +107,103 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="table-responsive text-nowrap" id="tableWrapper">
-            <table class="table table-striped tablesorter-blue" id="datatable_2">
-                <tbody>
-                <tr class="tableList_h_tr">
-                    <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
-                </tr>
-                <tr th:each="num : ${#numbers.sequence(0,4)}" style="height: 30px;">
-                    <td>
-                        <input th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].seq : ''}"
-                               th:name="${'tb504_1Dtos['+ num + '].seq'}"
-                               th:id="${'fk_tb_504_' + num}" type="hidden">
-                        <button name="row_del" id="row_del" type="button" class="btn btn-gfk btn-sm"
-                                th:onclick="gf_rowdel([[${num}]]); gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">삭제</button>&nbsp;
-                    </td>
-                    <td>
-                        <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].goodsCd : ''}"
-                               th:name="${'tb504_1Dtos['+ num + '].goodsCd'}" th:id="${'goodscd_' + num}" value="" size="5" class="form-control ">
-                    </td>
-                    <td>
-                        <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].goodsNm : ''}"
-                               th:name="${'tb504_1Dtos['+ num + '].goodsNm'}"
-                               th:id="${'goodsnm_' + num}" size="40" class="form-control ">
-                        <button name="row_find" id="row_find" type="button" class="btn btn-gfk btn-sm"
-                                th:onclick='gf_popup("700","500","_search_goods","/040105/popup?type="+ [[${num+2}]] +"&product=true&stock=true")'>검색</button>&nbsp;
-                    </td>
-                    <td>
-                        <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].standard : ''}"
-                               th:name="${'tb504_1Dtos['+ num + '].standard'}"
-                               th:id="${'standard_' + num}" size="5" class="form-control " readonly="">
-                    </td>
-                    <td>
-                        <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].qty : 0}"
-                               th:name="${'tb504_1Dtos['+ num + '].qty'}"
-                               th:id="${'qty_' + num}" size="5" class="form-control input_number"
-                               onchange="gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">
-                    </td>
-                    <td>
-                        <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].rQty : 0}"
-                               th:name="${'tb504_1Dtos['+ num + '].rQty'}"
-                               th:id="${'rqty_' + num}" size="5" class="form-control input_number"
-                               onchange="gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">
-                    </td>
-                    <td>
-                        <select th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].status : ''}"
-                               th:name="${'tb504_1Dtos['+ num + '].status'}"
-                               th:id="${'status_' + num}" size="1" class="form-select ">
-                            <option value="">선택</option>
-                            <option th:each="status : ${statuses}" th:value="${status.value}" th:text="${status.text}"
-                                    th:selected="${status.value} == ${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].status : ''}"></option>
-                        </select>
-                    </td>
-                    <td>
-                        <select type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].machineNo : ''}"
-                                th:name="${'tb504_1Dtos['+ num + '].machineNo'}"
-                                th:id="${'machineNo_' + num}" size="1" class="form-select ">
-                            <option value="">선택</option>
-                            <option th:each="machine : ${machines}" th:value="${machine.value}" th:text="${machine.text}"
-                                    th:selected="${machine.value} == ${dto.tb504_1Dtos[num] != null
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_2">
+                    <tbody>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    <tr th:each="num : ${#numbers.sequence(0,4)}" style="height: 30px;">
+                        <td>
+                            <input th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].seq : ''}"
+                                   th:name="${'tb504_1Dtos['+ num + '].seq'}"
+                                   th:id="${'fk_tb_504_' + num}" type="hidden">
+                            <button name="row_del" id="row_del" type="button" class="btn btn-gfk btn-sm"
+                                    th:onclick="gf_rowdel([[${num}]]); gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">삭제</button>&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].goodsCd : ''}"
+                                   th:name="${'tb504_1Dtos['+ num + '].goodsCd'}" th:id="${'goodscd_' + num}" value="" size="5" class="form-control ">
+                        </td>
+                        <td>
+                            <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].goodsNm : ''}"
+                                   th:name="${'tb504_1Dtos['+ num + '].goodsNm'}"
+                                   th:id="${'goodsnm_' + num}" size="40" class="form-control ">
+                            <button name="row_find" id="row_find" type="button" class="btn btn-gfk btn-sm"
+                                    th:onclick='gf_popup("700","500","_search_goods","/040105/popup?type="+ [[${num+2}]] +"&product=true&stock=true")'>검색</button>&nbsp;
+                        </td>
+                        <td>
+                            <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].standard : ''}"
+                                   th:name="${'tb504_1Dtos['+ num + '].standard'}"
+                                   th:id="${'standard_' + num}" size="5" class="form-control " readonly="">
+                        </td>
+                        <td>
+                            <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].qty : 0}"
+                                   th:name="${'tb504_1Dtos['+ num + '].qty'}"
+                                   th:id="${'qty_' + num}" size="5" class="form-control input_number"
+                                   onchange="gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">
+                        </td>
+                        <td>
+                            <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].rQty : 0}"
+                                   th:name="${'tb504_1Dtos['+ num + '].rQty'}"
+                                   th:id="${'rqty_' + num}" size="5" class="form-control input_number"
+                                   onchange="gf_qtynrqtysum('qty','rqty','qty_tot','rqty_tot','5');">
+                        </td>
+                        <td>
+                            <select th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].status : ''}"
+                                    th:name="${'tb504_1Dtos['+ num + '].status'}"
+                                    th:id="${'status_' + num}" size="1" class="form-select ">
+                                <option value="">선택</option>
+                                <option th:each="status : ${statuses}" th:value="${status.value}" th:text="${status.text}"
+                                        th:selected="${status.value} == ${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].status : ''}"></option>
+                            </select>
+                        </td>
+                        <td>
+                            <select type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].machineNo : ''}"
+                                    th:name="${'tb504_1Dtos['+ num + '].machineNo'}"
+                                    th:id="${'machineNo_' + num}" size="1" class="form-select ">
+                                <option value="">선택</option>
+                                <option th:each="machine : ${machines}" th:value="${machine.value}" th:text="${machine.text}"
+                                        th:selected="${machine.value} == ${dto.tb504_1Dtos[num] != null
                                     ? dto.tb504_1Dtos[num].machineNo : ''}">대기중</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].empNo : ''}"
-                                th:name="${'tb504_1Dtos['+ num + '].empNo'}"
-                                th:id="${'empNo_' + num}" size="1" class="form-select ">
-                            <option value="">선택</option>
-                            <option th:each="emp : ${emps}" th:value="${emp.key}" th:text="${emp.value}"
-                                    th:selected="${emp.key} == ${dto.tb504_1Dtos[num] != null
+                            </select>
+                        </td>
+                        <td>
+                            <select type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].empNo : ''}"
+                                    th:name="${'tb504_1Dtos['+ num + '].empNo'}"
+                                    th:id="${'empNo_' + num}" size="1" class="form-select ">
+                                <option value="">선택</option>
+                                <option th:each="emp : ${emps}" th:value="${emp.key}" th:text="${emp.value}"
+                                        th:selected="${emp.key} == ${dto.tb504_1Dtos[num] != null
                                     ? dto.tb504_1Dtos[num].empNo : ''}">홍길동4</option>
-                        </select>
-                    </td>
-                    <td>
-                        <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].note : ''}"
-                               th:name="${'tb504_1Dtos['+ num + '].note'}"
-                               th:id="${'note_' + num}" size="10" class="form-control ">
-                    </td>
-                </tr>
-                <tr style="height: 30px;">
-                    <td colspan="4" class="CaptionTD">
-                        합계
-                    </td>
-                    <td>
-                        <input type="text" name="qty_tot" th:value="${qty_tot}" id="qty_tot" size="5" class="form-control input_number " readonly="">
-                    </td>
-                    <td>
-                        <input type="text" name="rqty_tot" th:value="${rqty_tot}" id="rqty_tot" size="8" class="form-control input_number " readonly="">
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="text" th:value="${dto.tb504_1Dtos[num] != null ? dto.tb504_1Dtos[num].note : ''}"
+                                   th:name="${'tb504_1Dtos['+ num + '].note'}"
+                                   th:id="${'note_' + num}" size="20" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr style="height: 30px;">
+                        <td colspan="4" class="CaptionTD">
+                            합계
+                        </td>
+                        <td>
+                            <input type="text" name="qty_tot" th:value="${qty_tot}" id="qty_tot" size="5" class="form-control input_number " readonly="">
+                        </td>
+                        <td>
+                            <input type="text" name="rqty_tot" th:value="${rqty_tot}" id="rqty_tot" size="8" class="form-control input_number " readonly="">
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
+        </div>
     </main>
     <input type="hidden" name="seq" th:value="${dto.seq}" id="vseq" class="form-control ">
 </form>

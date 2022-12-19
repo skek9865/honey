@@ -1,0 +1,85 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::main})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<main>
+  <script th:inline="javascript">
+    function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+      switch (as_action) {
+        case "query" :
+          $('#size').val($('#num_per_page').val());
+          $('#page').val(1);
+          fm_home.action = "/040108";
+          fm_home.method = "/get";
+          fm_home.submit();
+          break;
+        case "update" : //저장
+          fm_input.action = "/040108/" + as_action;
+          fm_input.method = "post";
+          fm_input.submit();
+          break;
+      }
+    }
+  </script>
+  <form name="fm_home" method="post" enctype="multipart/form-data">
+    <div class="container-fluid p-2">
+      <div class="titleBar" id="titleBar">
+        <div class="row">
+          <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+          <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+        </div>
+      </div>
+      <div class="searchBar" id="searchBar">
+        <div class="row">
+          <div class="col-12 fixed-right p-2 px-4">
+            <table>
+              <tr>
+                <td>
+                  <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive text-nowrap" id="tableWrapper">
+        <table class="table table-striped tablesorter-blue" id="datatable_1">
+          <thead>
+          <tr class="tableList_h_tr">
+            <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
+            <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
+            <td class="list_td_1 text-center">
+              <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal"
+                      data-target="#inputpopup"
+                      th:onclick="gf_modal('040108/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
+                수정
+              </button>&nbsp;
+            </td>
+            <td class="list_td_1 text-center" th:text="${dto.custCd}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.custNm}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.ceoNm}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.empCd}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.saleCd}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.class1}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.class2}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.saleGr}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.buyGr}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div th:replace="paging.html :: paging"></div>
+    </div>
+  </form>
+</main>
+</html>
+
+<script src="/js/scripts_sub.js"></script>
+<script th:inline="javascript">
+  $(document).ready(function () {
+    $("#datatable_1").width("1400");
+  });
+</script>
