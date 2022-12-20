@@ -27,5 +27,5 @@ public interface Service040202 {
 
     Boolean delete(Integer id);
 
-    PrintData040201 findPrintData(Integer id);
+    PrintData040202 findPrintData(Integer id);
 }

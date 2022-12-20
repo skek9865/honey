@@ -8,15 +8,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.business.dto.manage.*;
+import project.honey.business.entity.basic.Tb405;
+import project.honey.business.entity.manage.Tb410;
+import project.honey.business.entity.manage.Tb410_1;
 import project.honey.business.entity.manage.Tb411;
 import project.honey.business.entity.manage.Tb411_1;
 import project.honey.business.form.manage.Search040201;
 import project.honey.business.form.manage.Tb411Form;
 import project.honey.business.form.manage.Tb411_1Form;
+import project.honey.business.repository.basic.Tb405Repository;
 import project.honey.business.repository.manage.Tb411Repository;
 import project.honey.business.repository.manage.Tb411_1Repository;
 import project.honey.comm.CodeToName;
+import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
+import project.honey.company.entity.Tb101;
+import project.honey.company.repository.Tb101Repository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +38,8 @@ public class Service040202Impl implements Service040202{
 
     private final Tb411Repository tb411Repository;
     private final Tb411_1Repository tb411_1Repository;
+    private final Tb101Repository tb101Repository;
+    private final Tb405Repository tb405Repository;
     private final CodeToName codeToName;
 
     @Transactional
@@ -223,7 +232,30 @@ public class Service040202Impl implements Service040202{
     }
 
     @Override
-    public PrintData040201 findPrintData(Integer id) {
-        return null;
+    public PrintData040202 findPrintData(Integer id) {
+        List<Tb101> tb101s = tb101Repository.findAll();
+        Tb101 tb101 = tb101s.get(0);
+        Tb411 tb411 = tb411Repository.findById(id).orElseThrow(RuntimeException::new);
+        List<Tb411_1> tb411_1s = tb411_1Repository.findByFk(id);
+
+        Map<String, String> custMap = codeToName.cust();
+        String custNm = custMap.get(tb411.getCustCd());
+        Map<String, String> goodsMap = codeToName.goods();
+
+        List<PrintData040202_1> printData040202_1s = new ArrayList<>();
+        GlobalConst globalConst = new GlobalConst();
+        tb411_1s.forEach(e -> {
+            Tb405 tb405 = tb405Repository.findByGoodsCd(e.getGoodsCd()).orElseThrow(RuntimeException::new);
+            PrintData040202_1 printData040202_1 = PrintData040202_1.of(e, goodsMap.get(e.getGoodsCd()), tb405.getUnit());
+            printData040202_1s.add(printData040202_1);
+        });
+        if(tb411_1s.size() < globalConst.getSubInputIdx()){
+            for (int i = tb411_1s.size(); i < globalConst.getSubInputIdx(); i++){
+                printData040202_1s.add(new PrintData040202_1());
+            }
+        }
+
+        PrintData040202 resultList = PrintData040202.of(tb101, tb411, printData040202_1s, custNm);
+        return resultList;
     }
 }

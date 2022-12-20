@@ -37,12 +37,12 @@
               <div class='input-group-addon px-2'>
                 <label for="orderDt" class="input_labal">일자</label>
               </div>
-              <input type="text" id="orderDt"  th:field="*{orderDt}" size="6" class="input_date" autocomplete="off">
+              <input type="text" id="orderDt" name="orderDt" th:value="${date}" size="6" class="input_date" autocomplete="off">
             </div>
           </td>
           <td>
             <label for="orderNo" class="input_labal">주문번호</label>
-            <input id="orderNo" th:field="*{orderNo}" type="text" size="10" class="form-control" readonly>
+            <input id="orderNo" name="orderNo" th:value="${orderNo}" type="text" size="10" class="form-control" readonly>
           </td>
           <td>
             <label for="vcustcd" class="input_labal">거래처</label>
@@ -112,10 +112,9 @@
           </td>
           <td>
             <label for='projectCd' class='input_labal'>프로젝트</label>
-            <select class='form-select' id='projectCd' th:field="*{projectCd}" size=1>
+            <select class='form-select' id='projectCd' name="projectCd" size=1>
               <option value=''>선택</option>
               <option th:each="projectCode : ${projectCodes}"
-                      th:attr="selected=${projectCode.value == projectCd ?'true' : 'false'}"
                       th:value="${projectCode.value}"
                       th:text="${projectCode.text}">
             </select>
@@ -131,7 +130,7 @@
               <div class='input-group-addon px-2'>
                 <label for="deadDt" class="input_labal">납기일자</label>
               </div>
-              <input type="text" id="deadDt" th:field="*{deadDt}" size="6" class="input_date" autocomplete="off">
+              <input type="text" id="deadDt" name="deadDt" th:value="${date}" size="6" class="input_date" autocomplete="off">
             </div>
           </td>
         </tr>
@@ -141,8 +140,8 @@
             <input id="payCondit" th:field="*{payCondit}" type="text" size="30" class="form-control">
           </td>
           <td colspan="2">
-            <label for="noteP" class="input_labal">참조</label>
-            <input id="noteP" th:field="*{note}" type="text" size="30" class="form-control">
+            <label for="note" class="input_labal">참조</label>
+            <input id="note" name="note" th:value="*{noteP}" type="text" size="30" class="form-control">
           </td>
         </tr>
         <tr>
@@ -202,12 +201,12 @@
           <td>
             <div class='input-group input-daterange'>
               <input th:id="|deadDt_${subStat.index}|" th:name="${'tb411_1Forms[' + subStat.index + '].deadDt'}"
-                     th:value="${sub.deadDt}" type="text" size="6" class="input_date" autocomplete="off">
+                     type="text" size="6" class="input_date" autocomplete="off">
             </div>
           </td>
           <td>
             <input th:id="|note_${subStat.index}|" th:name="${'tb411_1Forms[' + subStat.index + '].note'}"
-                   th:value="${sub.note}" type="text" size="5" class="form-control">
+                   th:value="${sub.noteC}" type="text" size="5" class="form-control">
           </td>
         </tr>
         <tr style="height: 30px;">
@@ -232,7 +231,7 @@
       </table>
     </div>
   </div>
-  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" id="seq" name="seq" size="0" class="form-control ">
   <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
   <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
   <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">

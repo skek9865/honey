@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
+import project.honey.business.dto.search.SearchPopUp410;
 import project.honey.business.entity.manage.Tb410;
 import project.honey.business.form.manage.Search040201;
 
@@ -69,6 +70,25 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
                         empEq(search040201.getSEmpNo()),
                         statusEq(search040201.getSStatus()),
                         custEq(search040201.getSCustCd()),
+                        goodsSeqIn(seqList)
+                )
+                .orderBy(
+                        tb410.seq.asc(),
+                        tb410_1.seq.asc()
+                )
+                .fetch();
+
+        return result;
+    }
+
+    @Override
+    public List<Tb410> findAllByPopUp(String ymd1, String ymd2, SearchPopUp410 searchPopUp410, List<Integer> seqList) {
+        List<Tb410> result = queryFactory.select(tb410)
+                .from(tb410)
+                .leftJoin(tb410.tb410_1s, tb410_1).fetchJoin()
+                .where(
+                        estimDtEq(ymd1, ymd2),
+                        custEq(searchPopUp410.getSCustCd()),
                         goodsSeqIn(seqList)
                 )
                 .orderBy(

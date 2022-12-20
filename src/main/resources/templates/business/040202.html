@@ -34,6 +34,9 @@
           fm_home.method = "get";
           fm_home.submit();
           break;
+        case "load" :
+          gf_modal('040202/popInput',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', as_val1,'pop');
+          break;
       }
     }
   </script>
