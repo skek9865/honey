@@ -6,6 +6,7 @@ import project.honey.business.dto.manage.PrintData040201;
 import project.honey.business.dto.manage.Tb410Dto;
 import project.honey.business.dto.manage.Tb410MainDto;
 import project.honey.business.dto.manage.Tb410_1Dto;
+import project.honey.business.dto.search.SearchPopUp410;
 import project.honey.business.form.manage.Search040201;
 import project.honey.business.form.manage.Tb410Form;
 import project.honey.business.form.manage.Tb410_1Form;
@@ -31,4 +32,6 @@ public interface Service040201 {
     Boolean delete(Integer id);
 
     PrintData040201 findPrintData(Integer id);
+
+    List<Tb410MainDto> findAllByPopUp(SearchPopUp410 searchPopUp410);
 }

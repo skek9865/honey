@@ -8,12 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import project.honey.business.dto.manage.*;
+import project.honey.business.dto.search.SearchPopUp410;
 import project.honey.business.form.manage.Search040201;
 import project.honey.business.form.manage.Tb410Form;
 import project.honey.business.form.manage.Tb411Form;
 import project.honey.business.service.basic.Service040103;
 import project.honey.business.service.basic.Service040109;
 import project.honey.business.service.basic.Service040110;
+import project.honey.business.service.manage.Service040201;
 import project.honey.business.service.manage.Service040202;
 import project.honey.comm.ExcelMaker;
 import project.honey.comm.GlobalConst;
@@ -44,6 +46,7 @@ public class Controller040202 {
     private final Service040103 service040103;
     private final Service040109 service040109;
     private final Service040110 service040110;
+    private final Service040201 service040201;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
     private final ExcelMaker excelMaker;
@@ -207,26 +210,106 @@ public class Controller040202 {
         excelMaker.makeExcel("주문서관리 (040202)", titles, excelData, excelType, fileName, response);
     }
 
-//    @GetMapping("/popup/{seq}")
-//    public String popUp(@PathVariable("seq") Integer seq, Model model){
-//        log.info("주문서관리 print");
-//
-//        PrintData040202 printData = service040202.findPrintData(seq);
-//        int totalAmt = 0, total = 0;
-//        List<PrintData040202_1> tb410_1Dtos = printData.getTb410_1Dtos();
-//        for(PrintData040202_1 pd : tb410_1Dtos){
-//            if(pd.getAmt() != null && pd.getVat() != null){
-//                totalAmt += pd.getAmt();
-//                total += (pd.getAmt() + pd.getVat());
-//            }
-//        }
-//        model.addAttribute("totalAmt", totalAmt);
-//        model.addAttribute("total", total);
-//
-//        model.addAttribute("global", new GlobalConst());
-//        model.addAttribute("printData", printData);
-//        model.addAttribute("subPrintData", printData.getTb410_1Dtos());
-//
-//        return "business/040202_prt";
-//    }
+    @GetMapping("/popup/{seq}")
+    public String popUp(@PathVariable("seq") Integer seq, Model model){
+        log.info("주문서관리 print");
+
+        PrintData040202 printData = service040202.findPrintData(seq);
+
+        int total = 0;
+        List<PrintData040202_1> tb411_1Dtos = printData.getTb411_1Dtos();
+        for(PrintData040202_1 pd : tb411_1Dtos){
+            if(pd.getAmt() != null && pd.getVat() != null){
+                total += (pd.getAmt() + pd.getVat());
+            }
+        }
+        model.addAttribute("total", total);
+
+        model.addAttribute("global", new GlobalConst());
+        model.addAttribute("printData", printData);
+        model.addAttribute("subPrintData", printData.getTb411_1Dtos());
+
+        return "business/040202_prt";
+    }
+
+    @GetMapping("/estPopUp")
+    public String estPopUp(@ModelAttribute("search") SearchPopUp410 search, Model model){
+        log.info("견적서검색 PopUp");
+        model.addAttribute("global", new GlobalConst());
+
+        if(search.getSYmd1() == null || search.getSYmd2() == null){
+            search.setYmd(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+
+        List<String> titles = GlobalMethod.makeTitle("순번", "견적번호", "거래처명", "담당자", "품목", "금액", "선택");
+        model.addAttribute("titles", titles);
+
+        List<Tb410MainDto> result = service040201.findAllByPopUp(search);
+        model.addAttribute("dtos", result);
+        return "business/040202_1";
+    }
+
+    @GetMapping("/popInput")
+    public String findByPopUp(@RequestParam Map<String, String> map, Model model){
+        log.info("주문서관리 popInput");
+        log.info("fstId = {}, scdId = {}, thdId = {}", map.get("fstId"), map.get("scdId"), map.get("thdId"));
+
+        List<String> titles = GlobalMethod.makeTitle(
+                "삭제", "코드", "품목", "규격", "수량",
+                "단가", "공급가액", "부가세", "납기일자", "적요"
+        );
+
+        GlobalConst globalConst = new GlobalConst();
+
+        model.addAttribute("fstId", map.get("fstId"));
+        model.addAttribute("scdId", map.get("scdId"));
+        model.addAttribute("thdId", map.get("thdId"));
+        model.addAttribute("action", map.get("action"));
+        model.addAttribute("global", globalConst);
+        model.addAttribute("titles",titles);
+
+        model.addAttribute("empCodes",service020101.findAllBySelect());
+        model.addAttribute("saleTypeCodes",service990301.findByFstId("11"));
+        model.addAttribute("whouseCodes",service040103.findAllBySelect());
+        model.addAttribute("excgCodes",service040110.findAllBySelect());
+        model.addAttribute("statusCodes",service990301.findByFstId("12"));
+        model.addAttribute("projectCodes",service040109.findAllBySelect());
+
+        String date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        model.addAttribute("date", date);
+
+        Long orderNo = service040202.findOrderNo();
+        model.addAttribute("orderNo", orderNo);
+
+        List<Tb410_1Dto> subPopDtos = new ArrayList<>();
+        Tb410Dto dto = service040201.findById(Integer.parseInt(map.get("vseq")));
+        List<Tb410_1Dto> findTb410_1 = service040201.findChildByFk(dto.getSeqP());
+
+        int qtyT = 0, amtT = 0, vatT = 0, totT = 0;
+        for(Tb410_1Dto subDto : findTb410_1){
+            qtyT += subDto.getQty();
+            amtT += subDto.getAmt();
+            vatT += subDto.getVat();
+        }
+        totT += (amtT + vatT);
+        model.addAttribute("qtyT", qtyT);
+        model.addAttribute("amtT", amtT);
+        model.addAttribute("vatT", vatT);
+        model.addAttribute("totT", totT);
+
+        if(findTb410_1.size() <= 5){
+            for(int i = 0; i < globalConst.getSubInputIdx(); i++) {
+                if(findTb410_1.size() - 1 < i) subPopDtos.add(new Tb410_1Dto(0));
+                else subPopDtos.add(findTb410_1.get(i));
+            }
+        }
+        else{
+            for(int i = findTb410_1.size() - 1; i < globalConst.getSubInputIdx(); i++) subPopDtos.add(findTb410_1.get(i));
+        }
+        model.addAttribute("dto", dto);
+        model.addAttribute("subDtos", subPopDtos);
+        return "business/040202_popInput";
+    }
+
 }
