@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>견적서 검색</title>
+  <title>주문서 검색</title>
   <link rel="icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
   <link rel="shortcut icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
   <link th:href="@{|${global.cssDir}/bootstrap.min.css|}" rel="stylesheet" >
@@ -53,7 +53,7 @@
   }
 </SCRIPT>
 <body class="bg-white" style="overflow-x:hidden;overflow-y:hidden;">
-<FORM name="fm_home" method="get" th:action="@{/040202/estPopUp}" >
+<FORM name="fm_home" method="get" th:action="@{/040203/orderPopUp}" >
   <main >
     <div class="container-fluid p-2" >
       <div class="" id="searchBar">
@@ -105,8 +105,8 @@
             <tbody>
             <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
               <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
-              <td class="list_td_1 text-center" th:text="${dto.est}"></td>
-              <td class="list_td_1 text-center" th:text="${dto.custCd}"></td>
+              <td class="list_td_1 text-center" th:text="${dto.orderNo}"></td>
+              <td class="list_td_1 text-center" th:text="${dto.custNm}"></td>
               <td class="list_td_1 text-center" th:text="${dto.empNo}"></td>
               <td class="list_td_1 text-center" th:text="${dto.goodsCd}"></td>
               <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.price,0, 'COMMA')}"></td>
