@@ -1,13 +1,13 @@
 package project.honey.business.service.manage;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.business.dto.manage.*;
+import project.honey.business.dto.search.SearchPopUp410;
 import project.honey.business.entity.basic.Tb405;
 import project.honey.business.entity.manage.Tb410;
 import project.honey.business.entity.manage.Tb410_1;
@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-@Slf4j
 public class Service040202Impl implements Service040202{
 
     private final Tb411Repository tb411Repository;
@@ -256,6 +255,59 @@ public class Service040202Impl implements Service040202{
         }
 
         PrintData040202 resultList = PrintData040202.of(tb101, tb411, printData040202_1s, custNm);
+        return resultList;
+    }
+
+    @Override
+    public List<Tb411MainDto> findAllByPopUp(SearchPopUp410 searchPopUp410) {
+        String ymd1 = GlobalMethod.replaceYmd(searchPopUp410.getSYmd1(), "-");
+        String ymd2 = GlobalMethod.replaceYmd(searchPopUp410.getSYmd2(), "-");
+
+        int price = 0, num = 0, seq = 0;
+        String est, goods = null;
+
+        List<Tb411_1> findSeqList = tb411_1Repository.findSeqGoods(searchPopUp410.getSGoodsCd());
+
+        List<Integer> seqList = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
+        findSeqList.forEach(e -> set.add(e.getTb411().getSeq()));
+        set.forEach(seqList::add);
+
+        List<Tb411> result = tb411Repository.findAllByPopUp(ymd1, ymd2, searchPopUp410, seqList);
+
+        List<Tb411MainDto> resultList = new ArrayList<>();
+
+        Map<String, String> empMap = codeToName.emp();
+        Map<String, String> goodsMap = codeToName.goods();
+        Map<String, String> custMap = codeToName.cust();
+
+        for(Tb411 entity : result){
+            if(seq == entity.getSeq()) continue;
+            List<Tb411_1> tb411_1s = entity.getTb411_1s();
+            String prt = "인쇄전";
+
+            String goodsNm = goodsMap.get(tb411_1s.get(0).getGoodsCd());
+            String empNm = empMap.get(entity.getEmpNo());
+            String custNm = custMap.get(entity.getCustCd());
+
+            if(entity.getPrtEmp() != null && entity.getPrtDt() != null) prt = "인쇄함";
+            for(Tb411_1 tb411_1 : tb411_1s){
+                goods = goodsNm;
+                if(tb411_1s.size() > 1){
+                    if(num + 1 == tb411_1s.size()) goods = goodsNm + " 외" + num + "건";
+                    num++;
+                }
+                price += tb411_1.getAmt();
+                price += tb411_1.getVat();
+            }
+            Tb411MainDto dto = Tb411MainDto.of(entity, custNm, goods, empNm, price, null, prt, entity.getStatus());
+            resultList.add(dto);
+            num = 0;
+            price = 0;
+
+            seq = entity.getSeq();
+        }
+
         return resultList;
     }
 }

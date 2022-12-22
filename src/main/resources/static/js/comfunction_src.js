@@ -167,6 +167,7 @@ function gf_sum_vat(qty,price,amt,vat,vatyn,amtsum,pricevat) {
 	var lamt = parseFloat(lprice) * parseFloat(lqty);
 	var lvat = Math.round(lamt * 0.1) ;
 	var lpricevat =  parseFloat(lprice) + (parseFloat(lvat)/lqty);
+	if(lvat == 0 || lqty == 0) lpricevat = 0;
 	if (lvatyn == 'N')
 	{
 		lvat = 0;

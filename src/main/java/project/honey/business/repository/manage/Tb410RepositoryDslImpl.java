@@ -34,7 +34,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
                         empEq(search040201.getSEmpNo()),
                         statusEq(search040201.getSStatus()),
                         custEq(search040201.getSCustCd()),
-                        goodsSeqIn(seqList)
+                        goodsSeqIn(search040201.getSGoodsCd(), seqList)
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -52,7 +52,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
                         empEq(search040201.getSEmpNo()),
                         statusEq(search040201.getSStatus()),
                         custEq(search040201.getSCustCd()),
-                        goodsSeqIn(seqList)
+                        goodsSeqIn(search040201.getSGoodsCd(), seqList)
                 )
                 .fetch()
                 .size();
@@ -70,7 +70,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
                         empEq(search040201.getSEmpNo()),
                         statusEq(search040201.getSStatus()),
                         custEq(search040201.getSCustCd()),
-                        goodsSeqIn(seqList)
+                        goodsSeqIn(search040201.getSGoodsCd(), seqList)
                 )
                 .orderBy(
                         tb410.seq.asc(),
@@ -89,7 +89,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
                 .where(
                         estimDtEq(ymd1, ymd2),
                         custEq(searchPopUp410.getSCustCd()),
-                        goodsSeqIn(seqList)
+                        goodsSeqIn(searchPopUp410.getSGoodsCd(), seqList)
                 )
                 .orderBy(
                         tb410.seq.asc(),
@@ -115,7 +115,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
     private BooleanExpression custEq(String custCd){
         return StringUtils.hasText(custCd) ? tb410.custCd.eq(custCd) : null;
     }
-    private BooleanExpression goodsSeqIn(List<Integer> seqList){
-        return seqList.size() > 0 ? tb410.seq.in(seqList) : null;
+    private BooleanExpression goodsSeqIn(String goodsCd, List<Integer> seqList){
+        return StringUtils.hasText(goodsCd) ? tb410.seq.in(seqList) : null;
     }
 }

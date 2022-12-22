@@ -2,14 +2,8 @@ package project.honey.comm;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import project.honey.business.entity.basic.Tb402;
-import project.honey.business.entity.basic.Tb403;
-import project.honey.business.entity.basic.Tb404;
-import project.honey.business.entity.basic.Tb405;
-import project.honey.business.repository.basic.Tb402Repository;
-import project.honey.business.repository.basic.Tb403Repository;
-import project.honey.business.repository.basic.Tb404Repository;
-import project.honey.business.repository.basic.Tb405Repository;
+import project.honey.business.entity.basic.*;
+import project.honey.business.repository.basic.*;
 import project.honey.pay.entity.Tb301;
 import project.honey.pay.repository.Tb301Repository;
 import project.honey.personDepart.entity.Tb201;
@@ -37,6 +31,7 @@ public class CodeToName {
     private final Tb403Repository tb403Repository;
     private final Tb404Repository tb404Repository;
     private final Tb405Repository tb405Repository;
+    private final Tb408Repository tb408Repository;
     private final Tb501Repository tb501Repository;
     private final Tb904Repository tb904Repository;
     private final Tb906Repository tb906Repository;
@@ -100,5 +95,11 @@ public class CodeToName {
     public Map<String, String> wHouse() {
         return tb403Repository.findAll().stream()
                 .collect(Collectors.toMap(Tb403::getWhouseCd, Tb403::getWhouseNm));
+    }
+
+    // 프로젝트 tb408
+    public Map<String, String> project() {
+        return tb408Repository.findAll().stream()
+                .collect(Collectors.toMap(Tb408::getProjectCd, Tb408::getProjectNm));
     }
 }

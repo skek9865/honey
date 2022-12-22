@@ -3,6 +3,7 @@ package project.honey.business.service.manage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import project.honey.business.dto.manage.*;
+import project.honey.business.dto.search.SearchPopUp410;
 import project.honey.business.form.manage.Search040201;
 import project.honey.business.form.manage.Tb411Form;
 import project.honey.business.form.manage.Tb411_1Form;
@@ -28,4 +29,6 @@ public interface Service040202 {
     Boolean delete(Integer id);
 
     PrintData040202 findPrintData(Integer id);
+
+    List<Tb411MainDto> findAllByPopUp(SearchPopUp410 searchPopUp410);
 }
