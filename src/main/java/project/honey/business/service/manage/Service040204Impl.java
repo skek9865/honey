@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.honey.business.dto.manage.*;
+import project.honey.business.dto.search.SearchPopUp410;
 import project.honey.business.entity.manage.Tb412;
 import project.honey.business.entity.manage.Tb412_1;
 import project.honey.business.entity.manage.Tb413;
@@ -83,7 +84,7 @@ public class Service040204Impl implements Service040204{
                 }
                 qty += tb413_1.getQty();
             }
-            Tb413MainDto dto = Tb413MainDto.of(entity, whouseNm, custNm, goods, qty);
+            Tb413MainDto dto = Tb413MainDto.of(entity, whouseNm, custNm, goods, qty, null);
             resultList.add(dto);
             num = 0;
             qty = 0;
@@ -203,5 +204,57 @@ public class Service040204Impl implements Service040204{
         tb413_1Repository.deleteByFk(id);
         tb413Repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<Tb413MainDto> findAllByPopUp(SearchPopUp410 searchPopUp410) {
+        String ymd1 = GlobalMethod.replaceYmd(searchPopUp410.getSYmd1(), "-");
+        String ymd2 = GlobalMethod.replaceYmd(searchPopUp410.getSYmd2(), "-");
+
+        int qty = 0, num = 0, seq = 0;
+        String goods = null;
+
+        List<Tb413_1> findSeqList = tb413_1Repository.findSeqGoods(searchPopUp410.getSGoodsCd());
+
+        List<Integer> seqList = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
+        findSeqList.forEach(e -> set.add(e.getTb413().getSeq()));
+        set.forEach(seqList::add);
+
+        List<Tb413> result = tb413Repository.findAllByPopUp(ymd1, ymd2, searchPopUp410, seqList);
+
+        List<Tb413MainDto> resultList = new ArrayList<>();
+
+        Map<String, String> empMap = codeToName.emp();
+        Map<String, String> goodsMap = codeToName.goods();
+        Map<String, String> custMap = codeToName.cust();
+        Map<String, String> whouseMap = codeToName.wHouse();
+
+        for(Tb413 entity : result){
+            if(seq == entity.getSeq()) continue;
+            List<Tb413_1> tb413_1s = entity.getTb413_1s();
+
+            String goodsNm = goodsMap.get(tb413_1s.get(0).getGoodsCd());
+            String empNm = empMap.get(entity.getEmpNo());
+            String custNm = custMap.get(entity.getCustCd());
+            String whouseNm = whouseMap.get(entity.getWhouseCd());
+
+            for(Tb413_1 tb413_1 : tb413_1s){
+                goods = goodsNm;
+                if(tb413_1s.size() > 1){
+                    if(num + 1 == tb413_1s.size()) goods = goodsNm + " 외" + num + "건";
+                    num++;
+                }
+                qty += tb413_1.getQty();
+            }
+            Tb413MainDto dto = Tb413MainDto.of(entity, whouseNm, custNm, goods, qty, empNm);
+            resultList.add(dto);
+            num = 0;
+            qty = 0;
+
+            seq = entity.getSeq();
+        }
+
+        return resultList;
     }
 }
