@@ -128,7 +128,6 @@ public class Service040201Impl implements Service040201{
         set.forEach(seqList::add);
 
         List<List<String>> resultList = new ArrayList<>();
-
         List<Tb410> result = tb410Repository.findAllByExcel(ymd1, ymd2, search040201, seqList);
 
         Map<String, String> empMap = codeToName.emp();
