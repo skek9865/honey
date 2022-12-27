@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import project.honey.company.dto.QTb105Dto;
+//import project.honey.company.dto.QTb105Dto;
 import project.honey.company.dto.Tb105Dto;
 import project.honey.company.entity.Tb105;
 

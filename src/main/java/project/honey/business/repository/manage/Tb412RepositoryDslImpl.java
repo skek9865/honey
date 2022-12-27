@@ -8,12 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 import project.honey.business.dto.search.SearchPopUp410;
 import project.honey.business.entity.manage.Tb412;
+import project.honey.business.form.analyze.Search040301;
 import project.honey.business.form.manage.Search040203;
 
 import javax.persistence.EntityManager;
 
 import java.util.List;
 
+import static project.honey.business.entity.basic.QTb402.tb402;
 import static project.honey.business.entity.manage.QTb412.tb412;
 import static project.honey.business.entity.manage.QTb412_1.tb412_1;
 
@@ -119,6 +121,63 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
         return result;
     }
 
+    @Override
+    public Page<Tb412> findAllBy040301(String ymd1, String ymd2, Search040301 search040301, List<Integer> seqList, List<String> custList, Pageable pageable) {
+        List<Tb412> result = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        custEq(search040301.getSCustCd()),
+                        goodsSeqIn(search040301.getSGoodsCd(), seqList),
+                        projectEq(search040301.getSProjectCd()),
+                        custGrEq(search040301.getSCustGr(), custList)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(
+                        tb412.seq.asc(),
+                        tb412_1.seq.asc()
+                )
+                .fetch();
+
+        int total = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        custEq(search040301.getSCustCd()),
+                        goodsSeqIn(search040301.getSGoodsCd(), seqList),
+                        projectEq(search040301.getSProjectCd()),
+                        custGrEq(search040301.getSCustGr(), custList)
+                )
+                .fetch()
+                .size();
+
+        return new PageImpl<>(result, pageable, total);
+    }
+
+    @Override
+    public List<Tb412> findAllBy040301Excel(String ymd1, String ymd2, Search040301 search040301, List<Integer> seqList, List<String> custList) {
+        List<Tb412> result = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        custEq(search040301.getSCustCd()),
+                        goodsSeqIn(search040301.getSGoodsCd(), seqList),
+                        projectEq(search040301.getSProjectCd()),
+                        custGrEq(search040301.getSCustGr(), custList)
+                )
+                .orderBy(
+                        tb412.seq.asc(),
+                        tb412_1.seq.asc()
+                )
+                .fetch();
+
+        return result;
+    }
+
     private BooleanExpression saleDtEq(String ymd1, String ymd2){
         return StringUtils.hasText(ymd1) && StringUtils.hasText(ymd2) ? tb412.saleDt.between(ymd1, ymd2) : null;
     }
@@ -161,5 +220,9 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
 
     private BooleanExpression whouseEq(String whouseCd){
         return StringUtils.hasText(whouseCd) ? tb412.whouseCd.eq(whouseCd) : null;
+    }
+
+    private BooleanExpression custGrEq(String custGr, List<String> custList){
+        return StringUtils.hasText(custGr) ? tb412.custCd.in(custList) : null;
     }
 }
