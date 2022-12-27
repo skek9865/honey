@@ -13,6 +13,6 @@ public interface Tb412RepositoryDsl {
     Page<Tb412> findAllByDsl(String ymd1, String ymd2, Search040203 search040203, List<Integer> seqList, Pageable pageable);
     List<Tb412> findAllByExcel(String ymd1, String ymd2, Search040203 search040203, List<Integer> seqList);
     List<Tb412> findAllByPopUp(String ymd1, String ymd2, SearchPopUp410 searchPopUp410, List<Integer> seqList);
-    Page<Tb412> findAllBy040301(String ymd1, String ymd2, Search040301 search040301, List<Integer> seqList, List<String> custList, Pageable pageable);
-    List<Tb412> findAllBy040301Excel(String ymd1, String ymd2, Search040301 search040301, List<Integer> seqList, List<String> custList);
+    Page<Tb412> findAllBy040301(String ymd1, String ymd2, Search040301 search040301, List<String> custList, Pageable pageable);
+    List<Tb412> findAllBy040301Excel(String ymd1, String ymd2, Search040301 search040301, List<String> custList);
 }

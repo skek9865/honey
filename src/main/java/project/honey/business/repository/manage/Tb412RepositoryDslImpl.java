@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import java.util.List;
 
 import static project.honey.business.entity.basic.QTb402.tb402;
+import static project.honey.business.entity.manage.QTb411_1.tb411_1;
 import static project.honey.business.entity.manage.QTb412.tb412;
 import static project.honey.business.entity.manage.QTb412_1.tb412_1;
 
@@ -122,14 +123,14 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
     }
 
     @Override
-    public Page<Tb412> findAllBy040301(String ymd1, String ymd2, Search040301 search040301, List<Integer> seqList, List<String> custList, Pageable pageable) {
+    public Page<Tb412> findAllBy040301(String ymd1, String ymd2, Search040301 search040301, List<String> custList, Pageable pageable) {
         List<Tb412> result = queryFactory.select(tb412)
                 .from(tb412)
                 .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
                 .where(
                         saleDtEq(ymd1, ymd2),
                         custEq(search040301.getSCustCd()),
-                        goodsSeqIn(search040301.getSGoodsCd(), seqList),
+                        goodsEq(search040301.getSGoodsCd()),
                         projectEq(search040301.getSProjectCd()),
                         custGrEq(search040301.getSCustGr(), custList)
                 )
@@ -147,7 +148,7 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
                 .where(
                         saleDtEq(ymd1, ymd2),
                         custEq(search040301.getSCustCd()),
-                        goodsSeqIn(search040301.getSGoodsCd(), seqList),
+                        goodsEq(search040301.getSGoodsCd()),
                         projectEq(search040301.getSProjectCd()),
                         custGrEq(search040301.getSCustGr(), custList)
                 )
@@ -158,14 +159,14 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
     }
 
     @Override
-    public List<Tb412> findAllBy040301Excel(String ymd1, String ymd2, Search040301 search040301, List<Integer> seqList, List<String> custList) {
+    public List<Tb412> findAllBy040301Excel(String ymd1, String ymd2, Search040301 search040301, List<String> custList) {
         List<Tb412> result = queryFactory.select(tb412)
                 .from(tb412)
                 .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
                 .where(
                         saleDtEq(ymd1, ymd2),
                         custEq(search040301.getSCustCd()),
-                        goodsSeqIn(search040301.getSGoodsCd(), seqList),
+                        goodsEq(search040301.getSGoodsCd()),
                         projectEq(search040301.getSProjectCd()),
                         custGrEq(search040301.getSCustGr(), custList)
                 )
@@ -224,5 +225,9 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
 
     private BooleanExpression custGrEq(String custGr, List<String> custList){
         return StringUtils.hasText(custGr) ? tb412.custCd.in(custList) : null;
+    }
+
+    private BooleanExpression goodsEq(String goodsCd){
+        return StringUtils.hasText(goodsCd) ? tb411_1.goodsCd.eq(goodsCd) : null;
     }
 }
