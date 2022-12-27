@@ -17,6 +17,7 @@ import java.util.List;
 
 import static project.honey.business.entity.manage.QTb410.tb410;
 import static project.honey.business.entity.manage.QTb410_1.tb410_1;
+import static project.honey.business.entity.manage.QTb411_1.tb411_1;
 
 public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
 
@@ -103,7 +104,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
     }
 
     @Override
-    public Page<Tb410> findAllBy040302(String ymd1, String ymd2, Search040302 search040302, List<Integer> seqList, Pageable pageable) {
+    public Page<Tb410> findAllBy040302(String ymd1, String ymd2, Search040302 search040302, Pageable pageable) {
         List<Tb410> result = queryFactory.select(tb410)
                 .from(tb410)
                 .leftJoin(tb410.tb410_1s, tb410_1).fetchJoin()
@@ -111,7 +112,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
                         estimDtEq(ymd1, ymd2),
                         empEq(search040302.getSEmpNo()),
                         custEq(search040302.getSCustCd()),
-                        goodsSeqIn(search040302.getSGoodsCd(), seqList)
+                        goodsEq(search040302.getSGoodsCd())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -128,7 +129,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
                         estimDtEq(ymd1, ymd2),
                         empEq(search040302.getSEmpNo()),
                         custEq(search040302.getSCustCd()),
-                        goodsSeqIn(search040302.getSGoodsCd(), seqList)
+                        goodsEq(search040302.getSGoodsCd())
                 )
                 .fetch()
                 .size();
@@ -137,7 +138,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
     }
 
     @Override
-    public List<Tb410> findAllBy040302Excel(String ymd1, String ymd2, Search040302 search040302, List<Integer> seqList) {
+    public List<Tb410> findAllBy040302Excel(String ymd1, String ymd2, Search040302 search040302) {
         List<Tb410> result = queryFactory.select(tb410)
                 .from(tb410)
                 .leftJoin(tb410.tb410_1s, tb410_1).fetchJoin()
@@ -145,7 +146,7 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
                         estimDtEq(ymd1, ymd2),
                         empEq(search040302.getSEmpNo()),
                         custEq(search040302.getSCustCd()),
-                        goodsSeqIn(search040302.getSGoodsCd(), seqList)
+                        goodsEq(search040302.getSGoodsCd())
                 )
                 .orderBy(
                         tb410.seq.asc(),
@@ -173,5 +174,8 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
     }
     private BooleanExpression goodsSeqIn(String goodsCd, List<Integer> seqList){
         return StringUtils.hasText(goodsCd) ? tb410.seq.in(seqList) : null;
+    }
+    private BooleanExpression goodsEq(String goodsCd){
+        return StringUtils.hasText(goodsCd) ? tb411_1.goodsCd.eq(goodsCd) : null;
     }
 }

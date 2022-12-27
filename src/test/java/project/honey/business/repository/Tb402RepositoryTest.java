@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import project.honey.business.entity.manage.Tb412;
 import project.honey.business.form.analyze.Search040301;
 import project.honey.business.repository.manage.Tb412Repository;
-import project.honey.business.repository.manage.Tb413Repository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +21,8 @@ public class Tb402RepositoryTest {
     @Test
     public void findAll(){
         List<String> custList = new ArrayList<>();
-        List<Integer> seqList = new ArrayList<>();
         Search040301 search040301 = new Search040301(null, null, null, null, null, null, null,null);
-        Page<Tb412> result = tb412Repository.findAllBy040301("20020101", "20221231", search040301, seqList, custList, PageRequest.of(0, 50));
+        Page<Tb412> result = tb412Repository.findAllBy040301("20020101", "20221231", search040301, custList, PageRequest.of(0, 50));
         result.forEach(System.out::println);
     }
 }

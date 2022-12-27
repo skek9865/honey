@@ -5,13 +5,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import project.honey.business.dto.analaze.Dto040302;
 import project.honey.business.entity.manage.Tb410;
 import project.honey.business.entity.manage.Tb410_1;
 import project.honey.business.form.analyze.Search040302;
 import project.honey.business.repository.manage.Tb410Repository;
-import project.honey.business.repository.manage.Tb410_1Repository;
 import project.honey.comm.CodeToName;
 import project.honey.comm.GlobalMethod;
 
@@ -22,7 +20,6 @@ import java.util.*;
 public class Service040302Impl implements Service040302{
 
     private final Tb410Repository tb410Repository;
-    private final Tb410_1Repository tb410_1Repository;
     private final CodeToName codeToName;
 
     @Override
@@ -30,14 +27,7 @@ public class Service040302Impl implements Service040302{
         String ymd1 = GlobalMethod.replaceYmd(search040302.getSYmd1(), "-");
         String ymd2 = GlobalMethod.replaceYmd(search040302.getSYmd2(), "-");
 
-        List<Tb410_1> findSeqList = tb410_1Repository.findSeqGoods(search040302.getSGoodsCd());
-
-        List<Integer> seqList = new ArrayList<>();
-        Set<Integer> set = new HashSet<>();
-        findSeqList.forEach(e -> set.add(e.getTb410().getSeq()));
-        set.forEach(seqList::add);
-
-        Page<Tb410> result = tb410Repository.findAllBy040302(ymd1, ymd2, search040302, seqList, pageable);
+        Page<Tb410> result = tb410Repository.findAllBy040302(ymd1, ymd2, search040302, pageable);
 
         List<Dto040302> resultList = new ArrayList<>();
 
@@ -54,7 +44,6 @@ public class Service040302Impl implements Service040302{
             String statusNm = statusMap.get(entity.getStatus());
 
             for(Tb410_1 tb410_1 : tb410_1s){
-                if(StringUtils.hasText(search040302.getSGoodsCd()) && !tb410_1.getGoodsCd().equals(search040302.getSGoodsCd())) continue;
                 String goodsNm = goodsMap.get(tb410_1.getGoodsCd());
                 Dto040302 dto040302 = Dto040302.of(entity, tb410_1, custNm, empNm, statusNm, goodsNm);
                 resultList.add(dto040302);
@@ -71,14 +60,7 @@ public class Service040302Impl implements Service040302{
 
         int seq = 0;
 
-        List<Tb410_1> findSeqList = tb410_1Repository.findSeqGoods(search040302.getSGoodsCd());
-
-        List<Integer> seqList = new ArrayList<>();
-        Set<Integer> set = new HashSet<>();
-        findSeqList.forEach(e -> set.add(e.getTb410().getSeq()));
-        set.forEach(seqList::add);
-
-        List<Tb410> result = tb410Repository.findAllBy040302Excel(ymd1, ymd2, search040302, seqList);
+        List<Tb410> result = tb410Repository.findAllBy040302Excel(ymd1, ymd2, search040302);
 
         List<List<String>> resultList = new ArrayList<>();
 
@@ -98,7 +80,6 @@ public class Service040302Impl implements Service040302{
             String statusNm = statusMap.get(entity.getStatus());
 
             for(Tb410_1 tb410_1 : tb410_1s){
-                if(StringUtils.hasText(search040302.getSGoodsCd()) && !tb410_1.getGoodsCd().equals(search040302.getSGoodsCd())) continue;
                 String goodsNm = goodsMap.get(tb410_1.getGoodsCd());
                 List<String> list = new ArrayList<>();
                 list.add(estNo);
