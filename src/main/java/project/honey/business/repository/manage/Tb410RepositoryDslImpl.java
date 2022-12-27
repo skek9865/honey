@@ -176,6 +176,6 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
         return StringUtils.hasText(goodsCd) ? tb410.seq.in(seqList) : null;
     }
     private BooleanExpression goodsEq(String goodsCd){
-        return StringUtils.hasText(goodsCd) ? tb411_1.goodsCd.eq(goodsCd) : null;
+        return StringUtils.hasText(goodsCd) ? tb410_1.goodsCd.eq(goodsCd) : null;
     }
 }
