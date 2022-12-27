@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import project.honey.business.dto.analaze.Dto040301;
 import project.honey.business.entity.manage.Tb412;
 import project.honey.business.entity.manage.Tb412_1;
@@ -51,11 +52,12 @@ public class Service040301Impl implements Service040301{
         for(Tb412 entity : result.getContent()){
             List<Tb412_1> tb412_1s = entity.getTb412_1s();
 
-            String goodsNm = goodsMap.get(tb412_1s.get(0).getGoodsCd());
             String custNm = custMap.get(entity.getCustCd());
             String projectNm = projectMap.get(entity.getProjectCd());
 
             for(Tb412_1 tb412_1 : tb412_1s){
+                if(StringUtils.hasText(search040301.getSGoodsCd()) && !tb412_1.getGoodsCd().equals(search040301.getSGoodsCd())) continue;
+                String goodsNm = goodsMap.get(tb412_1.getGoodsCd());
                 Dto040301 dto040301 = Dto040301.of(entity, tb412_1, goodsNm, custNm, projectNm);
                 resultList.add(dto040301);
             }
@@ -94,11 +96,12 @@ public class Service040301Impl implements Service040301{
 
             String saleNo = entity.getSaleDt().substring(0,4) + "-" + entity.getSaleDt().substring(4,6) + "-" + entity.getSaleDt().substring(6,8) + "-" + entity.getSaleNo();
 
-            String goodsNm = goodsMap.get(tb412_1s.get(0).getGoodsCd());
             String custNm = custMap.get(entity.getCustCd());
             String projectNm = projectMap.get(entity.getProjectCd());
 
             for(Tb412_1 tb412_1 : tb412_1s){
+                if(StringUtils.hasText(search040301.getSGoodsCd()) && !tb412_1.getGoodsCd().equals(search040301.getSGoodsCd())) continue;
+                String goodsNm = goodsMap.get(tb412_1.getGoodsCd());
                 List<String> list = new ArrayList<>();
                 list.add(saleNo);
                 list.add(goodsNm);
