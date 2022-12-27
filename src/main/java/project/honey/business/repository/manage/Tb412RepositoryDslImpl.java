@@ -228,6 +228,6 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
     }
 
     private BooleanExpression goodsEq(String goodsCd){
-        return StringUtils.hasText(goodsCd) ? tb411_1.goodsCd.eq(goodsCd) : null;
+        return StringUtils.hasText(goodsCd) ? tb412_1.goodsCd.eq(goodsCd) : null;
     }
 }
