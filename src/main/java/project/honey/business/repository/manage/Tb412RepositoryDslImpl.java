@@ -10,6 +10,8 @@ import project.honey.business.dto.search.SearchPopUp410;
 import project.honey.business.entity.manage.Tb412;
 import project.honey.business.form.analyze.Search040301;
 import project.honey.business.form.analyze.Search040306;
+import project.honey.business.form.analyze.Search040307;
+import project.honey.business.form.analyze.Search040309;
 import project.honey.business.form.manage.Search040203;
 
 import javax.persistence.EntityManager;
@@ -231,6 +233,95 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
         return result;
     }
 
+    @Override
+    public List<Tb412> findAllBy040307(String ymd1, String ymd2, Search040307 search040307, List<String> custList) {
+        List<Tb412> result = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        empEq(search040307.getSEmpNo()),
+                        custGrEq(search040307.getSCustGr(), custList),
+                        custEq(search040307.getSCustCd())
+                )
+                .orderBy(
+                        tb412.empNo.asc(),
+                        tb412.custCd.asc(),
+                        tb412.seq.asc(),
+                        tb412_1.seq.asc()
+                )
+                .fetch();
+
+        int total = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        empEq(search040307.getSEmpNo()),
+                        custGrEq(search040307.getSCustGr(), custList),
+                        custEq(search040307.getSCustCd())
+                )
+                .fetch()
+                .size();
+
+        return result;
+    }
+
+    @Override
+    public List<Tb412> findAllBy040307Excel(String ymd1, String ymd2, Search040307 search040307, List<String> custList) {
+        return null;
+    }
+
+    @Override
+    public Page<Tb412> findAllBy040309(String ymd1, String ymd2, String vatYn, Pageable pageable) {
+        List<Tb412> result = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        vatYnEq(vatYn)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(
+                        tb412.seq.asc(),
+                        tb412.custCd.asc(),
+                        tb412_1.seq.asc()
+                )
+                .fetch();
+
+        int total = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        vatYnEq(vatYn)
+                )
+                .fetch()
+                .size();
+
+        return new PageImpl<>(result, pageable, total);
+    }
+
+    @Override
+    public List<Tb412> findAllBy040309Excel(String ymd1, String ymd2, String vatYn) {
+        List<Tb412> result = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        vatYnEq(vatYn)
+                )
+                .orderBy(
+                        tb412.seq.asc(),
+                        tb412.custCd.asc(),
+                        tb412_1.seq.asc()
+                )
+                .fetch();
+
+        return result;
+    }
+
     private BooleanExpression saleDtEq(String ymd1, String ymd2){
         return StringUtils.hasText(ymd1) && StringUtils.hasText(ymd2) ? tb412.saleDt.between(ymd1, ymd2) : null;
     }
@@ -281,5 +372,13 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
 
     private BooleanExpression goodsEq(String goodsCd){
         return StringUtils.hasText(goodsCd) ? tb412_1.goodsCd.eq(goodsCd) : null;
+    }
+
+    private BooleanExpression vatYnEq(String vatYn){
+        if(StringUtils.hasText(vatYn)){
+            if(vatYn.equals("Y")) return tb412.saleType.eq("00001");
+            else return tb412.saleType.eq("00002");
+        }
+        return null;
     }
 }
