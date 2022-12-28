@@ -8,12 +8,12 @@
         case "query" :
           $('#size').val($('#num_per_page').val());
           $('#page').val(1);
-          fm_home.action = "/040305";
+          fm_home.action = "/040306";
           fm_home.method = "/get";
           fm_home.submit();
           break;
         case "excel" :
-          fm_home.action = "/040305/excel";
+          fm_home.action = "/040306/excel";
           fm_home.method = "get";
           fm_home.submit();
           break;
@@ -44,20 +44,6 @@
                   </div>
                 </td>
                 <td class="p-1">
-                  <label for='sWhouseCd' class="search_labal_lg">출하창고</label>
-                  <select class='form-select' id='sWhouseCd' th:field="${search.sWhouseCd}" size=1>
-                    <option value=''>선택</option>
-                    <option th:each="whouseCode : ${whouseCodes}" th:attr="selected=${whouseCode.value == sWhouseCd ?'true' : 'false'}"
-                            th:value="${whouseCode.value}" th:text="${whouseCode.text}"></option>
-                  </select>
-                </td>
-                <td class="px-4">
-                  <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>
-                  <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
-                </td>
-              </tr>
-              <tr>
-                <td class="p-1">
                   <label for="scustcd" class="search_labal">거래처</label>
                   <input type="hidden" id="scustcd" th:field="${search.sCustCd}" size="30" class="form-control" readonly>
                   <input type="text" id="scustnm" th:field="${search.sCustNm}" size="30" class="form-control" readonly>
@@ -71,6 +57,10 @@
                   <button name="clear1" id="clear1" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('sgoodscd').value='';document.getElementById('sgoodsnm').value='';">비움</button>
                   <button name="findgoods1" id="findgoods1" type="button" class="btn btn-gfk btn-ssm"
                           onclick='gf_popup("700","500","_search_goods","/040105/popup?type=1&product=true&stock=true")'>검색</button>
+                </td>
+                <td class="px-4">
+                  <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>
+                  <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
                 </td>
               </tr>
             </table>
@@ -87,14 +77,15 @@
           <tbody>
           <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
             <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.shipNo}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.saleNo}"></td>
             <td class="list_td_1 text-center" th:text="${dto.goodsNm}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.standard}"></td>
             <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.qty,0, 'COMMA')}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.whouseNm}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.custNm}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.phone}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.note}"></td>
+            <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.amt,0, 'COMMA')}"></td>
+            <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.vat,0, 'COMMA')}"></td>
+            <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.tot,0, 'COMMA')}"></td>
+            <td>
+              <button name="print" id="print" type="button" class="btn btn-gfk btn-ssm" th:data-seq="${dto.seq}">인쇄</button>&nbsp;
+            </td>
           </tr>
           </tbody>
           <tfoot>
@@ -116,5 +107,12 @@
 <script th:inline="javascript">
   $(document).ready(function () {
     $("#datatable_1").width([[${global.mainWidth}]]);
+  });
+</script>
+<script th:inline="javascript">
+  $('button[name="print"]').click(function (e) {
+    e.preventDefault();
+    var url = window.location.href + "";
+    gf_popup("850","950","040306_inputbox",url.split('?')[0] + "/popup/" + $(this).data("seq"));
   });
 </script>
