@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 import project.honey.business.dto.search.SearchPopUp410;
 import project.honey.business.entity.manage.Tb412;
 import project.honey.business.form.analyze.Search040301;
+import project.honey.business.form.analyze.Search040306;
 import project.honey.business.form.manage.Search040203;
 
 import javax.persistence.EntityManager;
@@ -169,6 +170,57 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
                         goodsEq(search040301.getSGoodsCd()),
                         projectEq(search040301.getSProjectCd()),
                         custGrEq(search040301.getSCustGr(), custList)
+                )
+                .orderBy(
+                        tb412.seq.asc(),
+                        tb412_1.seq.asc()
+                )
+                .fetch();
+
+        return result;
+    }
+
+    @Override
+    public Page<Tb412> findAllBy040306(String ymd1, String ymd2, Search040306 search040306, List<Integer> seqList, Pageable pageable) {
+        List<Tb412> result = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        custEq(search040306.getSCustCd()),
+                        goodsSeqIn(search040306.getSGoodsCd(), seqList)
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(
+                        tb412.seq.asc(),
+                        tb412_1.seq.asc()
+                )
+                .fetch();
+
+        int total = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        custEq(search040306.getSCustCd()),
+                        goodsSeqIn(search040306.getSGoodsCd(), seqList)
+                )
+                .fetch()
+                .size();
+
+        return new PageImpl<>(result, pageable, total);
+    }
+
+    @Override
+    public List<Tb412> findAllBy040306Excel(String ymd1, String ymd2, Search040306 search040306, List<Integer> seqList) {
+        List<Tb412> result = queryFactory.select(tb412)
+                .from(tb412)
+                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
+                .where(
+                        saleDtEq(ymd1, ymd2),
+                        custEq(search040306.getSCustCd()),
+                        goodsSeqIn(search040306.getSGoodsCd(), seqList)
                 )
                 .orderBy(
                         tb412.seq.asc(),
