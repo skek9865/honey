@@ -17,10 +17,12 @@
           for(i = 0; i < 5; i++){
             amt = $("#amt_" + i).val();
             vat = $("#vat_" + i).val();
+            amtSum = $("#amtSum_" + i).val();
+            priceVat = $("#priceVat_" + i).val();
             $('#amt_' + i).val(amt.replace(/,/gi,''))
             $('#vat_' + i).val(vat.replace(/,/gi,''))
-            $('#amtSum_' + i).val(vat.replace(/,/gi,''))
-            $('#priceVat_' + i).val(vat.replace(/,/gi,''))
+            $('#amtSum_' + i).val(amtSum.replace(/,/gi,''))
+            $('#priceVat_' + i).val(priceVat.replace(/,/gi,''))
           }
           fm_input.action = "/040203/" + as_action;
           fm_input.method = "post";

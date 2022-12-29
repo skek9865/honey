@@ -11,4 +11,7 @@ public interface Tb402Repository extends JpaRepository<Tb402, Integer>, Tb402Rep
 
     @Query("select t.custCd from Tb402 t where t.class1 = :class1")
     List<String> findAllByClass(@Param("class1")String class1);
+
+    @Query("select t.custCd from Tb402 t where t.shipYn = :shipYn")
+    List<String> findAllByShipYn(@Param("shipYn") String shipYn);
 }
