@@ -12069,6 +12069,11 @@ body {
   width: 70px;
   text-align: right;
 }
+.search_labal_xl {
+  font-size: 12px;
+  width: 120px;
+  text-align: right;
+}
 .input_date {
 	width: 70px !important;
 

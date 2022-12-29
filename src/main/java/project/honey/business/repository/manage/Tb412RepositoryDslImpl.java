@@ -234,16 +234,18 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
     }
 
     @Override
-    public List<Tb412> findAllBy040307(String ymd1, String ymd2, Search040307 search040307, List<String> custList) {
+    public List<Tb412> findAllBy040307(String ymd1, String ymd2, Search040307 search040307, List<String> custList, List<String> shipList) {
         List<Tb412> result = queryFactory.select(tb412)
                 .from(tb412)
                 .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
                 .where(
+                        tb412.custCd.in(shipList),
                         saleDtEq(ymd1, ymd2),
                         empEq(search040307.getSEmpNo()),
                         custGrEq(search040307.getSCustGr(), custList),
                         custEq(search040307.getSCustCd())
                 )
+                .groupBy(tb412.seq)
                 .orderBy(
                         tb412.empNo.asc(),
                         tb412.custCd.asc(),
@@ -265,11 +267,6 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
                 .size();
 
         return result;
-    }
-
-    @Override
-    public List<Tb412> findAllBy040307Excel(String ymd1, String ymd2, Search040307 search040307, List<String> custList) {
-        return null;
     }
 
     @Override
