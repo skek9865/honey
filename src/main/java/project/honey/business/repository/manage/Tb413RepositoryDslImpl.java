@@ -48,7 +48,6 @@ public class Tb413RepositoryDslImpl implements Tb413RepositoryDsl{
 
         int total = queryFactory.select(tb413)
                 .from(tb413)
-                .leftJoin(tb413.tb413_1s, tb413_1).fetchJoin()
                 .where(
                         shipDtEq(ymd1, ymd2),
                         whouseEq(search040204.getSWhouseCd()),
@@ -124,7 +123,6 @@ public class Tb413RepositoryDslImpl implements Tb413RepositoryDsl{
 
         int total = queryFactory.select(tb413)
                 .from(tb413)
-                .leftJoin(tb413.tb413_1s, tb413_1).fetchJoin()
                 .where(
                         shipDtEq(ymd1, ymd2),
                         whouseEq(search040304.getSWhouseCd()),

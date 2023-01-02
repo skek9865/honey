@@ -10,6 +10,7 @@ import project.honey.business.entity.manage.Tb412;
 import project.honey.business.entity.sale.Tb416;
 import project.honey.business.form.analyze.Search040307;
 import project.honey.business.form.sale.Search040402;
+import project.honey.business.form.sale.Search040404;
 
 import javax.persistence.EntityManager;
 import java.util.List;
@@ -51,7 +52,6 @@ public class Tb416RepositoryDslImpl implements Tb416RepositoryDsl{
 
         int total = queryFactory.select(tb416)
                 .from(tb416)
-                .leftJoin(tb416.tb416_1s, tb416_1).fetchJoin()
                 .where(
                         buyDtEq(ymd1, ymd2),
                         whouseEq(search040402.getSWhouseCd()),
@@ -115,18 +115,52 @@ public class Tb416RepositoryDslImpl implements Tb416RepositoryDsl{
                 )
                 .fetch();
 
-        int total = queryFactory.select(tb416)
+        return result;
+    }
+
+    @Override
+    public Page<Tb416> findAllBy040405(String ymd1, String ymd2, Search040404 search040404, Pageable pageable) {
+        List<Tb416> result = queryFactory.select(tb416)
                 .from(tb416)
                 .leftJoin(tb416.tb416_1s, tb416_1).fetchJoin()
                 .where(
-                        tb416.custCd.in(shipList),
                         buyDtEq(ymd1, ymd2),
-                        empEq(search040307.getSEmpNo()),
-                        custGrEq(search040307.getSCustGr(), custList),
-                        custEq(search040307.getSCustCd())
+                        custEq(search040404.getSCustCd())
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(
+                        tb416.seq.asc(),
+                        tb416_1.seq.asc()
+                )
+                .fetch();
+
+        int total = queryFactory.select(tb416)
+                .from(tb416)
+                .where(
+                        buyDtEq(ymd1, ymd2),
+                        custEq(search040404.getSCustCd())
                 )
                 .fetch()
                 .size();
+
+        return new PageImpl<>(result, pageable, total);
+    }
+
+    @Override
+    public List<Tb416> findAllBy040405Excel(String ymd1, String ymd2, Search040404 search040404) {
+        List<Tb416> result = queryFactory.select(tb416)
+                .from(tb416)
+                .leftJoin(tb416.tb416_1s, tb416_1).fetchJoin()
+                .where(
+                        buyDtEq(ymd1, ymd2),
+                        custEq(search040404.getSCustCd())
+                )
+                .orderBy(
+                        tb416.seq.asc(),
+                        tb416_1.seq.asc()
+                )
+                .fetch();
 
         return result;
     }

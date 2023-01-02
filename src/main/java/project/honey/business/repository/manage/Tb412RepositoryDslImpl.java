@@ -59,7 +59,6 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
 
         int total = queryFactory.select(tb412)
                 .from(tb412)
-                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
                 .where(
                         saleDtEq(ymd1, ymd2),
                         nameContain(search040203.getSName()),
@@ -147,7 +146,6 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
 
         int total = queryFactory.select(tb412)
                 .from(tb412)
-                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
                 .where(
                         saleDtEq(ymd1, ymd2),
                         custEq(search040301.getSCustCd()),
@@ -202,7 +200,6 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
 
         int total = queryFactory.select(tb412)
                 .from(tb412)
-                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
                 .where(
                         saleDtEq(ymd1, ymd2),
                         custEq(search040306.getSCustCd()),
@@ -254,18 +251,6 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
                 )
                 .fetch();
 
-        int total = queryFactory.select(tb412)
-                .from(tb412)
-                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
-                .where(
-                        saleDtEq(ymd1, ymd2),
-                        empEq(search040307.getSEmpNo()),
-                        custGrEq(search040307.getSCustGr(), custList),
-                        custEq(search040307.getSCustCd())
-                )
-                .fetch()
-                .size();
-
         return result;
     }
 
@@ -289,7 +274,6 @@ public class Tb412RepositoryDslImpl implements Tb412RepositoryDsl{
 
         int total = queryFactory.select(tb412)
                 .from(tb412)
-                .leftJoin(tb412.tb412_1s, tb412_1).fetchJoin()
                 .where(
                         saleDtEq(ymd1, ymd2),
                         vatYnEq(vatYn)
