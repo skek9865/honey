@@ -47,7 +47,6 @@ public class Tb415RepositoryDslImpl implements Tb415RepositoryDsl{
 
         int total = queryFactory.select(tb415)
                 .from(tb415)
-                .leftJoin(tb415.tb415_1s, tb415_1).fetchJoin()
                 .where(
                         orderDtEq(ymd1, ymd2),
                         empEq(search040401.getSEmpNo()),

@@ -49,7 +49,6 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
 
         int total = queryFactory.select(tb410)
                 .from(tb410)
-                .leftJoin(tb410.tb410_1s, tb410_1).fetchJoin()
                 .where(
                         estimDtEq(search040201.getSYmd1(), search040201.getSYmd2()),
                         empEq(search040201.getSEmpNo()),
@@ -124,7 +123,6 @@ public class Tb410RepositoryDslImpl implements Tb410RepositoryDsl{
 
         int total = queryFactory.select(tb410)
                 .from(tb410)
-                .leftJoin(tb410.tb410_1s, tb410_1).fetchJoin()
                 .where(
                         estimDtEq(ymd1, ymd2),
                         empEq(search040302.getSEmpNo()),

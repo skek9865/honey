@@ -45,7 +45,6 @@ public class Tb414RepositoryDslImpl implements Tb414RepositoryDsl{
 
         int total = queryFactory.select(tb414)
                 .from(tb414)
-                .leftJoin(tb414.tb414_1s, tb414_1).fetchJoin()
                 .where(
                         shipDtEq(ymd1, ymd2),
                         custEq(search040205.getSCustCd()),
@@ -97,7 +96,6 @@ public class Tb414RepositoryDslImpl implements Tb414RepositoryDsl{
 
         int total = queryFactory.select(tb414)
                 .from(tb414)
-                .leftJoin(tb414.tb414_1s, tb414_1).fetchJoin()
                 .where(
                         shipDtEq(ymd1, ymd2),
                         whouseEq(search040304.getSWhouseCd()),
