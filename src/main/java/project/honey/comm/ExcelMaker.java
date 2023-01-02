@@ -41,6 +41,7 @@ public class ExcelMaker {
         Row row = null;
         Cell cell = null;
         int rowNum = 0;
+        boolean sw = true;
 
         // 제목 삽입
         row = sheet.createRow(rowNum++);
@@ -69,8 +70,9 @@ public class ExcelMaker {
                 List<String> data = excelData.get(i);
                 for (int j = 0; j < data.size(); j++) {
                     cell = row.createCell(j + 1);
+                    if(data.get(j) != null && data.get(j).equals("담당자 소계")) sw = false;
                     if (data.get(j) != null && !data.get(j).equals("") && (excelType.get(j).equals("int") || excelType.get(j).equals("Tint"))) {
-                        if (excelType.get(j).equals("Tint")) {
+                        if (excelType.get(j).equals("Tint") && sw) {
                             totalIntList[j] += Integer.parseInt(data.get(j));
                         }
                         cell.setCellValue(Integer.parseInt(data.get(j)));
@@ -82,6 +84,7 @@ public class ExcelMaker {
                         cell.setCellStyle(bodyStyle);
                     }
                 }
+                sw = true;
             }
 
             row = sheet.createRow(rowNum++);

@@ -9,4 +9,7 @@ public interface Tb416Repository extends JpaRepository<Tb416, Integer>,Tb416Repo
 
     @Query("select count(t) from Tb416 t where t.buyDt = :buyDt")
     Long findBuyNo(@Param("buyDt")String buyDt);
+
+    @Query("select sum(t1.amt + t1.vat) from Tb416 t, Tb416_1 t1 where t1.tb416.seq = :fk and t.custCd = :custCd")
+    Integer sumAmtVat(@Param("custCd")String custCd, @Param("fk")Integer fk);
 }

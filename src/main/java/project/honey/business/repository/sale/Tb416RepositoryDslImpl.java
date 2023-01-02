@@ -6,12 +6,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
+import project.honey.business.entity.manage.Tb412;
 import project.honey.business.entity.sale.Tb416;
+import project.honey.business.form.analyze.Search040307;
 import project.honey.business.form.sale.Search040402;
 
 import javax.persistence.EntityManager;
 import java.util.List;
 
+import static project.honey.business.entity.manage.QTb412.tb412;
+import static project.honey.business.entity.manage.QTb412_1.tb412_1;
 import static project.honey.business.entity.sale.QTb416.tb416;
 import static project.honey.business.entity.sale.QTb416_1.tb416_1;
 
@@ -88,6 +92,43 @@ public class Tb416RepositoryDslImpl implements Tb416RepositoryDsl{
                         tb416_1.seq.asc()
                 )
                 .fetch();
+
+        return result;
+    }
+
+    @Override
+    public List<Tb416> findAllBy040307(String ymd1, String ymd2, Search040307 search040307, List<String> custList, List<String> shipList) {
+        List<Tb416> result = queryFactory.select(tb416)
+                .from(tb416)
+                .leftJoin(tb416.tb416_1s, tb416_1).fetchJoin()
+                .where(
+                        tb416.custCd.in(shipList),
+                        buyDtEq(ymd1, ymd2),
+                        empEq(search040307.getSEmpNo()),
+                        custGrEq(search040307.getSCustGr(), custList),
+                        custEq(search040307.getSCustCd())
+                )
+                .groupBy(tb416.seq)
+                .orderBy(
+                        tb416.empNo.asc(),
+                        tb416.custCd.asc(),
+                        tb416.seq.asc(),
+                        tb416_1.seq.asc()
+                )
+                .fetch();
+
+        int total = queryFactory.select(tb416)
+                .from(tb416)
+                .leftJoin(tb416.tb416_1s, tb416_1).fetchJoin()
+                .where(
+                        tb416.custCd.in(shipList),
+                        buyDtEq(ymd1, ymd2),
+                        empEq(search040307.getSEmpNo()),
+                        custGrEq(search040307.getSCustGr(), custList),
+                        custEq(search040307.getSCustCd())
+                )
+                .fetch()
+                .size();
 
         return result;
     }
