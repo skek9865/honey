@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <body>
-<form name="fm_input" th:action="@{/040401/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+<form name="fm_input" th:action="@{/040402/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
   <script th:inline="javascript">
     function gf_rowdel(num) {
       $('#goodscd_' + num).val("")
@@ -11,7 +11,6 @@
       $('#price_' + num).val(0)
       $('#amt_' + num).val(0)
       $('#vat_' + num).val(0)
-      $('#deadDt_' + num).val("")
       $('#note_' + num).val("")
       return false;
     }
@@ -24,6 +23,7 @@
             <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
                     th:onclick="lf_confirm([[${action}]],'','','')">저장
             </button>
+            <button name="load_search" id="load_search" type="button" class="btn btn-gfk btn-sm" onclick='gf_popup("1200","500","_search_est","/040402/orderPopUp")'>발주서 검색</button>
             <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
           </td>
         </tr>
@@ -35,14 +35,14 @@
           <td>
             <div class='input-group input-daterange'>
               <div class='input-group-addon px-2'>
-                <label for="orderDt" class="input_labal">일자</label>
+                <label for="buyDt" class="input_labal">일자</label>
               </div>
-              <input type="text" id="orderDt"  th:field="*{orderDt}" size="6" class="input_date" autocomplete="off">
+              <input type="text" id="buyDt"  th:field="*{buyDt}" size="6" class="input_date" autocomplete="off">
             </div>
           </td>
           <td>
-            <label for="orderNo" class="input_labal">발주번호</label>
-            <input id="orderNo" th:field="*{orderNo}" type="text" size="10" class="form-control" readonly>
+            <label for="buyNo" class="input_labal">구매번호</label>
+            <input id="buyNo" th:field="*{buyNo}" type="text" size="10" class="form-control" readonly>
           </td>
           <td>
             <label for="vcustcd" class="input_labal">거래처</label>
@@ -64,16 +64,6 @@
             </select>
           </td>
           <td>
-            <label for='whouseCd' class='input_labal'>입고창고</label>
-            <select class='form-select' id='whouseCd' th:field="*{whouseCd}" size=1>
-              <option value=''>선택</option>
-              <option th:each="whouseCode : ${whouseCodes}"
-                      th:attr="selected=${whouseCode.value == whouseCd ?'true' : 'false'}"
-                      th:value="${whouseCode.value}"
-                      th:text="${whouseCode.text}">
-            </select>
-          </td>
-          <td>
             <label for='vsaletype' class='input_labal'>거래유형</label>
             <select class='form-select' id='vsaletype' th:field="*{saleType}" size=1
                     th:onchange="gf_changeSaletype('vsaletype','vatyn_','5','sum');">
@@ -82,6 +72,16 @@
                       th:attr="selected=${saleTypeCode.value == saleType ?'true' : 'false'}"
                       th:value="${saleTypeCode.value}"
                       th:text="${saleTypeCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for='whouseCd' class='input_labal'>입고창고</label>
+            <select class='form-select' id='whouseCd' th:field="*{whouseCd}" size=1>
+              <option value=''>선택</option>
+              <option th:each="whouseCode : ${whouseCodes}"
+                      th:attr="selected=${whouseCode.value == whouseCd ?'true' : 'false'}"
+                      th:value="${whouseCode.value}"
+                      th:text="${whouseCode.text}">
             </select>
           </td>
         </tr>
@@ -107,16 +107,6 @@
             </select>
           </td>
           <td>
-            <div class='input-group input-daterange'>
-              <div class='input-group-addon px-2'>
-                <label for="deadDt" class="input_labal">납기일자</label>
-              </div>
-              <input type="text" id="deadDt"  th:field="*{deadDt}" size="6" class="input_date" autocomplete="off">
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td>
             <label for='status' class='input_labal'>상태</label>
             <select class='form-select' id='status' th:field="*{status}" size=1>
               <option value=''>선택</option>
@@ -125,8 +115,6 @@
                       th:value="${statusCode.value}"
                       th:text="${statusCode.text}">
             </select>
-          </td>
-          <td>
             <label class='input_labal' for="closeYn">종결여부</label>
             <div class='form-check form-check-inline'>
               <input class='form-check-input' type="checkbox" style="margin-top: 10px" id="closeYn" th:field="*{closeYn}">
@@ -154,7 +142,7 @@
                     th:onclick="gf_rowdel([[${subStat.index}]]); gf_totsum('qty','amt','vat','5','qty_t','amt_t','vat_t','tot_t');">삭제</button>&nbsp;
           </td>
           <td>
-            <input th:id="|goodscd_${subStat.index}|" th:name="${'tb415_1Forms[' + subStat.index + '].goodsCd'}"
+            <input th:id="|goodscd_${subStat.index}|" th:name="${'tb416_1Forms[' + subStat.index + '].goodsCd'}"
                    th:value="${sub.goodsCd}" type="text" size="5" class="form-control">
           </td>
           <td>
@@ -164,37 +152,31 @@
                     th:onclick='gf_popup("700","500","_search_goods","/040105/popup?type="+ [[${subStat.index + 2}]] +"&product=true&stock=true")'>검색</button>&nbsp;
           </td>
           <td>
-            <input th:id="|standard_${subStat.index}|" th:name="${'tb415_1Forms[' + subStat.index + '].standard'}"
+            <input th:id="|standard_${subStat.index}|" th:name="${'tb416_1Forms[' + subStat.index + '].standard'}"
                    th:value="${sub.standard}" type="text" size="5" class="form-control" readonly>
           </td>
           <td>
-            <input th:id="|qty_${subStat.index}|" th:name="${'tb415_1Forms[' + subStat.index + '].qty'}"
+            <input th:id="|qty_${subStat.index}|" th:name="${'tb416_1Forms[' + subStat.index + '].qty'}"
                    th:value="${sub.qty}" type="text" size="5" class="form-control input_number"
                    th:onchange="|gf_sum('qty_${subStat.index}', 'price_${subStat.index}', 'amt_${subStat.index}', 'vat_${subStat.index}', 'vatyn_${subStat.index}');
                   gf_totsum('qty','amt','vat','5','qty_t','amt_t','vat_t','tot_t');|">
           </td>
           <td>
-            <input th:id="|price_${subStat.index}|" th:name="${'tb415_1Forms[' + subStat.index + '].price'}"
+            <input th:id="|price_${subStat.index}|" th:name="${'tb416_1Forms[' + subStat.index + '].price'}"
                    th:value="${sub.price}" type="text" size="5" class="form-control input_number"
                    th:onchange="|gf_sum('qty_${subStat.index}', 'price_${subStat.index}', 'amt_${subStat.index}', 'vat_${subStat.index}', 'vatyn_${subStat.index}');
                   gf_totsum('qty','amt','vat','5','qty_t','amt_t','vat_t','tot_t');|">
           </td>
           <td>
-            <input th:id="|amt_${subStat.index}|" th:name="${'tb415_1Forms[' + subStat.index + '].amt'}"
+            <input th:id="|amt_${subStat.index}|" th:name="${'tb416_1Forms[' + subStat.index + '].amt'}"
                    th:value="${sub.amt}" type="text" size="5" class="form-control input_number" readonly>
           </td>
           <td>
-            <input th:id="|vat_${subStat.index}|" th:name="${'tb415_1Forms[' + subStat.index + '].vat'}"
+            <input th:id="|vat_${subStat.index}|" th:name="${'tb416_1Forms[' + subStat.index + '].vat'}"
                    th:value="${sub.vat}" type="text" size="5" class="form-control input_number" readonly>
           </td>
           <td>
-            <div class='input-group input-daterange'>
-              <input th:id="|deadDt_${subStat.index}|" th:name="${'tb415_1Forms[' + subStat.index + '].deadDt'}"
-                     th:value="${sub.deadDt}" type="text" size="6" class="input_date" autocomplete="off">
-            </div>
-          </td>
-          <td>
-            <input th:id="|note_${subStat.index}|" th:name="${'tb415_1Forms[' + subStat.index + '].note'}"
+            <input th:id="|note_${subStat.index}|" th:name="${'tb416_1Forms[' + subStat.index + '].note'}"
                    th:value="${sub.note}" type="text" size="20" class="form-control">
           </td>
         </tr>

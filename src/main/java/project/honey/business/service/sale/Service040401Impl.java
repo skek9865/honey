@@ -6,9 +6,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import project.honey.business.dto.manage.Tb412MainDto;
+import project.honey.business.dto.sale.PopUp040401Dto;
 import project.honey.business.dto.sale.Tb415Dto;
 import project.honey.business.dto.sale.Tb415MainDto;
 import project.honey.business.dto.sale.Tb415_1Dto;
+import project.honey.business.dto.search.SearchPopUp410;
+import project.honey.business.entity.manage.Tb412;
+import project.honey.business.entity.manage.Tb412_1;
 import project.honey.business.entity.sale.Tb415;
 import project.honey.business.entity.sale.Tb415_1;
 import project.honey.business.form.sale.Search040401;
@@ -209,5 +214,55 @@ public class Service040401Impl implements Service040401{
         tb415_1Repository.deleteByFk(id);
         tb415Repository.deleteById(id);
         return true;
+    }
+
+    @Override
+    public List<PopUp040401Dto> findAllByPopUp(SearchPopUp410 searchPopUp410) {
+        String ymd1 = GlobalMethod.replaceYmd(searchPopUp410.getSYmd1(), "-");
+        String ymd2 = GlobalMethod.replaceYmd(searchPopUp410.getSYmd2(), "-");
+
+        int qty = 0, num = 0, seq = 0;
+        String goods = null;
+
+        List<Tb415_1> findSeqList = tb415_1Repository.findSeqGoods(searchPopUp410.getSGoodsCd());
+
+        List<Integer> seqList = new ArrayList<>();
+        Set<Integer> set = new HashSet<>();
+        findSeqList.forEach(e -> set.add(e.getTb415().getSeq()));
+        set.forEach(seqList::add);
+
+        List<Tb415> result = tb415Repository.findAllByPopUp(ymd1, ymd2, searchPopUp410, seqList);
+
+        List<PopUp040401Dto> resultList = new ArrayList<>();
+
+        Map<String, String> empMap = codeToName.emp();
+        Map<String, String> goodsMap = codeToName.goods();
+        Map<String, String> custMap = codeToName.cust();
+
+        for(Tb415 entity : result){
+            if(seq == entity.getSeq()) continue;
+            List<Tb415_1> tb415_1s = entity.getTb415_1s();
+
+            String goodsNm = goodsMap.get(tb415_1s.get(0).getGoodsCd());
+            String empNm = empMap.get(entity.getEmpNo());
+            String custNm = custMap.get(entity.getCustCd());
+
+            for(Tb415_1 tb415_1 : tb415_1s){
+                goods = goodsNm;
+                if(tb415_1s.size() > 1){
+                    if(num + 1 == tb415_1s.size()) goods = goodsNm + " 외" + num + "건";
+                    num++;
+                }
+                qty += tb415_1.getQty();
+            }
+            PopUp040401Dto dto = PopUp040401Dto.of(entity, custNm, empNm, goods, qty);
+            resultList.add(dto);
+            num = 0;
+            qty = 0;
+
+            seq = entity.getSeq();
+        }
+
+        return resultList;
     }
 }
