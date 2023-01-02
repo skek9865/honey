@@ -9,7 +9,7 @@ import project.honey.business.entity.sale.Tb417;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
 
-public interface Tb417Repository extends JpaRepository<Tb417, Integer> {
+public interface Tb417Repository extends JpaRepository<Tb417, Integer>, Tb417RepositoryDsl {
 
     @Query("select sum(t.amount) from Tb417 t where t.custCd = :custCd and t.amountCl = '00001'")
     Integer sumAmountByCust(@Param("custCd") String custCd);

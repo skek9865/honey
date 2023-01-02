@@ -14,8 +14,6 @@ import project.honey.business.form.sale.Search040402;
 import javax.persistence.EntityManager;
 import java.util.List;
 
-import static project.honey.business.entity.manage.QTb412.tb412;
-import static project.honey.business.entity.manage.QTb412_1.tb412_1;
 import static project.honey.business.entity.sale.QTb416.tb416;
 import static project.honey.business.entity.sale.QTb416_1.tb416_1;
 
