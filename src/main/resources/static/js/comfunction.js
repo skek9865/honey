@@ -13,6 +13,21 @@ function gf_modal(as_url,as_acd,as_bcd,as_ccd,as_action,as_val,as_val1) {
 	});
 }
 
+function gf_modal_1(as_url,as_acd,as_bcd,as_ccd,as_action,as_val,as_val1) {
+	$.ajax({
+		url:as_url,
+		type:"GET",
+		data: { fstId : as_acd ,scdId : as_bcd ,thdId : as_ccd ,action : as_action ,vseq : as_val,vseq1 : as_val1},
+		dataType:"html",
+		success: function(req,stat) {
+			if(stat=="success") {
+				$("#modalhtml_1").html(req);
+			}
+		},
+		error: (log)=>{alert("실패" + log.value)},
+	});
+}
+
 function gf_menu(as_acd,as_bcd,as_ccd,as_empno) {
 	var purl = "menu";
 	$.ajax({

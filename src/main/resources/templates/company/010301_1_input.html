@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form name="fm_input" th:action="@{/010301/fk/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+  <div class="container-fluid p-2">
+    <div class="input_div">
+      <table class="input_table">
+        <tr>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="dvStDt" class="input_labal">운행시작일자</label>
+              </div>
+              <input type="text" id="dvStDt"  th:field="*{dvStDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="dvEdDt" class="input_labal">운행종료일자</label>
+              </div>
+              <input type="text" id="dvEdDt"  th:field="*{dvEdDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='empNo' class='input_labal'>운행자</label>
+            <select class='form-select' id='empNo' th:field="*{empNo}" size=1>
+              <option value=''>선택</option>
+              <option th:each="empCode : ${empCodes}"
+                      th:attr="selected=${empCode.value == empNo ?'true' : 'false'}"
+                      th:value="${empCode.value}"
+                      th:text="${empCode.text}">
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="price" class="input_labal">금액</label>
+            <input id="price" th:field="*{price}" type="text" size="20" class="form-control input_number">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="penalty" class="input_labal">과태료</label>
+            <input id="penalty" th:field="*{penalty}" type="text" size="20" class="form-control input_number">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="place" class="input_labal">출장지</label>
+            <input id="place" th:field="*{place}" type="text" size="25" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="purpose" class="input_labal">출장목적</label>
+            <input id="purpose" th:field="*{purpose}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="note" class="input_labal">비고</label>
+            <input id="note" th:field="*{note}" type="text" size="40" class="form-control">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="input_div button_table">
+      <table class="input_table">
+        <tr>
+          <td class="float-end">
+            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+            </button>
+            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" th:field="*{tb101}" size="0" class="form-control ">
+  <input type="hidden" th:field="*{tb106}" size="0" class="form-control ">
+  <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+  <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+  <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>
