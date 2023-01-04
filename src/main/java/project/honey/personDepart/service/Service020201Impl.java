@@ -126,7 +126,7 @@ public class Service020201Impl implements Service020201{
     }
 
     @Override
-    public Boolean delete(Integer id) {
+    public Boolean delete(Integer id) throws IOException{
         Tb203 entity = tb203Repository.findById(id).orElseThrow(RuntimeException::new);
         tb203Repository.deleteById(id);
         uploadService.deleteFileUuid("C:/study/spring/team/honey/src/main/resources/static/files/emp", entity.getSaveFNm());

@@ -20,5 +20,5 @@ public interface Service020201 {
 
     Boolean update(Tb203Form form);
 
-    Boolean delete(Integer id);
+    Boolean delete(Integer id) throws IOException;
 }

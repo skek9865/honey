@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import project.honey.comm.GlobalMethod;
-import project.honey.company.dto.Tb107Dto;
 import project.honey.company.entity.Tb107;
 
 @AllArgsConstructor
