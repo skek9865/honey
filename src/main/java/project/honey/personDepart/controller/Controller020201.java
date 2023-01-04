@@ -121,7 +121,7 @@ public class Controller020201 {
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id, Model model, HttpServletRequest request){
+    public String delete(@PathVariable("id") Integer id, Model model, HttpServletRequest request) throws IOException {
         log.info("개인파일관리 delete");
         if(service020201.delete(id)) model.addAttribute("msg", "정상적으로 삭제 되었습니다.");
         else model.addAttribute("msg", "문제가 발생하였습니다");

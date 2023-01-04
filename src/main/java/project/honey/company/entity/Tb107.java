@@ -4,7 +4,6 @@ import lombok.*;
 import org.hibernate.annotations.Comment;
 import project.honey.comm.BaseAtt;
 import project.honey.comm.GlobalMethod;
-import project.honey.company.dto.Tb107Dto;
 import project.honey.company.form.Tb107Form;
 
 import javax.persistence.*;
