@@ -8,29 +8,25 @@
         case "query" :
           $('#size').val($('#num_per_page').val());
           $('#page').val(1);
-          fm_home.action = "/010301";
+          fm_home.action = "/010302";
           fm_home.method = "/get";
           fm_home.submit();
           break;
         case "insert" : //저장
         case "update" : //저장
-          fm_input.action = "/010301/" + as_action;
+          fm_input.action = "/010302/" + as_action;
           fm_input.method = "post";
           fm_input.submit();
           break;
         case "delete" : //저장
-          fm_home.action = "/010301/" + as_action + "/" + as_val1;
+          fm_home.action = "/010302/" + as_action + "/" + as_val1;
           fm_home.method = "post";
           fm_home.submit();
           break;
         case "excel" :
-          fm_home.action = "/010301/excel";
+          fm_home.action = "/010302/excel";
           fm_home.method = "get";
           fm_home.submit();
-          break;
-        case "load_search" :
-          var url = "/010301/fk/" + as_val1 + "?fstId=" + as_val2 + "&scdId=" + as_val3 + "&thdId=" + as_val4;
-          gf_popup('1300','600','_search_fk',url);
           break;
       }
     }
@@ -52,7 +48,7 @@
                   <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>
                   <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal"
                           data-target="#inputpopup"
-                          th:onclick="gf_modal('010301/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">
+                          th:onclick="gf_modal('010302/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">
                     등록
                   </button>
                   <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
@@ -75,14 +71,11 @@
             <td class="list_td_1 text-center">
               <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal"
                       data-target="#inputpopup"
-                      th:onclick="gf_modal('010301/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
+                      th:onclick="gf_modal('010302/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
                 수정
               </button>&nbsp;
               <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm"
                       th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제
-              </button>&nbsp;
-              <button name="load_search" id="load_search" type="button" class="btn btn-gfk btn-ssm"
-                                    th:onclick="lf_confirm(this.name,[[${dto.seq}]],[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]])">운행관리
               </button>&nbsp;
             </td>
             <td class="list_td_1 text-center" th:text="${dto.carNm}"></td>
@@ -90,8 +83,10 @@
             <td class="list_td_1 text-center" th:text="${dto.carNo}"></td>
             <td class="list_td_1 text-center" th:text="${dto.empNo}"></td>
             <td class="list_td_1 text-center" th:text="${dto.instNm}"></td>
-            <td class="list_td_1 text-center" th:text="${dto.buyDt}"></td>
-            <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.buyAmt,0, 'COMMA')}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.instSDt}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.instEDt}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.ageLimit}"></td>
+            <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.instAmt,0, 'COMMA')}"></td>
             <td class="list_td_1 text-center" th:text="${dto.note}"></td>
           </tr>
           </tbody>

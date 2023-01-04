@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form name="fm_input" th:action="@{/010302/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+  <div class="container-fluid p-2">
+    <div class="input_div">
+      <table class="input_table">
+        <tr>
+          <td>
+            <label for="carNm" class="input_labal">자동차명</label>
+            <input id="carNm" th:field="*{carNm}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="carYear" class="input_labal">연식</label>
+            <input id="carYear" th:field="*{carYear}" type="text" size="10" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="carNo" class="input_labal">차량번호</label>
+            <input id="carNo" th:field="*{carNo}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='empNo' class='input_labal'>관리자</label>
+            <select class='form-select' id='empNo' th:field="*{empNo}" size=1>
+              <option value=''>선택</option>
+              <option th:each="empCode : ${empCodes}"
+                      th:attr="selected=${empCode.value == empNo ?'true' : 'false'}"
+                      th:value="${empCode.value}"
+                      th:text="${empCode.text}">
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="instNm" class="input_labal">보험회사</label>
+            <input id="instNm" th:field="*{instNm}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="instSDt" class="input_labal">보험시작일</label>
+              </div>
+              <input type="text" id="instSDt"  th:field="*{instSDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="instEDt" class="input_labal">보험종료일</label>
+              </div>
+              <input type="text" id="instEDt"  th:field="*{instEDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="ageLimit" class="input_labal">연령한정</label>
+            <input id="ageLimit" th:field="*{ageLimit}" type="text" size="10" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="instAmt" class="input_labal">보험료</label>
+            <input id="instAmt" th:field="*{instAmt}" type="text" size="20" class="form-control input_number">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="note" class="input_labal">비고</label>
+            <input id="note" th:field="*{note}" type="text" size="40" class="form-control">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="input_div button_table">
+      <table class="input_table">
+        <tr>
+          <td class="float-end">
+            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+            </button>
+            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" th:field="*{tb101}" size="0" class="form-control ">
+  <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+  <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+  <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>
