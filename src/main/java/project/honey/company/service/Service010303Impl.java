@@ -62,7 +62,7 @@ public class Service010303Impl implements Service010303{
 
             resultList.add(list);
         });
-        return null;
+        return resultList;
     }
 
     @Override

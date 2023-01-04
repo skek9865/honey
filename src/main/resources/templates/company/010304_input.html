@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form name="fm_input" th:action="@{/010304/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+  <div class="container-fluid p-2">
+    <div class="input_div">
+      <table class="input_table">
+        <tr>
+          <td>
+            <label for="company" class="input_labal">회사명</label>
+            <input id="company" th:field="*{company}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="telNo" class="input_labal">연락처</label>
+            <input id="telNo" th:field="*{telNo}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="mobile" class="input_labal">핸드폰</label>
+            <input id="mobile" th:field="*{mobile}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="fax" class="input_labal">팩스</label>
+            <input id="fax" th:field="*{fax}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="email" class="input_labal">이메일</label>
+            <input id="email" th:field="*{email}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="etcTel1" class="input_labal">기타연락처1</label>
+            <input id="etcTel1" th:field="*{etcTel1}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="etcTel2" class="input_labal">기타연락처2</label>
+            <input id="etcTel2" th:field="*{etcTel2}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="etcTel3" class="input_labal">기타연락처3</label>
+            <input id="etcTel3" th:field="*{etcTel3}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="note" class="input_labal">비고</label>
+            <input id="note" th:field="*{note}" type="text" size="40" class="form-control">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="input_div button_table">
+      <table class="input_table">
+        <tr>
+          <td class="float-end">
+            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+            </button>
+            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" th:field="*{tb101}" size="0" class="form-control ">
+  <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+  <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+  <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>
