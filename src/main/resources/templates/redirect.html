@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>redirect</title>
+</head>
+<script th:inline="javascript">
+  const msg = [[${msg}]];
+  const url = [[${url}]];
+  alert(msg);	// 알림표시
+  window.location.replace(url);	// 이동하는 페이지
+</script>
+</html>

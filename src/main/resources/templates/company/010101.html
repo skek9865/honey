@@ -1,0 +1,143 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::main})}"
+      xmlns:th="http://www.thymeleaf.org">
+        <main>
+            <form action="/010101" method="post"  th:object="${form}" enctype="multipart/form-data">
+            <div class="container-fluid p-2">
+                <div class="titleBar" id="titleBar">
+                    <div class="row">
+                        <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+                        <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+                    </div>
+                </div>
+                <div class="table-responsive text-nowrap" id="tableWrapper">
+                    <div class="input_div">
+                        <table class="input_table">
+                            <tr>
+                                <td>
+                                    <label for="corpnm" class='input_labal' >회사명</label>
+                                    <input type="text" id="corpnm" name="corpnm" th:value="${company.corpnm}" size="25" class="form-control">
+                                </td>
+                                <td>
+                                    <label for="corpeng" class='input_labal'>회사영문명</label>
+                                    <input type="text" id="corpeng" name="corpeng" th:value="${company.corpeng}" size="25" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="corpno" class='input_labal'>사업자번호</label>
+                                    <input type="text" id="corpno" name="corpno" th:value="${company.corpno}" size="20" class="form-control">
+                                </td>
+                                <td>
+                                    <label for="ceonm" class='input_labal'>대표자명</label>
+                                    <input type="text" id="ceonm" name="ceonm" th:value="${company.ceonm}" size="15" class="form-control">
+                                </td>
+                                <td>
+                                    <label for="setdt" class='input_labal'>설립일자</label>
+                                    <input type="date" id="setdt" name="setdt" th:value="${company.setdt}" size="6" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="corptel" class='input_labal'>회사전화</label>
+                                    <input type="text" id="corptel" name="corptel" th:value="${company.corptel}" size="20" class="form-control">
+                                </td>
+                                <td>
+                                    <label for="hometel" class='input_labal'>자택전화</label>
+                                    <input type="text" id="hometel" name="hometel" th:value="${company.hometel}" size="20" class="form-control">
+                                </td>
+                                <td>
+                                    <label for="corpfax" class='input_labal'>회사Fax</label>
+                                    <input type="text" id="corpfax" name="corpfax" th:value="${company.corpfax}" size="20" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="mobile" class='input_labal'>모바일</label>
+                                    <input type="text" id="mobile" name="mobile" th:value="${company.mobile}" size="20" class="form-control">
+                                </td>
+                                <td colspan="2">
+                                    <label for="email" class='input_labal'>이메일</label>
+                                    <input type="text" id="email" name="email" th:value="${company.email}" size="50" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <label for="hompage" class='input_labal'>홈페이지</label>
+                                    <input type="text" id="hompage" name="hompage" th:value="${company.hompage}" size="70" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <label for="zipcd1" class='input_labal'>우편번호1</label>
+                                    <input type="text" id="zipcd1" name="zipcd1" th:value="${company.zipcd1}" size="10" class="form-control">
+                                    <button type="button" onclick="openZipSearch('zipcd1','address1','address11')" class="btn btn-gfk btn-sm">검색</button>
+                                    <input type="text" id="address1" name="address1" th:value="${company.address1}" size="50" class="form-control">
+                                    <input type="text" id="address11" name="address11" th:value="${company.address11}" size="30" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <label for="zipcd2" class='input_labal'>우편번호2</label>
+                                    <input type="text" id="zipcd2" name="zipcd2" th:value="${company.zipcd2}" size="10" class="form-control">
+                                    <button type="button" onclick="openZipSearch('zipcd2','address2','address21')" class="btn btn-gfk btn-sm">검색</button>
+                                    <input type="text" id="address2" name="address2" th:value="${company.address2}" size="50" class="form-control">
+                                    <input type="text" id="address21" name="address21" th:value="${company.address21}" size="30" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <label for="zipcdeng" class='input_labal'>영문우편번호</label>
+                                    <input type="text" id="zipcdeng" name="zipcdeng" th:value="${company.zipcdeng}" size="10" class="form-control">
+                                    <button type="button" onclick="openZipSearch('zipcdeng','addresseng','addresseng1')" class="btn btn-gfk btn-sm">검색</button>
+                                    <input type="text" id="addresseng" name="addresseng" th:value="${company.addresseng}" size="50" class="form-control">
+                                    <input type="text" id="addresseng1" name="addresseng1" th:value="${company.addresseng1}" size="30" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="corpregno" class='input_labal'>법인등록번호</label>
+                                    <input type="text" id="corpregno" name="corpregno" th:value="${company.corpregno}" size="20" class="form-control">
+                                </td>
+                                <td>
+                                    <label for="bsns" class='input_labal'>업태</label>
+                                    <input type="text" id="bsns" name="bsns" th:value="${company.bsns}" size="30" class="form-control">
+                                </td>
+                                <td>
+                                    <label for="item" class='input_labal'>종목</label>
+                                    <input type="text" id="item" name="item" th:value="${company.item}" size="20" class="form-control">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <label for="logonm" class='input_labal'>회사로고</label>
+                                    <input type="file" id="logonm" name="logonm" th:value="${company.logonm}" size="20" class="form-control">
+                                    <img th:src="@{|/images/corp/${company.logonm}|}" alt="이미지가 없습니다" style="width:100px">
+                                </td>
+
+                                <td>
+                                    <label for="stampnm" class='input_labal'>도장이미지</label>
+                                    <input type="file" id="stampnm" name="stampnm" th:value="${company.stampnm}" size="20" class="form-control">
+                                    <img th:src="@{|/images/corp/${company.stampnm}|}" alt="이미지가 없습니다" style="width:100px">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="searchBar" id="searchBar">
+                    <div class="row">
+                        <div class="col-12 fixed-right p-2 px-4">
+                            <table style="float: right">
+                                <tr>
+                                    <td>
+                                        <button>저장</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+        </main>
+
+</html>

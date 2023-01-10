@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form name="fm_input" th:action="@{/040204/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+  <script th:inline="javascript">
+    function gf_rowdel(num) {
+      $('#goodscd_' + num).val("")
+      $('#goodsnm_' + num).val("")
+      $('#standard_' + num).val("")
+      $('#qty_' + num).val(0)
+      $('#productDt_' + num).val("")
+      $('#note_' + num).val("")
+      return false;
+    }
+  </script>
+  <div class="container-fluid p-2">
+    <div class="input_div button_table">
+      <table class="input_table">
+        <tr>
+          <td class="float-end">
+            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+            </button>
+            <button name="load_search" id="load_search" type="button" class="btn btn-gfk btn-sm" onclick='gf_popup("1200","500","_search_sale","/040204/salePopUp")'>판매 검색</button>
+            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="input_div">
+      <table class="input_table">
+        <tr>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="shipDt" class="input_labal">일자</label>
+              </div>
+              <input type="text" id="shipDt"  th:field="*{shipDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+          <td>
+            <label for="shipNo" class="input_labal">출하지시서번호</label>
+            <input id="shipNo" th:field="*{shipNo}" type="text" size="10" class="form-control" readonly>
+          </td>
+          <td>
+            <label for="vcustcd" class="input_labal">거래처</label>
+            <input type="hidden" id="vcustcd" th:field="*{custCd}" size="30" class="form-control" readonly>
+            <input type="text" id="vcustnm" th:field="*{custNm}" size="30" class="form-control" readonly>
+            <button name="clear" id="clear" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('vcustcd').value='';document.getElementById('vcustnm').value='';">비움</button>
+            <button name="findcust" id="findcust" type="button" class="btn btn-gfk btn-ssm" onclick='gf_popup("700","500","_search_cust","/040102/popup?type=2")'>검색</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="outDt" class="input_labal">출하예정일</label>
+              </div>
+              <input type="text" id="outDt"  th:field="*{outDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+          <td>
+            <label for='whouseCd' class='input_labal'>출하창고</label>
+            <select class='form-select' id='whouseCd' th:field="*{whouseCd}" size=1>
+              <option value=''>선택</option>
+              <option th:each="whouseCode : ${whouseCodes}"
+                      th:attr="selected=${whouseCode.value == whouseCd ?'true' : 'false'}"
+                      th:value="${whouseCode.value}"
+                      th:text="${whouseCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for='shipNm' class='input_labal'>출고자</label>
+            <select class='form-select' id='shipNm' th:field="*{shipNm}" size=1>
+              <option value=''>선택</option>
+              <option th:each="empCode : ${empCodes}"
+                      th:attr="selected=${empCode.value == shipNm ?'true' : 'false'}"
+                      th:value="${empCode.value}"
+                      th:text="${empCode.text}">
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='projectCd' class='input_labal'>프로젝트</label>
+            <select class='form-select' id='projectCd' th:field="*{projectCd}" size=1>
+              <option value=''>선택</option>
+              <option th:each="projectCode : ${projectCodes}"
+                      th:attr="selected=${projectCode.value == projectCd ?'true' : 'false'}"
+                      th:value="${projectCode.value}"
+                      th:text="${projectCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for='empNo' class='input_labal'>담당자</label>
+            <select class='form-select' id='empNo' th:field="*{empNo}" size=1>
+              <option value=''>선택</option>
+              <option th:each="empCode : ${empCodes}"
+                      th:attr="selected=${empCode.value == empNo ?'true' : 'false'}"
+                      th:value="${empCode.value}"
+                      th:text="${empCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for="phone" class="input_labal">연락처</label>
+            <input id="phone" th:field="*{phone}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='status' class='input_labal'>상태</label>
+            <select class='form-select' id='status' th:field="*{status}" size=1>
+              <option value=''>선택</option>
+              <option th:each="statusCode : ${statusCodes}"
+                      th:attr="selected=${statusCode.value == status ?'true' : 'false'}"
+                      th:value="${statusCode.value}"
+                      th:text="${statusCode.text}">
+            </select>
+          </td>
+          <td>
+            <label class='input_labal' for="closeYn">종결여부</label>
+            <div class='form-check form-check-inline'>
+              <input class='form-check-input' type="checkbox" style="margin-top: 10px" id="closeYn" th:field="*{closeYn}">
+            </div>
+          </td>
+          <td colspan="2">
+            <label for="note2" class="input_labal">출고시참조</label>
+            <input id="note2" th:field="*{note2}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="sender" class="input_labal">택배발송자</label>
+            <input id="sender" th:field="*{sender}" type="text" size="30" class="form-control">
+          </td>
+          <td>
+            <label for="name" class="input_labal">이름/연락처</label>
+            <input id="name" th:field="*{name}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <label for="zipCd1" class="input_labal">주소</label>
+            <input id="zipCd1" th:field="*{zipCd1}" type="text" size="5" class="form-control">
+            <button name="search1" id="search1" type="button" class="btn btn-gfk btn-sm"
+                    onclick="openZipSearch('zipCd1','address1','address11')">검색
+            </button>
+            <input id="address1" th:field="*{address1}" type="text" size="30" class="form-control">
+            <input id="address11" th:field="*{address11}" type="text" size="50" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <label for="zipCd" class="input_labal">배송지</label>
+            <input id="zipCd" th:field="*{zipCd}" type="text" size="5" class="form-control">
+            <button name="search" id="search" type="button" class="btn btn-gfk btn-sm"
+                    onclick="openZipSearch('zipCd','address2','address21')">검색
+            </button>
+            <input id="address2" th:field="*{address2}" type="text" size="30" class="form-control">
+            <input id="address21" th:field="*{address21}" type="text" size="50" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <label for="note" class="input_labal">기타사항</label>
+            <textarea id="note" th:field="*{note}" cols="150"></textarea>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="table-responsive text-nowrap" id="tableWrapper">
+      <table class="table table-striped tablesorter-blue" id="datatable_2">
+        <tbody>
+        <tr class="tableList_h_tr">
+          <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+        </tr>
+        <tr th:each="sub,subStat : ${subDtos}" style="height: 30px;">
+          <td>
+            <input th:id="|vatyn_${subStat.index}|" th:name="|vatyn_${subStat.index}|" type="hidden" size="5" class="form-control">
+            <button name="row_del" id="row_del" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="gf_rowdel([[${subStat.index}]]); gf_totsum('qty','amt','vat','5','qty_t','amt_t','vat_t','tot_t');">삭제</button>&nbsp;
+          </td>
+          <td>
+            <input th:id="|goodscd_${subStat.index}|" th:name="${'tb413_1Forms[' + subStat.index + '].goodsCd'}"
+                   th:value="${sub.goodsCd}" type="text" size="5" class="form-control">
+          </td>
+          <td>
+            <input th:id="|goodsnm_${subStat.index}|" th:name="goodsNm"
+                   th:value="${sub.goodsNm}" type="text" size="40" class="form-control">
+            <button name="row_find" id="row_find" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick='gf_popup("700","500","_search_goods","/040105/popup?type="+ [[${subStat.index + 2}]] +"&product=true&stock=true")'>검색</button>&nbsp;
+          </td>
+          <td>
+            <input th:id="|standard_${subStat.index}|" th:name="${'tb413_1Forms[' + subStat.index + '].standard'}"
+                   th:value="${sub.standard}" type="text" size="5" class="form-control" readonly>
+          </td>
+          <td>
+            <input th:id="|qty_${subStat.index}|" th:name="${'tb413_1Forms[' + subStat.index + '].qty'}"
+                   th:value="${sub.qty}" type="text" size="5" class="form-control input_number"
+                   onchange="gf_qtysum('qty','qty_t','5');">
+          </td>
+          <td>
+            <div class='input-group input-daterange'>
+              <input th:id="|productDt_${subStat.index}|" th:name="${'tb413_1Forms[' + subStat.index + '].productDt'}"
+                     th:value="${sub.productDt}" type="text" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+          <td>
+            <input th:id="|note_${subStat.index}|" th:name="${'tb413_1Forms[' + subStat.index + '].note'}"
+                   th:value="${sub.note}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr style="height: 30px;">
+          <td colspan="4" class="CaptionTD">
+            합계
+          </td>
+          <td>
+            <input type="text" name="qty_t" id="qty_t" th:value="${qtyT}" size="5" class="form-control input_number " readonly>
+          </td>
+          <td colspan="2"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+  <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+  <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>

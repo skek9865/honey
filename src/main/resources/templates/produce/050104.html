@@ -1,0 +1,122 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::form})}"
+      xmlns:th="http://www.thymeleaf.org">
+<form name="fm_home" method="post" >
+    <main >
+        <script th:inline="javascript">
+            function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+                switch (as_action) {
+                    case "query" :
+                        $('#size').val($('#num_per_page').val());
+                        $('#page').val(1);
+                        fm_home.action = "/050104";
+                        fm_home.method = "/get";
+                        fm_home.submit();
+                        break;
+
+                    case "insert" : //저장
+                    case "update" : //수정
+                        fm_input.action = "/050104/" + as_action
+                        fm_input.submit();
+                        break;
+
+                    case "excel" :
+                        fm_home.action = "/050104/excel"
+                        fm_home.method = "get"
+                        fm_home.submit();
+                        break;
+
+                }
+            }
+        </script>
+        <div class="container-fluid p-2">
+            <div class="titleBar" id="titleBar">
+                <div class="row">
+                    <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+                    <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+                </div>
+            </div>
+            <div class="searchBar" id="searchBar">
+                <div class="row">
+                    <div class="col-12 fixed-right p-2 px-4">
+                        <table>
+                            <tbody><tr>
+                                <td class="p-1">
+                                    <label for="sgoodscd" class="">BOM</label>
+                                    <input type="hidden" th:field="${search.goodsCd}" id="sgoodscd" value="" size="30" class="form-control" readonly="">
+                                    <input type="text" th:field="${search.goodsNm}" id="sgoodsnm"  size="30" class="form-control" readonly="">
+                                    <button name="clear" id="clear" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('sgoodscd').value='';document.getElementById('sgoodsnm').value='';">비움</button>
+                                    <button name="findgoods" id="findgoods" type="button" class="btn btn-gfk btn-ssm"
+                                            onclick='gf_popup("700","500","_search_goods","/040105/popup?type=1&product=true&stock=true")'>검색</button>
+                                </td>
+                                <td class="px-4">
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
+                                    <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>&nbsp;
+                                </td>
+                            </tr>
+                            </tbody></table>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_1" >
+                    <thead>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}"><!-- td 렌더링 -->
+                        <td class="list_td_1 text-center" th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.classSeq}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.goodsCd}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.goodsNm}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.standard}"></td>
+                        <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.qty,0, 'COMMA')}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.fClassSeq}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.fGoodsCd}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.fGoodsNm}"></td>
+                        <td class="list_td_1 text-center" th:text="${dto.fStandard}"></td>
+                        <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.fQty,0, 'COMMA')}"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="tableList_f_tr">
+                        <th th:each="footer, footerStat : ${footers}"
+                            class="tableList_f_td"
+                            th:text="${footer != '' ? #numbers.formatInteger(footer,0, 'COMMA') : ''}"></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- 페이징 부분 -->
+            <div th:replace="paging.html :: paging">
+        </div>
+
+        </div>
+    </main>
+    <script th:src="@{|/js/scripts_sub.js|}"></script>
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
+            $("#modal_main").addClass("modal-xl");
+            $("#datatable_1").width("1101px");
+
+            // 삭제
+            $('button[name="delete"]').click(function (e) {
+                e.preventDefault();
+                if(confirm("자료를 삭제하시겠습니까?")){
+                    var url = window.location.href + "";
+                    $.ajax({
+                        url: url.split('?')[0] + "/delete/" + $(this).data('id'),
+                        type : 'post',
+                        success : function (){
+                            alert("자료가 삭제되었습니다.");
+                            location.reload();
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+
+</form>

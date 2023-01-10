@@ -1,0 +1,174 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::main})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<main>
+  <script th:inline="javascript">
+    function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+      switch (as_action) {
+        case "query" :
+          $('#size').val($('#num_per_page').val());
+          $('#page').val(1);
+          fm_home.action = "/040202";
+          fm_home.method = "/get";
+          fm_home.submit();
+          break;
+        case "insert" : //저장
+        case "update" : //저장
+          for(i = 0; i < 5; i++){
+            amt = $("#amt_" + i).val();
+            vat = $("#vat_" + i).val();
+            $('#amt_' + i).val(amt.replace(/,/gi,''))
+            $('#vat_' + i).val(vat.replace(/,/gi,''))
+          }
+          fm_input.action = "/040202/" + as_action;
+          fm_input.method = "post";
+          fm_input.submit();
+          break;
+        case "delete" : //저장
+          fm_home.action = "/040202/" + as_action + "/" + as_val1;
+          fm_home.method = "post";
+          fm_home.submit();
+          break;
+        case "excel" :
+          fm_home.action = "/040202/excel";
+          fm_home.method = "get";
+          fm_home.submit();
+          break;
+        case "load" :
+          gf_modal('040202/popInput',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', as_val1,'pop');
+          break;
+      }
+    }
+  </script>
+  <form name="fm_home" method="post" enctype="multipart/form-data">
+    <div class="container-fluid p-2">
+      <div class="titleBar" id="titleBar">
+        <div class="row">
+          <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+          <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+        </div>
+      </div>
+      <div class="searchBar" id="searchBar">
+        <div class="row">
+          <div class="col-12 fixed-right p-2 px-4">
+            <table>
+              <tr>
+                <td class="p-1">
+                  <div class="input-group input-daterange">
+                    <div class="input-group-addon px-2">
+                      <label for="sYmd1" class="">조회기간</label>
+                    </div>
+                    <input type="text" id="sYmd1" th:field="${search.sYmd1}" class="input_date" autocomplete="off">
+                    <div class="input-group-addon">~&nbsp;</div>
+                    <input type="text" id="sYmd2" th:field="${search.sYmd2}" class="input_date" autocomplete="off">
+                  </div>
+                </td>
+                <td class="p-1">
+                  <label for='sEmpNo' class="search_labal">담당자</label>
+                  <select class='form-select' id='sEmpNo' th:field="${search.sEmpNo}" size=1>
+                    <option value=''>선택</option>
+                    <option th:each="empCode : ${empCodes}" th:attr="selected=${empCode.value == sEmpNo ?'true' : 'false'}"
+                            th:value="${empCode.value}" th:text="${empCode.text}"></option>
+                  </select>
+                </td>
+                <td class="p-1">
+                  <label for='sStatus' class="search_labal">상태</label>
+                  <select class='form-select' id='sStatus' th:field="${search.sStatus}" size=1>
+                    <option value=''>선택</option>
+                    <option th:each="statusCode : ${statusCodes}" th:attr="selected=${statusCode.value == sStatus ?'true' : 'false'}"
+                            th:value="${statusCode.value}" th:text="${statusCode.text}"></option>
+                  </select>
+                </td>
+                <td class="px-4">
+                  <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>
+                  <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal"
+                          data-target="#inputpopup"
+                          th:onclick="gf_modal('040202/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'insert', '','');">
+                    등록
+                  </button>
+                  <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="p-1">
+                  <label for="scustcd" class="search_labal">거래처</label>
+                  <input type="hidden" id="scustcd" th:field="${search.sCustCd}" size="30" class="form-control" readonly>
+                  <input type="text" id="scustnm" th:field="${search.sCustNm}" size="30" class="form-control" readonly>
+                  <button name="clear" id="clear" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('scustcd').value='';document.getElementById('scustnm').value='';">비움</button>
+                  <button name="findcust" id="findcust" type="button" class="btn btn-gfk btn-ssm" onclick='gf_popup("700","500","_search_cust","/040102/popup?type=1")'>검색</button>
+                </td>
+                <td class="p-1">
+                  <label for="sgoodscd" class="search_labal">품목</label>
+                  <input type="hidden" id="sgoodscd" th:field="${search.sGoodsCd}" size="30" class="form-control">
+                  <input type="text" id="sgoodsnm" th:field="${search.sGoodsNm}"  size="30" class="form-control" readonly>
+                  <button name="clear1" id="clear1" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('sgoodscd').value='';document.getElementById('sgoodsnm').value='';">비움</button>
+                  <button name="findgoods1" id="findgoods1" type="button" class="btn btn-gfk btn-ssm"
+                          onclick='gf_popup("700","500","_search_goods","/040105/popup?type=1&product=true&stock=true")'>검색</button>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="table-responsive text-nowrap" id="tableWrapper">
+        <table class="table table-striped tablesorter-blue" id="datatable_1">
+          <thead>
+          <tr class="tableList_h_tr">
+            <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
+            <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
+            <td class="list_td_1 text-center">
+              <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal"
+                      data-target="#inputpopup"
+                      th:onclick="gf_modal('040202/input',[[${menuId.fstId}]],[[${menuId.scdId}]],[[${menuId.thdId}]],'update', [[${dto.seq}]],'');">
+                수정
+              </button>&nbsp;
+              <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm"
+                      th:onclick="lf_confirm(this.name,[[${dto.seq}]],'','')">삭제
+              </button>&nbsp;
+              <button name="print" id="print" type="button" class="btn btn-gfk btn-ssm" th:data-seq="${dto.seq}">인쇄
+              </button>&nbsp;
+            </td>
+            <td class="list_td_1 text-center" th:text="${dto.orderNo}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.custNm}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.empNo}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.goodsCd}"></td>
+            <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.price,0, 'COMMA')}"></td>
+            <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.qty,0, 'COMMA')}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.status}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.prt}"></td>
+            <td class="list_td_1 text-center" th:text="${dto.note}"></td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr class="tableList_f_tr">
+            <th th:each="footer, footerStat : ${footers}"
+                class="tableList_f_td"
+                th:text="${footer != '' ? #numbers.formatInteger(footer,0, 'COMMA') : ''}"></th>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div th:replace="paging.html :: paging"></div>
+    </div>
+  </form>
+</main>
+</html>
+
+<script src="/js/scripts_sub.js"></script>
+<script th:inline="javascript">
+  $(document).ready(function () {
+    $("#modal_main").addClass("modal-xl");
+    $("#datatable_1").width([[${global.mainWidth}]]);
+  });
+</script>
+<script th:inline="javascript">
+  $('button[name="print"]').click(function (e) {
+    e.preventDefault();
+    var url = window.location.href + "";
+    gf_popup("850","950","040202_inputbox",url.split('?')[0] + "/popup/" + $(this).data("seq"));
+  });
+</script>

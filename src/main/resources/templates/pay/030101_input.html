@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" enctype="multipart/form-data" method="post" th:object="${dto}">
+    <main>
+        <div class="container-fluid p-2">
+            <div class="input_div">
+                <table class="input_table">
+                    <tbody><tr>
+                        <td>
+                            <label for="itemDiv" class="input_labal">공제/지급구분</label>
+                            <select class="form-select" id="itemDiv" th:field="*{itemDiv}" th:value="*{itemDiv}" size="1">
+                                <option value="">선택</option>
+                                <th:block th:each="code : ${codes}">
+                                    <option th:value="${code.value}" th:text="${code.text}"></option>
+                                </th:block>
+                        </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="taxDiv" class="input_labal">과세여부</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" th:field="*{taxDiv}" th:attr="checked=${dto.taxDiv == 'Y'?'true' : 'false'}" id="taxDiv"  type="checkbox" value="Y">
+                                <label class="form-check-label" for="taxDiv"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="itemCd" class="input_labal">항목코드</label>
+                            <input type="text" id="itemCd" th:field="*{itemCd}" th:value="*{itemCd}" size="5" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="itemNm" class="input_labal">항목명</label>
+                            <input type="text"  id="itemNm" th:field="*{itemNm}" th:value="*{itemNm}" size="30" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="taxRate" class="input_labal">세제율</label>
+                            <input type="text" id="taxRate" name="taxRate" th:value="${dto.taxRate == null? 0:#numbers.formatDecimal(dto.taxRate,1,2)}"  size="11" class="form-control input_number ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="useYn" class="input_labal">사용여부</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="useYn" th:field="*{useYn}" th:attr="checked=${dto.useYn == 'Y'?'true' : 'false'}" type="checkbox" value="Y">
+                                <label class="form-check-label" for="useYn"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="input_div button_table">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td class="float-end">
+                            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm">저장</button>&nbsp;
+                            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>&nbsp;
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <input type="hidden" id="iseq" name="seq" th:value="*{seq}">
+    <input type="hidden" id="ifstId" name="fstId">
+    <input type="hidden" id="iscdId" name="scdId">
+    <input type="hidden" id="ithdId" name="thdId">
+    <input type="hidden" id="ipage" name="page">
+    <input type="hidden" id="isize" name="size">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+
+        $('#ifstId').val($('#fstId').val());
+        $('#iscdId').val($('#scdId').val());
+        $('#ithdId').val($('#thdId').val());
+        $('#ipage').val($('#page').val());
+        $('#isize').val($('#size').val());
+
+        var method = [[${dto.seq}]]==null?'/insert':'/update'
+        //저장
+        $('#save').on('click', function (e){
+
+            e.preventDefault();
+            var inputForm = $('form[name="fm_input"]');
+            var url = window.location.href + "";
+            inputForm.attr("action",url.split('?')[0] + method)
+            inputForm.submit();
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::form})}"
+      xmlns:th="http://www.thymeleaf.org">
+<form name="fm_home" method="post" >
+    <main >
+        <script th:inline="javascript">
+            function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+                switch (as_action) {
+                    case "query" :
+                        var form = $('form[name="fm_home"]');
+                        form.action = "/030102"
+                        $('#size').val($('#num_per_page').val());
+                        $('#page').val(1);
+                        form.attr("method", "get");
+                        form.submit();
+                        break;
+
+                    case "pitemedel" :  //급여항목삭제
+                        if (confirm("자료를 삭제 하시겠습니까?")) {
+                            fm_home.action = "/030102/pitemedel"
+                            fm_home.submit();
+                            break;
+                        } else {
+                            break;
+                        }
+                    case "pitemesave" : //급여항목추가
+                        fm_home.action = "/030102/pitemesave"
+                        fm_home.submit();
+                        break;
+
+                    case "pitemedel_one" :  //급여항목삭제
+                        if (confirm("자료를 삭제 하시겠습니까?")) {
+                            fm_home.action = "/030102/pitemedel/" + as_val1;
+                            fm_home.submit();
+                            break;
+                        } else {
+                            break;
+                        }
+                    case "pitemesave_one" : //급여항목추가
+                        fm_home.action = "/030102/pitemesave/" + as_val1;
+                        fm_home.submit();
+                        break;
+
+
+                }
+            }
+        </script>
+        <div class="container-fluid p-2">
+            <div class="titleBar" id="titleBar">
+                <div class="row">
+                    <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+                    <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+                </div>
+            </div>
+            <div class="searchBar" id="searchBar">
+                <div class="row">
+                    <div class="col-12 fixed-right p-2 px-4">
+                        <table>
+                            <tr>
+                                <td class="p-1">
+                                    <label for="sEmpNm" class="search_labal">사원명</label>
+                                    <input id="sEmpNm" name="sEmpNm" th:value="${sEmpNm}" type="text" size="15" class="form-control">
+                                </td>
+                                <td class="p-1">
+                                    <label for='sPost' class="search_labal_lg">직위/직급</label>
+                                    <SELECT class='form-select' id='sPost' name='sPost' th:value="${sPost}"  size=1 >
+                                        <OPTION value=''>선택</OPTION>
+                                        <OPTION th:each="post : ${posts}" th:value="${post.value}" th:text="${post.text}"
+                                        th:attr="selected=${post.value == sPost ? 'true' : 'false'}"></OPTION>
+                                    </SELECT>
+                                </td>
+                                <td class="p-1">
+                                    <label for='sDeptCd' class="search_labal">부서명</label>
+                                    <SELECT class='form-select' id='sDeptCd' name='sDeptCd' th:value="${sDeptCd}"  size=1 >
+                                        <OPTION value=''>선택</OPTION>
+                                        <OPTION th:each="dept : ${depts}" th:value="${dept.value}" th:text="${dept.text}"
+                                        th:attr="selected=${sDeptCd == dept.value ? 'true':'false'}">대표이사</OPTION>
+                                    </SELECT>
+                                </td>
+
+                                <td class="px-4">
+                                    <button name="query" id="query" type="submit" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
+                                    <button name="pitemesave" id="pitemesave" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">급여항목추가</button>&nbsp;
+                                    <button name="pitemedel" id="pitemedel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">급여항목삭제</button>&nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_1" >
+                    <thead>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="list_tr_1" th:each="dto, dtoStat : ${list}"><!-- td 렌더링 -->
+                        <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + dtoStat.count}"></td>
+                        <td class="list_td_1 text-center">
+                            <button name="paymnt" id="paymnt" type="button" class="btn btn-gfk btn-ssm" th:data-empNo="${dto.empNo}">급여내역</button>&nbsp;
+                            <button name="pitemesave_one" id="pitemesave_one" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.empNo}]],'','')">급여항목추가</button>&nbsp;
+                            <button name="pitemedel_one" id="pitemedel_one" type="button" class="btn btn-gfk btn-ssm" th:onclick="lf_confirm(this.name,[[${dto.empNo}]],'','')">급여항목삭제</button>&nbsp;
+                        </td>
+                        <td th:text="${dto.empNo}"></td>
+                        <td th:text="${dto.empNm}"></td>
+                        <td th:text="${dto.empDt}"></td>
+                        <td th:text="${dto.post}"></td>
+                        <td th:text="${dto.deptNm}"></td>
+                        <td class="payout text-end" th:text="${#numbers.formatInteger(dto.payout,0, 'COMMA')}"></td>
+                        <td class="taxAmt text-end" th:text="${#numbers.formatInteger(dto.taxAmt,0, 'COMMA')}"></td>
+                        <td class="deduction text-end" th:text="${#numbers.formatInteger(dto.deduction,0, 'COMMA')}"></td>
+                        <td class="actualPayment text-end" th:text="${#numbers.formatInteger(dto.actualPayment,0, 'COMMA')}"></td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr class="tableList_f_tr">
+                        <th class="tableList_f_td" data-column="0"></th>
+                        <th class="tableList_f_td" data-column="1"></th>
+                        <th class="tableList_f_td" data-column="2"></th>
+                        <th class="tableList_f_td" data-column="3"></th>
+                        <th class="tableList_f_td" data-column="4"></th>
+                        <th class="tableList_f_td" data-column="5"></th>
+                        <th class="tableList_f_td" data-column="6"></th>
+                        <th class="tableList_f_td text-end" data-column="7" th:text="${#numbers.formatInteger(totalPayout,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td text-end" data-column="8" th:text="${#numbers.formatInteger(totalTaxAmt,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td text-end" data-column="9" th:text="${#numbers.formatInteger(totalDeduction,0, 'COMMA')}"></th>
+                        <th class="tableList_f_td tablesorter-headerDesc" data-column="10" th:text="${#numbers.formatInteger(totalActualPayment,0, 'COMMA')}"></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <!-- 페이징 부분 -->
+            <div th:replace="paging.html :: paging">
+        </div>
+
+        </div>
+    </main>
+    <script th:src="@{|/js/scripts_sub.js|}"></script>
+    <script th:inline="javascript">
+
+
+        $(document).ready(function () {
+            gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
+            $("#datatable_1").width([[${global.mainWidth}]]);
+
+
+
+            // 삭제
+            $('button[name="delete"]').click(function (e) {
+                e.preventDefault();
+                if(confirm("자료를 삭제하시겠습니까?")){
+                    var url = window.location.href + "";
+                    $.ajax({
+                        url: url.split('?')[0] + "/delete/" + $(this).data('id'),
+                        type : 'post',
+                        success : function (){
+                            alert("자료가 삭제되었습니다.");
+                            location.reload();
+                        }
+                    })
+                }
+            });
+
+            $('button[name="paymnt"]').click(function (e) {
+                e.preventDefault();
+                var url = window.location.href + "";
+                gf_popup("550","800","030102_inputbox",url.split('?')[0] + "/popup/" + $(this).data("empno") + "?fstId=" + [[${menuId.fstId}]]
+                    + "&scdId=" + [[${menuId.scdId}]] + "&thdId=" +[[${menuId.thdId}]]) ;
+            });
+
+        });
+    </script>
+
+</form>

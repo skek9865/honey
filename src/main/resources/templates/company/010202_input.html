@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" th:action="@{/010202/input}" method="post" th:object="${dto}">
+  <input type="hidden" name ="fk_tb_101"  th:value="*{fk_tb_101}">
+  <div class="container-fluid p-2">
+    <div class="input_div">
+      <table class="input_table">
+        <tr>
+          <td>
+            <label for="cernm" class="input_labal">인증서명</label>
+            <input type="text" id="cernm" th:field="*{cernm}" th:value="*{cernm}"  size="25" class="form-control ">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="expdt" class="input_labal">만료일</label>
+              </div>
+              <input type="text" id="expdt" th:field="*{expdt}" th:value="*{expdt}"  size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="usenote" class="input_labal">사용용도</label>
+            <input type="text" id="usenote" th:field="*{usenote}" th:value="*{usenote}" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="savemtd" class="input_labal">보관형태</label>
+            <input type="text" id="savemtd" th:field="*{savemtd}" th:value="*{savemtd}"  size="25" class="form-control ">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="empno" class="input_labal">관리자</label>
+            <select id="empno" th:field="*{empno}" th:value="*{empno}" class="form-select" >
+              <option value="">선택</option>
+              <th:block th:each="emp : ${empList}">
+                <option th:value="${emp.value}" th:text="${emp.text}" th:attr="selected=${emp.value eq empno ? 'true' : 'false'}"></option>
+              </th:block>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="note" class="input_labal">비고</label>
+            <input type="text" id="note" th:field="*{note}" th:value="*{note}"  size="25" class="form-control ">
+          </td>
+        </tr>
+        <td>
+          <label for="useyn" class="input_labal">사용여부</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" id="useyn" th:field="*{useyn}" th:attr="checked=${dto.useyn == 'Y'?'true' : 'false'}" type="checkbox" value="Y">
+            <label class="form-check-label" for="useyn"></label>
+          </div>
+        </td>
+        </tr>
+      </table>
+    </div>
+    <div class="input_div button_table">
+      <table class="input_table">
+        <tr>
+          <td class="float-end">
+            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+            </button>
+            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+  <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+  <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+  <input type="hidden" id="sEmpNm" name="sEmpNm" size="0" class="form-control ">
+  <input type="hidden" id="sPost" name="sPost" size="0" class="form-control ">
+  <input type="hidden" id="sDeptCd" name="sDeptCd" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>

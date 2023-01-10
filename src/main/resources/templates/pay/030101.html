@@ -1,0 +1,122 @@
+<html th:replace="~{layout/layoutMain:: layout(~{::form})}"
+      xmlns:th="http://www.thymeleaf.org">
+<form name="fm_home" method="post" >
+    <main >
+        <script th:inline="javascript">
+            function lf_confirm(as_action, as_val1, as_val2, as_val3) {// FORM을 서버미트 하기전에 수행할 일
+                switch (as_action) {
+                    case "query" :
+                        var form = $('form[name="fm_home"]');
+                        form.action = "/030101"
+                        $('#size').val($('#num_per_page').val());
+                        $('#page').val(1);
+                        form.attr("method", "get");
+                        form.submit();
+                        break;
+
+                    case "excel" :  //급여항목삭제
+                        fm_home.action = "/030101/excel"
+                        fm_home.method = "get"
+                        fm_home.submit();
+                        break;
+
+                }
+            }
+        </script>
+        <div class="container-fluid p-2">
+            <div class="titleBar" id="titleBar">
+                <div class="row">
+                    <div class="col titleBar_text"><i class="bi bi-square-half sb-nav-link-icon"></i>&nbsp;[[${menuNm.thdNm}]]&nbsp;([[${menuId.fstId}]][[${menuId.scdId}]][[${menuId.thdId}]])</div>
+                    <div class="col titleBar_path">[[${menuNm.fstNm}]] > [[${menuNm.scdNm}]] > [[${menuNm.thdNm}]]</div>
+                </div>
+            </div>
+            <div class="searchBar" id="searchBar">
+                <div class="row">
+                    <div class="col-12 fixed-right p-2 px-4">
+                        <table>
+                            <tr>
+                                <td><!--조회 등록 엑셀-->
+                                    <button name="query" id="query" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
+                                    <button name="insert" id="insert" type="button" class="btn btn-gfk btn-sm" data-toggle="modal" data-target="#inputpopup" onclick="gf_modal('030101/input','','','','', '');">등록</button>&nbsp;
+                                    <button name="excel" id="excel" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">엑셀</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive text-nowrap" id="tableWrapper">
+                <table class="table table-striped tablesorter-blue" id="datatable_1" >
+                    <thead>
+                    <tr class="tableList_h_tr">
+                        <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="list_tr_1" th:each="pay, payStat : ${list}"><!-- td 렌더링 -->
+                        <td th:text="${pageMaker.pageable.pageSize * pageMaker.pageable.pageNumber  + payStat.count}"></td>
+                        <td>
+                            <button name="update" id="update" type="button" class="btn btn-gfk btn-ssm" data-toggle="modal" data-target="#inputpopup" th:onclick="gf_modal('030101/input?id=' + [[${pay.seq}]],'','','','', '');">수정</button>&nbsp;
+                            <button name="delete" id="delete" type="button" class="btn btn-gfk btn-ssm" th:data-id="${pay.seq}">삭제</button>&nbsp;
+                        </td>
+                        <td th:text="${pay.itemDiv}"></td>
+                        <td th:text="${pay.taxDiv}"></td>
+                        <td th:text="${pay.itemCd}"></td>
+                        <td th:text="${pay.itemNm}"></td>
+                        <td class="text-end" th:text="${#numbers.formatDecimal(pay.taxRate,1,2)}"></td>
+                        <td th:text="${pay.useYn}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- 페이징 부분 -->
+            <div th:replace="paging.html :: paging">
+        </div>
+
+        </div>
+    </main>
+    <script th:src="@{|/js/scripts_sub.js|}"></script>
+    <script th:inline="javascript">
+        // 업데이트 모달
+        function gf_updateModal(as_url,as_acd,as_bcd,as_ccd,as_action,as_val,as_val1, id) {
+            console.log(as_url)
+            console.log(id)
+            console.log(as_url + id)
+            $.ajax({
+                url:as_url + id,
+                type:"GET",
+                data: { ACD : as_acd ,BCD : as_bcd ,CCD : as_ccd ,action : as_action ,vseq : as_val,vseq1 : as_val1},
+                dataType:"html",
+                success: function(req,stat) {
+                    if(stat=="success") {
+                        $("#modalhtml").html(req);
+                    }
+                },
+                error: (log)=>{alert("실패" + log.value)},
+            });
+        }
+
+
+        $(document).ready(function () {
+            gf_menu([[${menuId.fstId}]],[[${menuId.scdId}]],'','systemman');
+            $("#datatable_1").width([[${global.mainWidth}]]);
+
+            // 삭제
+            $('button[name="delete"]').click(function (e) {
+                e.preventDefault();
+                if(confirm("자료를 삭제하시겠습니까?")){
+                    var url = window.location.href + "";
+                    $.ajax({
+                        url: url.split('?')[0] + "/delete/" + $(this).data('id'),
+                        type : 'post',
+                        success : function (){
+                            alert("자료가 삭제되었습니다.");
+                            location.reload();
+                        }
+                    })
+                }
+            });
+        });
+    </script>
+
+</form>

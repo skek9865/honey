@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>거래명세서</title>
+</head>
+<style>
+    table {border-collapse:collapse; border-spacing:0; border: 1px solid black}
+    .main-td {border: 1px solid black; text-align: center}
+    .sub-td{border: 1px solid black; text-align: center}
+    @page  {size: A4; margin: 0;}
+    @media print {
+        .sub-td {background-color:#eee !important; -webkit-print-color-adjust:exact;}
+    }
+</style>
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<div id='report'>
+  <button id="btnPrint" onclick="this.style.display='none'; pagePrintPreview(); this.style.display='block'; ">미리보기</button>
+  <div style="margin-top: 15px;" th:object="${printData}">
+    <img class="main-style" th:src="@{|/images/corp/*{stampFnm}|}" title="회사도장" style="position: absolute; top: 430px; left: 92%;" width="50">
+    <img class="main-style" th:src="@{|/images/corp/*{stampFnm}|}" title="회사도장" style="position: absolute; top: 85px; left: 92%;" width="50">
+    <th:block th:each="num : ${#numbers.sequence(0,1)}">
+      <div style="margin-top: 15px" th:if="${num == 1}"></div>
+      <table width="100%">
+        <tr>
+          <td colspan="4" style="font-weight: 500; text-decoration: underline;font-size: 30px; text-align: center; width: 45%;">거래명세서</td>
+          <td class="main-td" colspan="5" rowspan="2" style="width: 55%;">연 락 처<br>☎(fax) [[*{fax}]] (H.P) [[*{mobile}]]</td>
+        </tr>
+        <tr th:if="${num == 1}">
+          <td colspan="4" style="border-bottom: 1px solid black; text-align: center">(공급받는자 보관용)</td>
+        </tr>
+        <tr th:if="${num == 0}">
+          <td colspan="4" style="border-bottom: 1px solid black; text-align: center">(공급자 보관용)</td>
+        </tr>
+        <tr>
+          <td style="width: 40px"></td>
+          <td style="text-align: center;" th:text="*{orderDt}"></td>
+          <td style="text-align: center">No.</td>
+          <td th:text="*{orderNo}"></td>
+          <td class="main-td" rowspan="4" style="width: 15px; font-weight: bold">공<br>급<br>자</td>
+          <td class="main-td" style="width: 100px">등록번호</td>
+          <td class="main-td" colspan="3" th:text="*{corpNo}"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td colspan="2" style="text-align: center; font-weight: bold; padding-right: 10px" th:text="|*{custNm} 귀하|"></td>
+          <td></td>
+          <td class="main-td">상 호(법인명)</td>
+          <td class="main-td" style="font-size: 10px" th:text="*{corpNm}"></td>
+          <td class="main-td">성명</td>
+          <td class="main-td" style="text-align: left; padding-left: 5px" th:text="*{ceoNm}"></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td rowspan="2" colspan="4" style="text-align: center">아래와 같이 공급합니다.</td>
+          <td class="main-td">사업장 주소</td>
+          <td class="main-td" colspan="3" style="font-size: 13px" th:text="*{address}"></td>
+        </tr>
+        <tr>
+          <td class="main-td">업태</td>
+          <td class="main-td" style="font-size: 12px" th:text="*{bsns}"></td>
+          <td class="main-td">종목</td>
+          <td class="main-td" style="font-size: 12px" th:text="*{item}"></td>
+        </tr>
+        <tr>
+          <td class="main-td">NO.</td>
+          <td class="main-td">품 목 및 규 격</td>
+          <td class="main-td">단위</td>
+          <td class="main-td">수량</td>
+          <td class="main-td" colspan="2">단 가</td>
+          <td class="main-td">공 급 가 액</td>
+          <td class="main-td" colspan="2">V.A.T</td>
+        </tr>
+        <tr th:each="subDto,subDtoStat : ${subPrintData}">
+          <td class="sub-td" style="background-color: #eee;" th:text="${subDto.goodsNm} ? ${subDtoStat.count} : '&nbsp;'"></td>
+          <td class="sub-td" style="background-color: #eee;" th:text="${subDto.goodsNm} ? |${subDto.goodsNm}/${subDto.standard}| : '&nbsp;'"></td>
+          <td class="sub-td" style="background-color: #eee;" th:text="${subDto.unit}"></td>
+          <td class="sub-td" style="background-color: #eee; text-align: right;" th:text="${#numbers.formatInteger(subDto.qty,0, 'COMMA')}"></td>
+          <td class="sub-td" colspan="2" style="background-color: #eee; text-align: right;" th:text="${#numbers.formatInteger(subDto.price,0, 'COMMA')}"></td>
+          <td class="sub-td" style="background-color: #eee; text-align: right;" th:text="${#numbers.formatInteger(subDto.amt,0, 'COMMA')}"></td>
+          <td class="sub-td" colspan="2" style="background-color: #eee; text-align: right;" th:text="${#numbers.formatInteger(subDto.vat,0, 'COMMA')}"></td>
+        </tr>
+        <tr>
+          <td class="main-td"></td>
+          <td class="main-td"></td>
+          <td class="main-td">합계</td>
+          <td class="main-td" colspan="3" style="text-align: right" th:text="${#numbers.formatInteger(total,0, 'COMMA')}"></td>
+          <td class="main-td"></td>
+          <td class="main-td" colspan="2"></td>
+        </tr>
+      </table>
+    </th:block>
+  </div >
+</div>
+</html>

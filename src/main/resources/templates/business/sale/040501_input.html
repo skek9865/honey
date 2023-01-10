@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<form name="fm_input" th:action="@{/040501/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+  <div class="container-fluid p-2">
+    <div class="input_div">
+      <table class="input_table">
+        <tr>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="amountDt" class="input_labal">입출금일자</label>
+              </div>
+              <input type="text" id="amountDt" th:field="*{amountDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="amountNo" class="input_labal">입출금순번</label>
+            <input id="amountNo" th:field="*{amountNo}"type="text" size="10" class="form-control input_number">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='amountCl' class='input_labal'>입출/구분</label>
+            <select class='form-select' id='amountCl' th:field="*{amountCl}" size=1>
+              <option value=''>선택</option>
+              <option th:each="amountClCode : ${amountClCodes}"
+                      th:attr="selected=${amountClCode.value == amountCl ?'true' : 'false'}"
+                      th:value="${amountClCode.value}"
+                      th:text="${amountClCode.text}">
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="amountTy" class="input_labal">입출타입</label>
+            <input id="amountTy" th:field="*{amountTy}" type="text" size="8" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='tb102' class='input_labal'>계좌</label>
+            <select class='form-select' id='tb102' th:field="*{tb102}" size=1>
+              <option value=''>선택</option>
+              <option th:each="bankCode : ${bankCodes}"
+                      th:attr="selected=${bankCode.seq == tb102 ?'true' : 'false'}"
+                      th:value="${bankCode.seq}"
+                      th:text="${bankCode.accountno}">
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="price" class="input_labal">매출액</label>
+            <input id="price" th:field="*{price}"type="text" size="20" class="form-control input_number">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="amount" class="input_labal">입출금액</label>
+            <input id="amount" th:field="*{amount}"type="text" size="15" class="form-control input_number">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="vcustcd" class="input_labal">거래처</label>
+            <input type="hidden" id="vcustcd" th:field="*{custCd}" size="30" class="form-control" readonly>
+            <input type="text" id="vcustnm" th:field="*{custNm}" size="30" class="form-control" readonly>
+            <button name="clear" id="clear" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('vcustcd').value='';document.getElementById('vcustnm').value='';">비움</button>
+            <button name="findcust" id="findcust" type="button" class="btn btn-gfk btn-ssm" onclick='gf_popup("700","500","_search_cust","/040102/popup?type=2")'>검색</button>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='empNo' class='input_labal'>사원명</label>
+            <select class='form-select' id='empNo' th:field="*{empNo}" size=1>
+              <option value=''>선택</option>
+              <option th:each="empCode : ${empCodes}"
+                      th:attr="selected=${empCode.value == empNo ?'true' : 'false'}"
+                      th:value="${empCode.value}"
+                      th:text="${empCode.text}">
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="note" class="input_labal">적요</label>
+            <input id="note" th:field="*{note}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="note1" class="input_labal">참조</label>
+            <input id="note1" th:field="*{note1}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="input_div button_table">
+      <table class="input_table">
+        <tr>
+          <td class="float-end">
+            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+            </button>
+            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+  <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+  <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>

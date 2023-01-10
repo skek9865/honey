@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" th:action="@{/020101/insert}" method="post" enctype="multipart/form-data" th:object="${dto}">
+  <div class="container-fluid p-2">
+    <div class="input_div">
+      <table class="input_table">
+        <tr>
+          <td>
+            <label for="empNo" class="input_labal">사원번호</label>
+            <input id="empNo" th:field="*{empNo}" type="text" size="15" class="form-control">
+          </td>
+          <td>
+            <label for="empNm" class="input_labal">사원명</label>
+            <input id="empNm" th:field="*{empNm}" type="text" size="15" class="form-control">
+          </td>
+          <td>
+            <label for="idNo" class="input_labal">주민등록번호</label>
+            <input id="idNo" th:field="*{idNo}" type="text" size="20" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="empEngNm" class="input_labal">영문성명</label>
+            <input id="empEngNm" th:field="*{empEngNm}" type="text" size="20" class="form-control">
+          </td>
+          <td>
+            <label for="emp2Nm" class="input_labal">제2외국어성명</label>
+            <input id="emp2Nm" th:field="*{emp2Nm}" type="text" size="20" class="form-control">
+          </td>
+          <td>
+            <label class='input_labal' for="headYn">세대주여부</label>
+            <div class='form-check form-check-inline'>
+              <input class='form-check-input' type="checkbox" style="margin-top: 10px" id="headYn" th:field="*{headYn}">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='empClass' class='input_labal'>입사구분</label>
+            <select class='form-select' id='empClass' th:field="*{empClass}" size=1>
+              <option value=''>선택</option>
+              <option th:each="empClassCode : ${empClassCodes}"
+                      th:attr="selected=${empClassCode.value == empClass ?'true' : 'false'}"
+                      th:value="${empClassCode.value}"
+                      th:text="${empClassCode.text}">
+              </option>
+            </select>
+          </td>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="empDt" class="input_labal">입사일자</label>
+              </div>
+              <input type="text" id="empDt" th:field="*{empDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+          <td>
+            <label for='post' class='input_labal'>직위/직급</label>
+            <select class='form-select' id='post' th:field="*{post}" size=1>
+              <option value=''>선택</option>
+              <option th:each="postCode : ${postCodes}"
+                      th:attr="selected=${postCode.value == post ?'true' : 'false'}"
+                      th:value="${postCode.value}"
+                      th:text="${postCode.text}">
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='post1' class='input_labal'>직책</label>
+            <select class='form-select' id='post1' th:field="*{post1}" size=1>
+              <option value=''>선택</option>
+              <option th:each="post1Code : ${post1Codes}"
+                      th:attr="selected=${post1Code.value == post1 ?'true' : 'false'}"
+                      th:value="${post1Code.value}"
+                      th:text="${post1Code.text}">
+            </select>
+          </td>
+          <td>
+            <label for='deptCd' class='input_labal'>부서명</label>
+            <select class='form-select' id='deptCd' th:field="*{deptCd}" size=1>
+              <option value=''>선택</option>
+              <option th:each="deptCdCode : ${deptCdCodes}"
+                      th:attr="selected=${deptCdCode.value == deptCd ?'true' : 'false'}"
+                      th:value="${deptCdCode.value}"
+                      th:text="${deptCdCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for="workCd" class="input_labal">업무코드</label>
+            <input id="workCd" th:field="*{workCd}" type="text" size="5" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="phone" class="input_labal">전화번호</label>
+            <input id="phone" th:field="*{phone}" type="text" size="15" class="form-control">
+          </td>
+          <td>
+            <label for="mobile" class="input_labal">모바일</label>
+            <input id="mobile" th:field="*{mobile}" type="text" size="18" class="form-control">
+          </td>
+          <td>
+            <label for="email" class="input_labal">Email</label>
+            <input id="email" th:field="*{email}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="psNo" class="input_labal">여권번호</label>
+            <input id="psNo" th:field="*{psNo}" type="text" size="30" class="form-control">
+          </td>
+          <td>
+            <div class='input-group input-daterange'>
+              <div class='input-group-addon px-2'>
+                <label for="leaveDt" class="input_labal">퇴사일자</label>
+              </div>
+              <input type="text" id="leaveDt" th:field="*{leaveDt}" size="6" class="input_date" autocomplete="off">
+            </div>
+          </td>
+          <td>
+            <label for="leaveRs" class="input_labal">퇴사사유</label>
+            <input id="leaveRs" th:field="*{leaveRs}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for='bankNm' class='input_labal'>급여은행</label>
+            <select class='form-select' id='bankNm' th:field="*{bankNm}" size=1>
+              <option value=''>선택</option>
+              <option th:each="bankNmCode : ${bankNmCodes}"
+                      th:attr="selected=${bankNmCode.value == bankNm ?'true' : 'false'}"
+                      th:value="${bankNmCode.value}"
+                      th:text="${bankNmCode.text}">
+            </select>
+          </td>
+          <td>
+            <label for="aCutNm" class="input_labal">예금주</label>
+            <input id="aCutNm" th:field="*{aCutNm}" type="text" size="20" class="form-control">
+          </td>
+          <td>
+            <label for="aCutNo" class="input_labal">사원계좌번호</label>
+            <input id="aCutNo" th:field="*{aCutNo}" type="text" size="30" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td colspan="3">
+            <label for="zipCd" class="input_labal">주소</label>
+            <input id="zipCd" th:field="*{zipCd}" type="text" size="5" class="form-control">
+            <button name="search" id="search" type="button" class="btn btn-gfk btn-sm"
+                    onclick="openZipSearch('zipCd','address','address1')">검색
+            </button>
+            <input id="address" th:field="*{address}" type="text" size="30" class="form-control">
+            <input id="address1" th:field="*{address1}" type="text" size="50" class="form-control">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="img" class="input_labal">사진</label>
+            <input id="img" name="img" type="file" size="20" class="form-control">
+          </td>
+          <td colspan="2">
+            <label for="file" class="input_labal">파일</label>
+            <input id="file" name="file" type="file" size="20" class="form-control">
+            <a th:if="*{fileNm}" style="font-size: 11px" th:href="@{${fileName}}" th:download="*{fileNm}" th:text="*{fileNm}"></a>
+          </td>
+        </tr>
+        <tr th:if="*{picNm}">
+          <td>
+            <label class="input_labal">사진상세</label>
+            <img class="main-style" th:src="@{${imgName}}" title="사진" style="" width="100">
+            <button name="print" id="print" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="imgPopup([[${imgName}]])">인쇄
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <label for="note" class="input_labal">비고</label>
+            <input id="note" th:field="*{note}" type="text" size="80" class="form-control">
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div class="input_div button_table">
+      <table class="input_table">
+        <tr>
+          <td class="float-end">
+            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+            </button>
+            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+  <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+  <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+  <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+  <input type="hidden" id="sEmpNm" name="sEmpNm" size="0" class="form-control ">
+  <input type="hidden" id="sPost" name="sPost" size="0" class="form-control ">
+  <input type="hidden" id="sDeptCd" name="sDeptCd" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>

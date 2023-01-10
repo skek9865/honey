@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>주문서 검색</title>
+  <link rel="icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
+  <link rel="shortcut icon" th:href="@{|${global.imgDir}/favicon.ico|}" type="image/x-icon" />
+  <link th:href="@{|${global.cssDir}/bootstrap.min.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/bootstrap-datepicker3.min.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/bootstrap-icons.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/bootstrap.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/styles.css|}" rel="stylesheet" />
+  <link th:href="@{|${global.cssDir}/style_old.css|}" rel="stylesheet" />
+  <link th:href="@{|${global.cssDir}/bootstrap4-toggle.min.css|}" rel="stylesheet" >
+  <link th:href="@{|${global.cssDir}/theme.blue.css|}" rel="stylesheet" >
+
+  <script th:src="@{|${global.jsDir}/all.min.js|}" crossorigin="anonymous"></script>
+  <script th:src="@{|${global.jsDir}/jquery-3.4.1.min.js|}"></script>
+  <script th:src="@{|${global.jsDir}/jquery-ui.min.js|}"></script>
+
+  <script th:src="@{|${global.jsDir}/colResizable-1.6.js|}"></script>
+  <script th:src="@{|${global.jsDir}/jquery.tablesorter.min.js|}"></script>
+  <script th:src="@{|${global.jsDir}/bootstrap4-toggle.min.js|}"></script>
+  <script th:src="@{|${global.jsDir}/popper.min.js|}"></script>
+
+  <script th:src="@{|${global.jsDir}/bootstrap.min.js|}"></script>
+  <script th:src="@{|${global.jsDir}/bootstrap-datepicker.min.js|}" type='text/javascript' ></script>
+  <script th:src="@{|${global.jsDir}/bootstrap-datepicker.ko.min.js|}" charset="UTF-8"></script>
+
+  <script th:src="@{|${global.jsDir}/showModalDialog.js|}" type="text/javascript"></script>
+  <script th:src="@{|${global.jsDir}/showModalDialogCallee.js|}" type="text/javascript"></script>
+
+  <script th:src="@{|${global.jsDir}/comfunction.js|}"></script>
+  <script th:src="@{|${global.jsDir}/comfunction_src.js|}"></script>
+  <script th:src="@{|${global.jsDir}/clientValidate.js|}"></script>
+
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
+</head>
+<SCRIPT LANGUAGE="javascript">
+  function lf_confirm(as_action,as_val1,as_val2,as_val3) { // FORM을 서버미트 하기전에 수행할 일
+    form = fm_home;
+    switch (as_action) {
+      case "find" : //검색
+        form.action ="?action="+as_action;
+        form.submit();
+        break;
+    }
+  }
+  function Do_Select(as_seq) {
+    window.opener.lf_confirm("load",as_seq,"","");
+    self.close()
+  }
+</SCRIPT>
+<body class="bg-white" style="overflow-x:hidden;overflow-y:hidden;">
+<FORM name="fm_home" method="get" th:action="@{/040203/orderPopUp}" >
+  <main >
+    <div class="container-fluid p-2" >
+      <div class="" id="searchBar">
+        <div class="p-2">
+          <table width="100%">
+            <tr>
+              <td class="p-1">
+                <div class="input-group input-daterange">
+                  <div class="input-group-addon px-2">
+                    <label for="sYmd1" class="">조회기간</label>
+                  </div>
+                  <input type="text" id="sYmd1" th:field="${search.sYmd1}" class="input_date" autocomplete="off">
+                  <div class="input-group-addon">~&nbsp;</div>
+                  <input type="text" id="sYmd2" th:field="${search.sYmd2}" class="input_date" autocomplete="off">
+                </div>
+              </td>
+              <td class="p-1">
+                <label for="sgoodscd" class="search_labal">품목</label>
+                <input type="hidden" id="sgoodscd" th:field="${search.sGoodsCd}" size="30" class="form-control">
+                <input type="text" id="sgoodsnm" th:field="${search.sGoodsNm}"  size="30" class="form-control" readonly>
+                <button name="clear1" id="clear1" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('sgoodscd').value='';document.getElementById('sgoodsnm').value='';">비움</button>
+                <button name="findgoods1" id="findgoods1" type="button" class="btn btn-gfk btn-ssm"
+                        onclick='gf_popup("700","500","_search_goods","/040105/popup?type=1&product=true&stock=true")'>검색</button>
+              </td>
+              <td class="p-1">
+                <label for="scustcd" class="search_labal">거래처</label>
+                <input type="hidden" id="scustcd" th:field="${search.sCustCd}" size="30" class="form-control" readonly>
+                <input type="text" id="scustnm" th:field="${search.sCustNm}" size="30" class="form-control" readonly>
+                <button name="clear" id="clear" type="button" class="btn btn-gfk btn-ssm" onclick="document.getElementById('scustcd').value='';document.getElementById('scustnm').value='';">비움</button>
+                <button name="findcust" id="findcust" type="button" class="btn btn-gfk btn-ssm" onclick='gf_popup("700","500","_search_cust","/040102/popup?type=1")'>검색</button>
+              </td>
+              <td>
+                <button name="find" id="find" type="button" class="btn btn-gfk btn-sm" onclick="lf_confirm(this.name,'','','')">조회</button>&nbsp;
+                <button name="popup_close" id="popup_close" type="button" class="btn btn-gfk btn-sm" onclick="window.close()">닫기</button>&nbsp;
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="table-responsive text-nowrap" id="tableWrapper">
+        <div class="tableWrapper">
+          <table class="table table-striped tableList" style="width:98%;" id="datatable_1" >
+            <thead>
+            <tr class="tableList_h_tr">
+              <th th:each="title : ${titles}" th:text="${title}">타이틀</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="list_tr_1" th:each="dto, dtoStat : ${dtos}">
+              <td class="list_td_1 text-center" th:text="${dtoStat.count}"></td>
+              <td class="list_td_1 text-center" th:text="${dto.orderNo}"></td>
+              <td class="list_td_1 text-center" th:text="${dto.custNm}"></td>
+              <td class="list_td_1 text-center" th:text="${dto.empNo}"></td>
+              <td class="list_td_1 text-center" th:text="${dto.goodsCd}"></td>
+              <td class="list_td_1 text-end" th:text="${#numbers.formatInteger(dto.price,0, 'COMMA')}"></td>
+              <td class="list_td_1 text-center">
+                <button name="select" id="select" type="button" class="btn btn-gfk btn-ssm" th:onclick='|Do_Select(${dto.seq});|'>선택</button>&nbsp;
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main >
+</FORM>
+<script src="/js/scripts_sub.js"></script>
+</body>
+</html>

@@ -312,6 +312,7 @@ svg {
 table {
   caption-side: bottom;
   border-collapse: collapse;
+  font-size: 11px;
 }
 
 caption {
@@ -2446,6 +2447,7 @@ textarea.form-control-lg {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
+  font-size: 11px;
 }
 @media (prefers-reduced-motion: reduce) {
   .form-select, .dataTable-selector {
@@ -2548,6 +2550,7 @@ textarea.form-control-lg {
 }
 .form-check-input[disabled] ~ .form-check-label, .form-check-input:disabled ~ .form-check-label {
   opacity: 0.5;
+  font-size: 11px;
 }
 
 .form-switch {
@@ -11930,6 +11933,7 @@ body {
 }
 
 .list_td_1 {
+    font-size: 12px;
 	height: 20px; 
 	text-align: center; 
 	vertical-align: middle;
@@ -12039,11 +12043,13 @@ body {
 }
 
 .input_labal {
+  font-size: 11px;
 	width: 100px;
 	text-align: right;
   font-weight: 900;
 }
 .input_labal_sm {
+  font-size: 11px;
 	width: 50px;
 	text-align: right;
   font-weight: 900;
@@ -12053,7 +12059,21 @@ body {
 	text-align: right;
   font-weight: 900;
 }
-
+.search_labal {
+  font-size: 12px;
+  width: 40px;
+  text-align: right;
+}
+.search_labal_lg {
+  font-size: 12px;
+  width: 70px;
+  text-align: right;
+}
+.search_labal_xl {
+  font-size: 12px;
+  width: 120px;
+  text-align: right;
+}
 .input_date {
 	width: 70px !important;
 

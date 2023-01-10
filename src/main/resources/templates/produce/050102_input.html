@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" enctype="multipart/form-data" method="post" th:object="${dto}">
+    <main>
+        <div class="container-fluid p-2">
+            <div class="input_div">
+                <table class="input_table">
+                    <tbody><tr>
+                        <td>
+                            <label for="vfaulycd" class="input_labal">불량코드</label>
+                            <input type="text" th:field="*{faulyCd}" id="vfaulycd" size="5" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vfaulynm" class="input_labal">불량명</label>
+                            <input type="text" th:field="*{faulyNm}" id="vfaulynm" size="20" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="verroral" class="input_labal">불량정렬순번</label>
+                            <input type="text" name="errorAl" id="verroral" th:value="${dto.errorAl != null ? dto.errorAl:0}" size="11" class="form-control input_number ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vnote" class="input_labal">적요</label>
+                            <input type="text" th:field="*{note}" id="vnote" size="40" class="form-control ">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label for="vuseyn" class="input_labal">사용여부</label>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" id="vuseyn" th:field="*{useYn}" th:attr="checked=${dto.useYn == 'Y'?'true' : 'false'}" type="checkbox" value="Y">
+                                <label class="form-check-label" for="vuseyn"></label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody></table>
+            </div>
+            <div class="input_div button_table">
+                <table class="input_table">
+                    <tbody>
+                    <tr>
+                        <td class="float-end">
+                            <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                                    th:onclick="lf_confirm([[${action}]],'','','')">저장
+                            </button>&nbsp;
+                            <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>&nbsp;
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <input type="hidden" id="iseq" name="seq" th:value="*{seq}">
+    <input type="hidden" id="ifstId" name="fstId">
+    <input type="hidden" id="iscdId" name="scdId">
+    <input type="hidden" id="ithdId" name="thdId">
+    <input type="hidden" id="ipage" name="page">
+    <input type="hidden" id="isize" name="size">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>

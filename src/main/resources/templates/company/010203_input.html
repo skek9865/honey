@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{|${global.jsDir}/printPreview_a.js|}"></script>
+<body>
+<form name="fm_input" th:action="@{/010203/input}" method="post" th:object="${dto}">
+    <input type="hidden" name ="fk_tb_101"  th:value="*{fk_tb_101}">
+    <div class="container-fluid p-2">
+        <div class="input_div">
+            <table class="input_table">
+                <tr>
+                    <td>
+                        <label for="cardnm" class="input_labal">카드명</label>
+                        <input type="text" id="cardnm" th:field="*{cardnm}" th:value="*{cardnm}"  size="25" class="form-control ">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="cardno" class="input_labal">카드번호</label>
+                        <input type="text" id="cardno" th:field="*{cardno}" th:value="*{cardno}"  size="30" class="form-control ">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class='input-group input-daterange'>
+                            <div class='input-group-addon px-2'>
+                                <label for="expdt" class="input_labal">유효기간</label>
+                            </div>
+                            <input type="text" id="expdt" th:field="*{expdt}" th:value="*{expdt}"  size="6" class="input_date" autocomplete="off">
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="cvcno" class="input_labal">cvc번호</label>
+                        <input type="text" id="cvcno" th:field="*{cvcno}" th:value="*{cvcno}" size="5" class="form-control">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="empno" class="input_labal">사용자</label>
+                        <select id="empno" th:field="*{empno}" th:value="*{empno}" class="form-select" >
+                            <option value="">선택</option>
+                            <th:block th:each="emp : ${empList}">
+                                <option th:value="${emp.value}" th:text="${emp.text}" th:attr="selected=${emp.value eq empno ? 'true' : 'false'}"></option>
+                            </th:block>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="fk_tb_102" class="input_labal">결제계좌</label>
+                        <select id="fk_tb_102" th:field="*{fk_tb_102}" th:value="*{fk_tb_102}" class="form-select" >
+                            <option value="">선택</option>
+                            <th:block th:each="bank : ${bankList}">
+                                <option th:value="${bank.seq}" th:text="${bank.accountno}" th:attr="selected=${bank.seq eq fk_tb_102 ? 'true' : 'false'}"></option>
+                            </th:block>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="limitamt" class="input_labal">한도</label>
+                        <input type="text" id="limitamt" th:field="*{limitamt}" th:value="*{limitamt}"  size="25" class="form-control text-right">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class='input-group input-daterange'>
+                            <div class='input-group-addon px-2'>
+                                <label for="issuedt" class="input_labal">발급일자</label>
+                            </div>
+                            <input type="text" id="issuedt" th:field="*{issuedt}" th:value="*{issuedt}"  size="6" class="input_date" autocomplete="off" >
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="fk_tb_103" class="input_labal">인증서</label>
+                        <select id="fk_tb_103" th:field="*{fk_tb_103}" th:value="*{fk_tb_103}" class="form-select" >
+                            <option value="">선택</option>
+                            <th:block th:each="cer : ${cerList}">
+                                <option th:value="${cer.seq}" th:text="${cer.cernm}" th:attr="selected=${cer.seq eq fk_tb_103 ? 'true' : 'false'}"></option>
+                            </th:block>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="note" class="input_labal">비고</label>
+                        <input type="text" id="note" th:field="*{note}" th:value="*{note}"  size="25" class="form-control ">
+                    </td>
+                </tr>
+                <td>
+                    <label for="useyn" class="input_labal">사용여부</label>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" id="useyn" th:field="*{useyn}" th:attr="checked=${dto.useyn == 'Y'?'true' : 'false'}" type="checkbox" value="Y">
+                        <label class="form-check-label" for="useyn"></label>
+                    </div>
+                </td>
+                </tr>
+            </table>
+        </div>
+        <div class="input_div button_table">
+            <table class="input_table">
+                <tr>
+                    <td class="float-end">
+                        <button name="save" id="save" type="button" class="btn btn-gfk btn-sm"
+                                th:onclick="lf_confirm([[${action}]],'','','')">저장
+                        </button>
+                        <button name="close" id="close" type="button" class="btn btn-gfk btn-sm" data-dismiss="modal">닫기</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <input type="hidden" th:field="*{seq}" size="0" class="form-control ">
+    <input type="hidden" id="fstId" name="fstId" th:value="${fstId}" size="0" class="form-control ">
+    <input type="hidden" id="scdId" name="scdId" th:value="${scdId}" size="0" class="form-control ">
+    <input type="hidden" id="thdId" name="thdId" th:value="${thdId}" size="0" class="form-control ">
+    <input type="hidden" id="sEmpNm" name="sEmpNm" size="0" class="form-control ">
+    <input type="hidden" id="sPost" name="sPost" size="0" class="form-control ">
+    <input type="hidden" id="sDeptCd" name="sDeptCd" size="0" class="form-control ">
+</form>
+<script th:src="@{|${global.jsDir}/scripts_sub.js|}"></script>
+</body>
+</html>
