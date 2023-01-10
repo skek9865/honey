@@ -7,13 +7,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import project.honey.comm.ExcelMaker;
 import project.honey.comm.GlobalConst;
 import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
+import project.honey.comm.menu.MenuNm;
 import project.honey.personDepart.form.Tb202Form;
 import project.honey.personDepart.dto.Tb202Dto;
 import project.honey.personDepart.service.Service020102;
@@ -44,7 +49,6 @@ public class Controller020102 {
         List<String> titles = GlobalMethod.makeTitle(
                 "순번", "관리", "부서코드", "부서명", "사용여부"
         );
-
         model.addAttribute("menus", menuMaker.getMenuId(1,"","",""));
         model.addAttribute("menuNm",menuMaker.getMenuNm(menuIdDto));
         model.addAttribute("titles",titles);
@@ -75,7 +79,7 @@ public class Controller020102 {
     }
 
     @PostMapping("/insert")
-    public String insert(@ModelAttribute Tb202Form form, Model model, HttpServletRequest request){
+    public String insert(@ModelAttribute("dto") Tb202Form form, Model model, HttpServletRequest request){
         log.info("부서관리 insert");
         log.info("form = {}", form);
         if (service020102.insert(form)) model.addAttribute("msg","정상적으로 저장 되었습니다.");
