@@ -16,6 +16,26 @@
 
                     case "insert" : //저장
                     case "update" : //수정
+                        if (!gf_checkSubmit("불량코드",fm_input.vfaulycd,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("불량명",fm_input.vfaulynm,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("불량정렬순번",fm_input.verroral,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("사용여부",fm_input.vuseyn,1,0,0,0,0,0)) { break; }
+                        if(fm_input.vfaulycd.value.length > 5){
+                            alert("불량코드는 5자리 이하로 입력하세요");
+                            break;
+                        }
+                        if(fm_input.vfaulynm.value.length > 50){
+                            alert("불량명은 50자리 이하로 입력하세요");
+                            break;
+                        }
+                        if(fm_input.verroral.value.length > 10){
+                            alert("불량정렬순번은 10자리 이하로 입력하세요");
+                            break;
+                        }
+                        if(fm_input.vnote.value.length > 255){
+                            alert("적요는 255자리 이하로 입력하세요");
+                            break;
+                        }
                         fm_input.action = "/050102/" + as_action
                         fm_input.submit();
                         break;

@@ -14,6 +14,21 @@
           break;
         case "insert" : //저장
         case "update" : //저장
+          if (!gf_checkSubmit("프로젝트코드",fm_input.projectCd,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("프로젝트정렬순서",fm_input.projectAl,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("프로젝트명",fm_input.projectNm,1,0,0,0,0,0)) { break; }
+          if(fm_input.projectCd.value.length > 5){
+            alert("프로젝트코드는 5자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.projectAl.value.length > 10){
+            alert("프로젝트정렬순서는 10자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.projectNm.value.length > 50){
+            alert("프로젝트명은 50자리 이하로 입력하세요");
+            break;
+          }
           fm_input.action = "/040109/" + as_action;
           fm_input.method = "post";
           fm_input.submit();

@@ -14,6 +14,35 @@
           break;
         case "insert" : //저장
         case "update" : //저장
+          if (!gf_checkSubmit("자동차명",fm_input.carNm,1,0,0,0,0,0)) { break; }
+          if(fm_input.carNm.value.length > 50){
+            alert("자동차명은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.carYear.value.length > 10){
+            alert("연식은 10자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.carNo.value.length > 20){
+            alert("차량번호는 20자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.instNm.value.length > 50){
+            alert("보험회사는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.ageLimit.value.length > 10){
+            alert("연령한정은 10자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.instAmt.value.length > 10){
+            alert("보험료는 10자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.note.value.length > 255){
+            alert("비고는 255자리 이하로 입력하세요");
+            break;
+          }
           fm_input.action = "/010302/" + as_action;
           fm_input.method = "post";
           fm_input.submit();

@@ -6,6 +6,23 @@
             switch (as_action) {
                 case "insert" : //저장
                 case "update" : //수정
+                    if (!gf_checkSubmit("대출명",fm_input.loannm,1,0,0,0,0,0)) { break; }
+                    if(fm_input.loannm.value.length > 50){
+                        alert("대출명은 50자리 이하로 입력하세요");
+                        break;
+                    }
+                    if(fm_input.limitamt.value.length > 10){
+                        alert("약정한도는 10자리 이하로 입력하세요");
+                        break;
+                    }
+                    if(fm_input.irate.value.length > 8){
+                        alert("금리는 8자리 이하로 입력하세요");
+                        break;
+                    }
+                    if(fm_input.note.value.length > 255){
+                        alert("비고는 255자리 이하로 입력하세요");
+                        break;
+                    }
                     fm_input.action = "/010204/" + as_action;
                     fm_input.submit();
                     break;

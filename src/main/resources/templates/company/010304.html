@@ -14,6 +14,43 @@
           break;
         case "insert" : //저장
         case "update" : //저장
+          if (!gf_checkSubmit("회사명",fm_input.company,1,0,0,0,0,0)) { break; }
+          if(fm_input.company.value.length > 50){
+            alert("회사명은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.telNo.value.length > 50){
+            alert("연락처는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.mobile.value.length > 50){
+            alert("핸드폰은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.fax.value.length > 50){
+            alert("팩스는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.email.value.length > 50){
+            alert("이메일은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.etcTel1.value.length > 50){
+            alert("기타연락처1은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.etcTel2.value.length > 50){
+            alert("기타연락처2은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.etcTel3.value.length > 50){
+            alert("기타연락처3은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.note.value.length > 255){
+            alert("비고는 255자리 이하로 입력하세요");
+            break;
+          }
           fm_input.action = "/010304/" + as_action;
           fm_input.method = "post";
           fm_input.submit();

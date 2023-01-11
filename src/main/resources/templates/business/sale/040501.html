@@ -14,6 +14,35 @@
           break;
         case "insert" : //저장
         case "update" : //저장
+          if (!gf_checkSubmit("입출금일자",fm_input.amountDt,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("입출금순번",fm_input.amountNo,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("입출/구분",fm_input.amountCl,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("입출금액",fm_input.amount,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("거래처",fm_input.vcustcd,1,0,0,0,0,0)) { break; }
+          if(fm_input.amountNo.value.length > 10){
+            alert("입출금순번은 10자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.amountTy.value.length > 5){
+            alert("입출타입은 5자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.price.value.length > 11){
+            alert("매출액은 11자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.amount.value.length > 11){
+            alert("입출금액은 11자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.note.value.length > 255){
+            alert("적요는 255자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.note1.value.length > 255){
+            alert("참조는 255자리 이하로 입력하세요");
+            break;
+          }
           fm_input.action = "/040501/" + as_action;
           fm_input.method = "post";
           fm_input.submit();

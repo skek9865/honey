@@ -15,6 +15,31 @@
 
                     case "insert" : //저장
                     case "update" : //수정
+                        if (!gf_checkSubmit("작업일",fm_input.vwhousedt,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("처리순번",fm_input.vwhouseno,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("창고",fm_input.vwhouseout,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("품목",fm_input.vgoodscd,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("제고수량",fm_input.vstqty,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("실사수량",fm_input.vreqty,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("조정수량",fm_input.vadqty,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("적요",fm_input.vnote,1,0,0,0,0,0)) { break; }
+
+                        if(fm_input.vstqty.value.length > 10){
+                            alert("제고수량은 10자리 이하로 입력하세요");
+                            break;
+                        }
+                        if(fm_input.vreqty.value.length > 10){
+                            alert("실사수량은 10자리 이하로 입력하세요");
+                            break;
+                        }
+                        if(fm_input.vadqty.value.length > 10){
+                            alert("조정수량은 10자리 이하로 입력하세요");
+                            break;
+                        }
+                        if(fm_input.vnote.value.length > 255){
+                            alert("적요는 255자리 이하로 입력하세요");
+                            break;
+                        }
                         fm_input.action = "/060110/" + as_action
                         fm_input.submit();
                         break;

@@ -14,6 +14,39 @@
           break;
         case "insert" : //저장
         case "update" : //저장
+          if (!gf_checkSubmit("구분",fm_input.part,1,0,0,0,0,0)) { break; }
+          if(fm_input.part.value.length > 50){
+            alert("구분은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.patentNo.value.length > 50){
+            alert("특허번호/등록번호는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.patentApNo.value.length > 50){
+            alert("출원번호는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.patentNm.value.length > 100){
+            alert("명칭/물품류은 100자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.patentMan.value.length > 50){
+            alert("특허권자는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.inventor.value.length > 50){
+            alert("발명자/창작자는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.issueDBy.value.length > 100){
+            alert("발급처는 100자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.note.value.length > 255){
+            alert("비고는 255자리 이하로 입력하세요");
+            break;
+          }
           fm_input.action = "/010303/" + as_action;
           fm_input.method = "post";
           fm_input.submit();

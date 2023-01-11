@@ -14,6 +14,22 @@
           break;
         case "insert" : //저장
         case "update" : //저장
+          if (!gf_checkSubmit("품목분류",fm_input.classSeq,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("품목구분코드",fm_input.classCd,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("품목그룹정렬순서",fm_input.classAl,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("품목구분명",fm_input.classNm,1,0,0,0,0,0)) { break; }
+          if(fm_input.classCd.value.length > 5){
+            alert("품목구분코드는 5자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.classAl.value.length > 10){
+            alert("품목그룹정렬순서는 10자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.classNm.value.length > 50){
+            alert("품목구분명은 50자리 이하로 입력하세요");
+            break;
+          }
           fm_input.action = "/040104/" + as_action;
           fm_input.submit();
           break;

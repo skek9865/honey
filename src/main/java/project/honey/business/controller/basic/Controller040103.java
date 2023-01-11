@@ -16,6 +16,7 @@ import project.honey.comm.GlobalMethod;
 import project.honey.comm.PageMaker;
 import project.honey.comm.menu.MenuIdDto;
 import project.honey.comm.menu.MenuMaker;
+import project.honey.produce.service.Service050101;
 import project.honey.system.service.Service990301;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,6 +32,7 @@ import java.util.Map;
 public class Controller040103 {
 
     private final Service040103 service040103;
+    private final Service050101 service050101;
     private final Service990301 service990301;
     private final MenuMaker menuMaker;
     private final ExcelMaker excelMaker;
@@ -65,6 +67,7 @@ public class Controller040103 {
         model.addAttribute("thdId", map.get("thdId"));
         model.addAttribute("action", map.get("action"));
         model.addAttribute("global", new GlobalConst());
+        model.addAttribute("productCodes", service050101.findAllBySelect());
         model.addAttribute("whouseCodes",service990301.findByFstId("06"));
         if(map.get("vseq").isEmpty()){
             model.addAttribute("dto",new Tb403Dto());

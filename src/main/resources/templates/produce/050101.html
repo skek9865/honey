@@ -16,6 +16,21 @@
 
                     case "insert" : //저장
                     case "update" : //수정
+                        if (!gf_checkSubmit("생산공정코드",fm_input.vproductcd,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("생산공정정렬순서",fm_input.vproductal,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("생산공정명",fm_input.vproductnm,1,0,0,0,0,0)) { break; }
+                        if(fm_input.vproductcd.value.length > 5){
+                            alert("생산공정코드는 5자리 이하로 입력하세요");
+                            break;
+                        }
+                        if(fm_input.vproductal.value.length > 10){
+                            alert("생산공정정렬순서는 10자리 이하로 입력하세요");
+                            break;
+                        }
+                        if(fm_input.vproductnm.value.length > 50){
+                            alert("생산공정명은 50자리 이하로 입력하세요");
+                            break;
+                        }
                         fm_input.action = "/050101/" + as_action
                         fm_input.submit();
                         break;
