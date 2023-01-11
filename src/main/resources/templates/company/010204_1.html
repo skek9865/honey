@@ -6,6 +6,10 @@
             switch (as_action) {
                 case "insert" : //저장
                 case "update" : //수정
+                    if (!gf_checkSubmit("회사코드",fm_input.vfk_tb_101,1,0,0,0,0,0)) { break; }
+                    if (!gf_checkSubmit("대출번호",fm_input.vfk_tb_105,1,0,0,0,0,0)) { break; }
+                    if (!gf_checkSubmit("납입일",fm_input.vinstdt,1,0,0,0,0,0)) { break; }
+                    if (!gf_checkSubmit("납입금액",fm_input.vinstamt,1,0,0,0,0,0)) { break; }
                     fm_input.action = "/010204/" + as_action;
                     fm_input.submit();
                     break;

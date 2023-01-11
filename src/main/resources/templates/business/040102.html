@@ -14,6 +14,82 @@
           break;
         case "insert" : //저장
         case "update" : //저장
+          if (!gf_checkSubmit("거래처구분",fm_input.classSeq,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("거래처코드",fm_input.classCd,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("상호(이름)",fm_input.custNm,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("세무신고구분",fm_input.taxGb,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("외화",fm_input.forNm,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("출하대상거래처",fm_input.shipYn,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("영업유형",fm_input.saleType,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("구매유형",fm_input.buyType,1,0,0,0,0,0)) { break; }
+          if(fm_input.classCd.value.length > 10){
+            alert("거래코드는 10자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.custNm.value.length > 50){
+            alert("상호(이름)는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.taxCd.value.length > 50){
+            alert("세무신고코드는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.ceoNm.value.length > 50){
+            alert("대표자명은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.bsnS.value.length > 50){
+            alert("업태는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.item.value.length > 50){
+            alert("종목은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.phone.value.length > 20){
+            alert("전화번호는 20자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.mobile.value.length > 20){
+            alert("모바일은 20자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.custFax.value.length > 20){
+            alert("거래처Fax는 20자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.email.value.length > 50){
+            alert("Email은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.address11.value.length > 50){
+            alert("상세주소1은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.address21.value.length > 50){
+            alert("상세주소2는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.rAddress.value.length > 50){
+            alert("실제주소는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.bankBo.value.length > 50){
+            alert("통장번호는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.saleCd.value.length > 10){
+            alert("영업사원은 10자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.homePage.value.length > 50){
+            alert("홈페이지는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.note.value.length > 255){
+            alert("비고는 255자리 이하로 입력하세요");
+            break;
+          }
           fm_input.action = "/040102/" + as_action;
           fm_input.method = "post";
           fm_input.submit();

@@ -6,6 +6,25 @@
       switch (as_action) {
         case "insert" : //저장
         case "update" : //저장
+          if (!gf_checkSubmit("인중서명",fm_input.cernm,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("만료일",fm_input.expdt,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("사용여부",fm_input.useyn,1,0,0,0,0,0)) { break; }
+          if(fm_input.cernm.value.length > 50){
+            alert("인중서명은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.usenote.value.length > 100){
+            alert("사용용도는 100자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.savemtd.value.length > 50){
+            alert("보관형태는 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.note.value.length > 255){
+            alert("비고는 255자리 이하로 입력하세요");
+            break;
+          }
           fm_input.action = "/010202/" + as_action;
           fm_input.submit();
           break;
