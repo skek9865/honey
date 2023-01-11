@@ -22,10 +22,10 @@
             <label for='productCd' class='input_labal'>생산공정명</label>
             <select class='form-select' id='productCd' th:field="*{productCd}" size=1>
               <option value=''>선택</option>
-<!--              <option th:each="whouseCode : ${whouseCodes}"-->
-<!--                      th:attr="selected=${whouseCode.value == post ?'true' : 'false'}"-->
-<!--                      th:value="${whouseCode.value}"-->
-<!--                      th:text="${whouseCode.text}">-->
+              <option th:each="productCode : ${productCodes}"
+                      th:attr="selected=${productCode.key == productCd ? 'true' : 'false'}"
+                      th:value="${productCode.key}"
+                      th:text="${productCode.value}"></option>
             </select>
           </td>
         </tr>

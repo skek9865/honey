@@ -14,6 +14,48 @@
           break;
         case "insert" : //저장
         case "update" : //저장
+          if (!gf_checkSubmit("품목코드",fm_input.vgoodscd,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("품목명",fm_input.vgoodsnm,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("품목구분",fm_input.vclass,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("세트여부",fm_input.vsetyn,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("재고수량관리",fm_input.vstockyn,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("재고수량",fm_input.vstockqty,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("입고단가",fm_input.vwprice,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("입고VAT",fm_input.vwpricevat,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("출고단가",fm_input.vfprice,1,0,0,0,0,0)) { break; }
+          if (!gf_checkSubmit("출고VAT",fm_input.vfpricevat,1,0,0,0,0,0)) { break; }
+          if(fm_input.vgoodscd.value.length > 20){
+            alert("품목코드는 20자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.vgoodsnm.value.length > 50){
+            alert("품목명은 50자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.vunit.value.length > 20){
+            alert("단위는 20자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.vstandard.value.length > 20){
+            alert("규격은 20자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.vstockqty.value.length > 11){
+            alert("재고수량은 11자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.vaqty.value.length > 10){
+            alert("안전재고 10자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.vwprice.value.length > 11){
+            alert("입고단가는 11자리 이하로 입력하세요");
+            break;
+          }
+          if(fm_input.vfprice.value.length > 11){
+            alert("출고단가는 11자리 이하로 입력하세요");
+            break;
+          }
           fm_input.action = "/040105/" + as_action;
           fm_input.submit();
           break;

@@ -45,6 +45,12 @@
                 switch (as_action) {
                     case "insert" : //저장
                     case "update" : //수정
+                        if (!gf_checkSubmit("급여항목명",fm_input.itemCd,1,0,0,0,0,0)) { break; }
+                        if (!gf_checkSubmit("금액",fm_input.payAmt,1,0,0,0,0,0)) { break; }
+                        if(fm_input.payAmt.value.length > 11){
+                            alert("금액은 11자리 이하로 입력하세요");
+                            break;
+                        }
                         fm_input.action = "/030103/" + as_action
                         fm_input.submit();
                         break;
